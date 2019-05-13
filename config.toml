@@ -1,0 +1,21 @@
+
+title = "Sergey Sova"
+description = "Notes about development"
+base_url = "https://sova.dev"
+theme = "hyde"
+compile_sass = false
+
+highlight_code = true
+highlight_theme = "visual-studio-dark"
+
+build_search_index = true
+generate_rss = false
+check_external_links = true
+
+[extra]
+hyde_links = [
+  { url = "https://github.com/sergeysova", name = "Github" },
+  { url = "https://t.me/sergeysova", name = "Telegram" },
+  { url = "https://twitter.com/_sergeysova", name = "Twitter" },
+]
+hyde_theme = "theme-base-0d"
