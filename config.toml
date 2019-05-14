@@ -3,12 +3,12 @@ title = "Sergey Sova"
 description = "Notes about development"
 base_url = "https://sova.dev"
 theme = "hyde"
-compile_sass = false
+compile_sass = true
 
 highlight_code = true
 highlight_theme = "visual-studio-dark"
 
-build_search_index = true
+build_search_index = false
 generate_rss = false
 check_external_links = true
 
