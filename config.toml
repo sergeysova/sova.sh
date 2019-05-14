@@ -12,10 +12,16 @@ build_search_index = true
 generate_rss = false
 check_external_links = true
 
+languages = [
+  { code = "ru" },
+  { code = "en" },
+]
+
 [extra]
 hyde_links = [
   { url = "https://github.com/sergeysova", name = "Github" },
   { url = "https://t.me/sergeysova", name = "Telegram" },
   { url = "https://twitter.com/_sergeysova", name = "Twitter" },
+  { url = "/ru", name = "По русски" },
 ]
 hyde_theme = "theme-base-0d"
