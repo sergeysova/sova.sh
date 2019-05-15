@@ -2,6 +2,7 @@
 title = "Sergey Sova"
 description = "Notes about development"
 base_url = "https://sova.dev"
+# theme = "after-dark"
 theme = "hyde"
 compile_sass = true
 
@@ -12,9 +13,16 @@ build_search_index = false
 generate_rss = false
 check_external_links = true
 
+paginate_by = 10
+
 languages = [
   { code = "ru" },
-  { code = "en" },
+]
+
+taxonomies = [
+    # You can enable/disable RSS
+    { name = "categories" },
+    { name = "tags" },
 ]
 
 [extra]
@@ -22,6 +30,15 @@ hyde_links = [
   { url = "https://github.com/sergeysova", name = "Github" },
   { url = "https://t.me/sergeysova", name = "Telegram" },
   { url = "https://twitter.com/_sergeysova", name = "Twitter" },
-  { url = "/ru", name = "По русски" },
+  { url = "/ru", name = "По-русски" },
 ]
 hyde_theme = "theme-base-0d"
+
+after_dark_menu = [
+    {url = "$BASE_URL", name = "Home"},
+    {url = "$BASE_URL/categories", name = "Categories"},
+    {url = "$BASE_URL/tags", name = "Tags"},
+    {url = "https://twitter.com/_sergeysova", name = "Twitter"},
+    {url = "https://github.com/sergeysova", name = "Github"},
+]
+after_dark_title = "Sergey Sova"
