@@ -13,7 +13,7 @@
 {% endblock extra_head %}
 {% block content %}
 <article class="post">
-  <h1 class="post-title">{{ page.title }}</h1>
+  <h2 class="post-title">{{ page.title }}</h2>
   <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
   {{ page.content | safe }}
 </article>
