@@ -19,8 +19,13 @@
 
   {% if config.generate_rss %}
   <link rel="alternate" type="application/rss+xml" title="RSS"
-    href="{{ get_url(path="rss.xml", trailing_slash=false) }}"> {% endif %} {% block extra_head %}
-  {% endblock extra_head %}
+    href="{{ get_url(path="rss.xml", trailing_slash=false) }}"> {% endif %}
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  {% block extra_head %}{% endblock extra_head %}
 </head>
 
 <body class="{{ config.extra.hyde_theme }} {% if config.extra.hyde_reverse %}layout-reverse{% endif %}">

@@ -1,9 +1,13 @@
 {% extends "index.html" %}
 {% block title %}{{ page.title }} — Sergey Sova{% endblock title %}
 {% block extra_head %}
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Sergey Sova" />
 <meta property="og:title" content="{{ page.title }} — Sergey Sova" />
+<meta property="og:published_time" content="{{ page.date }}" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="{{ page.title }} — Sergey Sova" />
+<meta name="telegram:channel" content="@sergeysova">
 {% if page.description %}
 <meta property="og:description" content="{{ page.description }}" />
 <meta name="twitter:description" content="{{ page.description }}" />
