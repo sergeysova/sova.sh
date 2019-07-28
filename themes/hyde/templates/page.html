@@ -1,4 +1,18 @@
-{% extends "index.html" %} {% block content %}
+{% extends "index.html" %}
+{% block title %}{{ page.title }} — Sergey Sova{% endblock title %}
+{% block extra_head %}
+<meta property="og:title" content="{{ page.title }} — Sergey Sova" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{ page.title }} — Sergey Sova" />
+{% if page.description %}
+<meta property="og:description" content="{{ page.description }}" />
+<meta name="twitter:description" content="{{ page.description }}" />
+{% endif %}
+<meta property="og:url" content="{{ page.permalink }}" />
+<meta property="twitter:site" content="@_sergeysova" />
+<meta property="twitter:creator" content="@_sergeysova" />
+{% endblock extra_head %}
+{% block content %}
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
   <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
