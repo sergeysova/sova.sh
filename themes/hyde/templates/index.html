@@ -30,7 +30,7 @@
 
 <body class="{{ config.extra.hyde_theme }} {% if config.extra.hyde_reverse %}layout-reverse{% endif %}">
   {% block sidebar %}
-  <div class="sidebar">
+  <aside class="sidebar">
     <div class="container {% if config.extra.hyde_sticky %}sidebar-sticky{% endif %}">
       <div class="sidebar-about">
         {% block sidebar_about %}
@@ -50,7 +50,7 @@
         {% endfor %} {% endblock sidebar_nav %}
       </ul>
     </div>
-  </div>
+  </aside>
   {% endblock sidebar %}
 
   <div class="content container">
