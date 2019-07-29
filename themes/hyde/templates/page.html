@@ -3,6 +3,7 @@
 {% block extra_head %}
 <meta property="og:title" content="{{ page.title | safe }}" />
 <meta property="og:published_time" content="{{ page.date | date(format="%Y-%m-%dT%T%z") }}" />
+<meta property="telegram:unixtime" content="{{ page.date | date(format="%s") }}" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="{{ page.title | safe }}" />
 {% if page.description %}
