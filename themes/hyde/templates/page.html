@@ -2,7 +2,7 @@
 {% block title %}{{ page.title }} — Sergey Sova{% endblock title %}
 {% block extra_head %}
 <meta property="og:title" content="{{ page.title | safe }}" />
-<meta property="og:published_time" content="{{ page.date | safe }}" />
+<meta property="og:published_time" content="{{ page.date | date(format="%Y-%m-%dT%T%z") }}" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="{{ page.title | safe }}" />
 {% if page.description %}
@@ -14,7 +14,7 @@
 {% block content %}
 <article class="post">
   <h2 class="post-title">{{ page.title }}</h2>
-  <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+  <time class="post-date">{{ page.date | date(format="%B %d %Y") }}</time>
   {{ page.content | safe }}
 </article>
 {% endblock content %}
