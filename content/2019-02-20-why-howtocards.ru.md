@@ -1,5 +1,6 @@
 +++
 title = "Why Howtocards"
+description = "Какую проблему пытается решить сервис?"
 date = 2019-02-20
 +++
 
