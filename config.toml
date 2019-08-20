@@ -17,7 +17,7 @@ paginate_by = 10
 
 default_language = "en"
 languages = [
-  { code = "ru" },
+  { code = "ru", rss = false },
 ]
 
 taxonomies = [
