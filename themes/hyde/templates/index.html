@@ -56,6 +56,7 @@
 
   <div class="content container">
     {% block content %}
+    {{ section.content | safe }}
     <div class="posts">
       {% for page in section.pages | reverse %}
       <div class="post">

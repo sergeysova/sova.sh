@@ -15,6 +15,7 @@ check_external_links = true
 
 paginate_by = 10
 
+default_language = "en"
 languages = [
   { code = "ru" },
 ]
