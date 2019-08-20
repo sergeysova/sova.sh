@@ -142,5 +142,5 @@ date = 2019-08-20
 [feature]: https://t.me/feature_slices
 [фича]: https://t.me/feature_slices
 [фичи]: https://t.me/feature_slices
-[библиотечный код]: /ru/why-utils-and-helpers-is-a-dump/
-[внутренняя библиотека]: /ru/why-utils-and-helpers-is-a-dump/
+[библиотечный код]: @/2018-10-07-why-utils-and-helpers-is-a-dump.ru.md
+[внутренняя библиотека]: @/2018-10-07-why-utils-and-helpers-is-a-dump.ru.md
