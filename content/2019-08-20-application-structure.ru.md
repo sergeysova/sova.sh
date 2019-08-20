@@ -112,7 +112,7 @@ date = 2019-08-20
   - route: `/post/:postSlug` (или `/:postSlug`)
   - example: `/post/effector-model`
 - Просмотр issue репозитория
-  - file: `src/repo/view/issues/view.js`
+  - file: `src/pages/repo/view/issues/view.js`
   - route: `/repo/:repoSlug/issues/:issueId`
   - example: `/repo/effector/issues/5`
 
