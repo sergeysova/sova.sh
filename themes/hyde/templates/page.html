@@ -17,6 +17,28 @@
   <h2 class="post-title">{{ page.title }}</h2>
   <time datetime="{{ page.date | date(format="%+") }}"
     class="post-date">{{ page.date | date(format="%B %d %Y") }}</time>
+  {% if toc %}
+  <ul>
+    {% for toclink in toc %}
+    <li><a href="{{toclink.permalink | safe}}">{{ toclink.title }}</a></li>
+    {% if toclink.children %}
+    <ul>
+      {% for inner in toclink.children %}
+      <li><a href="{{inner.permalink | safe}}">{{ inner.title }}</a></li>
+      {% if inner.children %}
+      <ul>
+        {% for double in inner.children %}
+        <li><a href="{{double.permalink | safe}}">{{ double.title }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+  </ul>
+  <hr />
+  {% endif %}
   {{ page.content | safe }}
 </article>
 
