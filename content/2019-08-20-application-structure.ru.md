@@ -108,12 +108,30 @@ rss = true
 
 Примеры:
 
+```
+src/
+  pages/
+    post/
+      page.js
+      model.js
+    repo/
+      view/
+        pulls/▸
+        issues/
+          view/
+            page.js
+            model.js
+        page.js
+        model.js
+    index.js
+```
+
 - Страница поста в блоге
   - file: `src/pages/post/page.js`
   - route: `/post/:postSlug` (или `/:postSlug`)
   - example: `/post/effector-model`
 - Просмотр issue репозитория
-  - file: `src/pages/repo/view/issues/view.js`
+  - file: `src/pages/repo/view/issues/view/page.js`
   - route: `/repo/:repoSlug/issues/:issueId`
   - example: `/repo/effector/issues/5`
 
