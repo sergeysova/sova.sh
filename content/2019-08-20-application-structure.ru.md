@@ -52,7 +52,7 @@ rss = true
 
 - `lib/` это [внутренняя библиотека] фичи. Должна иметь тесты и документацию.
 - `index.js` ре-экспортит необходимые элементы наружу.
-- `models/`
+- `models/` — [модели effector]
 
 ### 1.1 [Atomic] in [Feature]
 
@@ -145,3 +145,4 @@ rss = true
 [фичи]: https://t.me/feature_slices
 [библиотечный код]: @/2018-10-07-why-utils-and-helpers-is-a-dump.ru.md
 [внутренняя библиотека]: @/2018-10-07-why-utils-and-helpers-is-a-dump.ru.md
+[модели effector]: @/2019-08-21-effector-model-structure.ru.md
