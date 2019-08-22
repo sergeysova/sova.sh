@@ -32,6 +32,8 @@
 </head>
 
 <body class="{{ config.extra.hyde_theme }} {% if config.extra.hyde_reverse %}layout-reverse{% endif %}">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
   {% block sidebar %}
   <aside class="sidebar">
     <div class="container {% if config.extra.hyde_sticky %}sidebar-sticky{% endif %}">
@@ -50,7 +52,6 @@
         <li class="sidebar-nav-item">
           <a href="{{link.url}}">{{link.name}}</a>
         </li>
-        <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
         {% endfor %} {% endblock sidebar_nav %}
       </ul>
     </div>
