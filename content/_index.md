@@ -2,7 +2,9 @@
 title = "Sergey Sova"
 +++
 
-Сейчас меня можно почитать только на русском.
-<a href="/ru">Читать</a>
-
-<meta http-equiv="refresh" content="0;URL=/ru" />
+<div class="post">
+  <h1 class="post-title">
+    <a href="/ru">На русском</a></a>
+  </h1>
+  <span>Russian content</span>
+</div>
