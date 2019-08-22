@@ -32,7 +32,6 @@ hyde_links = [
   { url = "https://t.me/sergeysova", name = "Telegram" },
   { url = "https://twitter.com/_sergeysova", name = "Twitter" },
   # { url = "/ru", name = "По-русски" },
-  { url = "https://mastodon.social/@sergeysova", name = "Mastodon" },
   { url = "https://podcast.sova.dev", name = "Подкаст" },
 ]
 hyde_theme = "theme-base-0d"
@@ -42,7 +41,6 @@ after_dark_menu = [
     {url = "$BASE_URL/categories", name = "Categories"},
     {url = "$BASE_URL/tags", name = "Tags"},
     {url = "https://twitter.com/_sergeysova", name = "Twitter"},
-    {url = "https://mastodon.social/@sergeysova", name = "Mastodon"},
     {url = "https://github.com/sergeysova", name = "Github"},
 ]
 after_dark_title = "Sergey Sova"
