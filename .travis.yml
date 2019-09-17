@@ -11,5 +11,5 @@ after_success: |
   [ $TRAVIS_PULL_REQUEST = false ] &&
   zola build &&
   sudo pip install ghp-import &&
-  ghp-import -c sova.dev -n public &&
+  ghp-import -c sova.dev -n public -m "sova.dev: $(curl -s http://whatthecommit.com/index.txt)" &&
   git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
