@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>Используйте логические переменные — Sergey Sova</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;poole.css">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface" />
+  <link rel="alternate" type="application/rss+xml" title="Сова говорит…" href="https://feeds.simplecast.com/1xtMFVVp" />
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  
+<meta property="og:title" content="Используйте логические переменные" />
+<meta property="og:published_time" content="2019-04-15T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1555286400" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Используйте логические переменные" />
+
+<meta property="og:description" content="Вместо простой проверки логического выражения, лучше присвоить его значение переменной, которая сделает смысл проверки очевидным." />
+<meta name="twitter:description" content="Вместо простой проверки логического выражения, лучше присвоить его значение переменной, которая сделает смысл проверки очевидным." />
+
+<meta property="og:url" content="https://sova.dev/ru/use-logical-vars-to-docs/" />
+
+</head>
+
+<body class="theme-base-0d ">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
+  
+  <aside class="sidebar">
+    <div class="container sidebar-sticky">
+      <div class="sidebar-about">
+        
+        <a href="https:&#x2F;&#x2F;sova.dev">
+          <h1>Sergey Sova</h1>
+        </a>
+        
+        <p class="lead">Notes about development</p>
+         
+      </div>
+
+      <ul class="sidebar-nav">
+         
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;sergeysova">Github</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;sergeysova">Telegram</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;twitter.com&#x2F;_sergeysova">Twitter</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;podcast.sova.dev">Подкаст</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;vk.com&#x2F;sovadev">VK.com</a>
+        </li>
+         
+      </ul>
+    </div>
+  </aside>
+  
+
+  <div class="content container">
+    
+<article class="post">
+  <h2 class="post-title">Используйте логические переменные</h2>
+  <time datetime="2019-04-15T00:00:00+00:00"
+    class="post-date">April 15 2019</time>
+  
+  <blockquote>
+<p>Вместо простой проверки логического выражения, лучше присвоить его значение переменной, которая сделает смысл проверки очевидным.</p>
+</blockquote>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">if </span><span style="color:#dcdcdc;">(elementIndex </span><span style="color:#569cd6;">&lt; </span><span style="color:#b5cea8;">0 </span><span style="color:#569cd6;">|| </span><span style="color:#dcdcdc;">MAX_ELEMENTS </span><span style="color:#569cd6;">&lt; </span><span style="color:#dcdcdc;">elementIndex </span><span style="color:#569cd6;">|| </span><span style="color:#dcdcdc;">elementIndex === lastElementIndex) {
+  </span><span style="color:#608b4e;">// ...
+</span><span style="color:#dcdcdc;">}
+</span></pre>
+<p>Что тут написано?</p>
+<p>Скорее всего рядовой разработчик пропустит эту строку и даже читать не будет.
+Хорошо, если автор оставил поясняющий комментарий.</p>
+<p>Исправить ситуацию, можно, присвоив проверкам имена:</p>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">finished = elementIndex </span><span style="color:#569cd6;">&lt; </span><span style="color:#b5cea8;">0 </span><span style="color:#569cd6;">|| </span><span style="color:#dcdcdc;">MAX_ELEMENTS </span><span style="color:#569cd6;">&lt; </span><span style="color:#dcdcdc;">elementIndex
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">repeatedEntry = elementIndex === lastElementIndex
+
+</span><span style="color:#569cd6;">if </span><span style="color:#dcdcdc;">(finished </span><span style="color:#569cd6;">|| </span><span style="color:#dcdcdc;">repeatedEntry) {
+  </span><span style="color:#608b4e;">// ...
+</span><span style="color:#dcdcdc;">}
+</span></pre>
+<p>Стало намного проще осознать назначение условного выражения.</p>
+
+</article>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v4.0&appId=715931972181656&autoLogAppEvents=1"></script>
+
+<div class="fb-comments" data-href="https://sova.dev/ru/use-logical-vars-to-docs/" data-width="" data-numposts="10"></div>
+
+
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-67236238-5');
+  </script>
+
+</body>
+
+</html>

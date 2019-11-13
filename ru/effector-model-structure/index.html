@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>Структура моделей Effector — Sergey Sova</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;poole.css">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface" />
+  <link rel="alternate" type="application/rss+xml" title="Сова говорит…" href="https://feeds.simplecast.com/1xtMFVVp" />
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  
+<meta property="og:title" content="Структура моделей Effector" />
+<meta property="og:published_time" content="2019-08-21T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1566345600" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Структура моделей Effector" />
+
+<meta property="og:description" content="Почему я называю файлики моделями и описываю логику отдельно от сторов и событий" />
+<meta name="twitter:description" content="Почему я называю файлики моделями и описываю логику отдельно от сторов и событий" />
+
+<meta property="og:url" content="https://sova.dev/ru/effector-model-structure/" />
+
+</head>
+
+<body class="theme-base-0d ">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
+  
+  <aside class="sidebar">
+    <div class="container sidebar-sticky">
+      <div class="sidebar-about">
+        
+        <a href="https:&#x2F;&#x2F;sova.dev">
+          <h1>Sergey Sova</h1>
+        </a>
+        
+        <p class="lead">Notes about development</p>
+         
+      </div>
+
+      <ul class="sidebar-nav">
+         
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;sergeysova">Github</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;sergeysova">Telegram</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;twitter.com&#x2F;_sergeysova">Twitter</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;podcast.sova.dev">Подкаст</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;vk.com&#x2F;sovadev">VK.com</a>
+        </li>
+         
+      </ul>
+    </div>
+  </aside>
+  
+
+  <div class="content container">
+    
+<article class="post">
+  <h2 class="post-title">Структура моделей Effector</h2>
+  <time datetime="2019-08-21T00:00:00+00:00"
+    class="post-date">August 21 2019</time>
+  
+  <ul>
+    
+    <li><a href="https://sova.dev/ru/effector-model-structure/#model">Model</a></li>
+    
+    <ul>
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#user-story">User Story</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#entity">Entity</a></li>
+      
+      
+    </ul>
+    
+    
+    <li><a href="https://sova.dev/ru/effector-model-structure/#struktura">Структура</a></li>
+    
+    <ul>
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#tipy">Типы</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#sobytiia">События</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#effekty">Эффекты</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#story-i-vychisliaemye-story">Сторы и вычисляемые сторы</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#logika-v-vide-sviazei">Логика в виде связей</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/effector-model-structure/#detali-realizatsii">Детали реализации</a></li>
+      
+      
+    </ul>
+    
+    
+  </ul>
+  <hr />
+  
+  <p>Во время работы, у меня есть три состояния:</p>
+<ul>
+<li>Читаю существующий код</li>
+<li>Изменяю существующий код</li>
+<li>Пишу новый код</li>
+</ul>
+<p>Во время <strong>чтения и изменения</strong> кода, мне необходимо четко понимать какую <strong>задачу</strong> решает каждый кусок кода в файле, в какой <strong>сценарий</strong> складываются эти кусочки и как работают вместе файлы логики в проекте.</p>
+<p><strong>Написание нового</strong> кода, я начинаю с проектирования внешнего <strong>интерфейса</strong> файла, с событий которые необходимых в этом блоке логики.</p>
+<p>Какие-то файлы описывают <strong>user story</strong>, другие — <strong>сущности</strong>. Детали подхода для каждого из типов файлов несколько отличаются, но код однозначно должен читаться сверху вниз: определения, логика, детали реализации.</p>
+<h3 id="model">Model</h3>
+<p>Вне зависимости от типа, я называю модуль с логикой на эффекторе — <strong>модель</strong>.</p>
+<h4 id="user-story"><strong>User Story</strong></h4>
+<p>Чаще всего один или несколько схожих сценариев, решающих одну задачу пользователя. Такой тип модели использую в страницах и организмах фичи, подробности в предыдущей статье <a href="https://sova.dev/ru/application-structure/">Структура приложения</a>.</p>
+<h4 id="entity"><strong>Entity</strong></h4>
+<p>Данные описывающие одну сущность и события ее модифицирующие. У таких моделей обычно нет сценария использования и они лежат в <code>models/</code> директории фичи.</p>
+<h2 id="struktura">Структура</h2>
+<ul>
+<li>Определения</li>
+<li>Логика</li>
+</ul>
+<p>Модуль поделен на логические блоки идущие в строгом порядке, блоки разделены между собой пустой строкой.</p>
+<p>Порядок блоков в модели:</p>
+<ol>
+<li>Типы</li>
+<li>События</li>
+<li>Эффекты</li>
+<li>Сторы и вычисляемые сторы</li>
+<li>Логика в виде связей</li>
+<li>Детали реализации</li>
+</ol>
+<h3 id="tipy">Типы</h3>
+<ul>
+<li>В начале определяю типы используемые в модуле. Именно в начале, чтобы любой разработчик сразу мог определить словарь имен типов.</li>
+<li>Так как импорты должны идти самыми первыми в файле, удобно видеть сразу и типы созданные в текущем модуле и заимпорченные.</li>
+<li>Размещаю здесь необходимые константы</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">type </span><span style="color:#4ec9b0;">InputEvent </span><span style="color:#dcdcdc;">= </span><span style="color:#4ec9b0;">SyntheticEvent</span><span style="color:#dcdcdc;">&lt;</span><span style="color:#4ec9b0;">HTMLInputElement</span><span style="color:#dcdcdc;">&gt;
+</span><span style="color:#569cd6;">type </span><span style="color:#4ec9b0;">Form </span><span style="color:#dcdcdc;">= { login</span><span style="color:#569cd6;">: </span><span style="color:#dcdcdc;">string; password</span><span style="color:#569cd6;">: </span><span style="color:#dcdcdc;">string; remember</span><span style="color:#569cd6;">: </span><span style="color:#dcdcdc;">boolean }
+
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">MINIMUM_TIMEOUT = </span><span style="color:#b5cea8;">100
+</span></pre><h3 id="sobytiia">События</h3>
+<ul>
+<li>
+<p>В этом блоке описываю приватные и публичные события. Когда усаживаюсь проектировать, начинаю именно с этого блока, проставляя всем событиям тип <code>*</code>. После определения интерфейса модуля указываю конкретные типы.</p>
+</li>
+<li>
+<p>Все события именую в camelCase, в прошедшем времени.</p>
+</li>
+<li>
+<p>Формат именования: <code>[неймспейс] сущность событие</code></p>
+</li>
+<li>
+<p>Событие описывает “что произошло”.</p>
+</li>
+<li>
+<p>Имена событиям пропишет Babel plugin effector.</p>
+</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">pageMounted = createEvent&lt;void&gt;()
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">loginChanged = createEvent&lt;</span><span style="color:#4ec9b0;">InputEvent</span><span style="color:#dcdcdc;">&gt;()
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">buttonPressed = createEvent&lt;</span><span style="color:#4ec9b0;">ButtonEvent</span><span style="color:#dcdcdc;">&gt;()
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">buttonTypePressed = submitPressed.map((event) </span><span style="color:#569cd6;">=&gt; </span><span style="color:#dcdcdc;">event.currentTarget.type)
+
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">loginSaveFailed = createEvent&lt;string&gt;()
+</span></pre><h3 id="effekty">Эффекты</h3>
+<ul>
+<li>Только декларация эффекта, без привязки к handler.</li>
+<li>Flow требует указания дженерик-типов, если эффект экспортируется.</li>
+<li>Имена эффектов также как и событий пропишет Babel plugin effector.</li>
+<li>Эффекты именую глаголом с существительным.</li>
+<li>При необходимости под каждым эффектом описываю его fetching.</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">saveLogin = createEffect()
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">saveLoginFetching = createFetching(saveLogin, “loading”)
+
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">loadLogin = createEffect()
+</span></pre><h3 id="story-i-vychisliaemye-story">Сторы и вычисляемые сторы</h3>
+<ul>
+<li>Сторы именую существительным с префиксом <code>$</code>, чтобы всегда однозначно знать где стор. Это нужно, так как почти везде где типизация пустит событие, подойдет и стор. Необходимо иметь возможность с первого взгляда распознать стор не ожидая подсказки типов в IDE. При вводе <code>$</code> IDE подскажет какие сторы имеются, чтобы быстро заимпортить.</li>
+<li>Boolean сторы именую с префиксами <code>is</code>, <code>has</code>, <code>was</code>, …</li>
+<li>Начальное значение передаю в аргументы <code>createStore</code>, так не нужно создавать лишнее имя <code>storeNameInitial</code>.</li>
+<li>Вычисляемые сторы ниже обычных и отделены пустой строкой.</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">$login = createStore(“”)
+</span><span style="color:#569cd6;">const </span><span style="color:#dcdcdc;">$password = createStore(“”)
+
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isLoginValid =  $login.map(loginValidator)
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isPasswordValid =  $login.map(passwordValidator)
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isFormValid = eachTrue([$isLoginValid, $isPasswordValid])
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$form = createStoreObject({ login: $login, password: $password })
+</span></pre><h3 id="logika-v-vide-sviazei">Логика в виде связей</h3>
+<ul>
+<li>Здесь только связи между определениями и импортами</li>
+<li>Я группирую и сортирую блоки кода так, чтобы логика модели читалась сверху вниз</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">$login.on(loginChanged.map(trimEvent), (_, login) </span><span style="color:#569cd6;">=&gt; </span><span style="color:#dcdcdc;">login).reset(pageMounted)
+
+sample($form, submitPressed).watch(loginUser)
+
+loginUser.use(authApi.login)
+</span></pre><h3 id="detali-realizatsii">Детали реализации</h3>
+<ul>
+<li>В этом месте определяются все вспомогательные функции, для этого они должны быть описаны как function declaration</li>
+</ul>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#569cd6;">function </span><span style="color:#dcdcdc;">trimEvent(event) {
+  </span><span style="color:#569cd6;">return </span><span style="color:#dcdcdc;">event.currentTarget.value
+}
+</span></pre>
+</article>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v4.0&appId=715931972181656&autoLogAppEvents=1"></script>
+
+<div class="fb-comments" data-href="https://sova.dev/ru/effector-model-structure/" data-width="" data-numposts="10"></div>
+
+
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-67236238-5');
+  </script>
+
+</body>
+
+</html>

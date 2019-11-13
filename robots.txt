@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://sova.dev/sitemap.xml

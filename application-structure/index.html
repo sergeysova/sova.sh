@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>Application structure — Sergey Sova</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;poole.css">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface" />
+  <link rel="alternate" type="application/rss+xml" title="Сова говорит…" href="https://feeds.simplecast.com/1xtMFVVp" />
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  
+<meta property="og:title" content="Application structure" />
+<meta property="og:published_time" content="2019-08-20T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1566259200" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Application structure" />
+
+<meta property="og:description" content="Where to look for files and where to put new" />
+<meta name="twitter:description" content="Where to look for files and where to put new" />
+
+<meta property="og:url" content="https://sova.dev/application-structure/" />
+
+</head>
+
+<body class="theme-base-0d ">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
+  
+  <aside class="sidebar">
+    <div class="container sidebar-sticky">
+      <div class="sidebar-about">
+        
+        <a href="https:&#x2F;&#x2F;sova.dev">
+          <h1>Sergey Sova</h1>
+        </a>
+        
+        <p class="lead">Notes about development</p>
+         
+      </div>
+
+      <ul class="sidebar-nav">
+         
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;sergeysova">Github</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;sergeysova">Telegram</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;twitter.com&#x2F;_sergeysova">Twitter</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;podcast.sova.dev">Подкаст</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;vk.com&#x2F;sovadev">VK.com</a>
+        </li>
+         
+      </ul>
+    </div>
+  </aside>
+  
+
+  <div class="content container">
+    
+<article class="post">
+  <h2 class="post-title">Application structure</h2>
+  <time datetime="2019-08-20T00:00:00+00:00"
+    class="post-date">August 20 2019</time>
+  
+  <ul>
+    
+    <li><a href="https://sova.dev/application-structure/#1-feature-structure">1. Feature structure:</a></li>
+    
+    <ul>
+      
+      <li><a href="https://sova.dev/application-structure/#1-1-atomic-in-feature">1.1 Atomic in Feature</a></li>
+      
+      
+    </ul>
+    
+    
+    <li><a href="https://sova.dev/application-structure/#2-page-s-structure">2. Page&#x27;s structure:</a></li>
+    
+    
+    <li><a href="https://sova.dev/application-structure/#3-ui-structure">3. UI structure:</a></li>
+    
+    
+  </ul>
+  <hr />
+  
+  <blockquote>
+<p>Translated by <a href="https://t.me/murgut">Murgut</a></p>
+</blockquote>
+<p>I split my source code on <code>features/</code>, <code>ui/</code> and <code>pages/</code>.<br/>
+<strong>Logic</strong> can be only in the <code>pages/</code> and <code>features/</code>.</p>
+<p>Example:</p>
+<blockquote>
+<p>▸ — the icon of collapse directory tree</p>
+</blockquote>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">src/
+</span><span style="color:#dcdcdc;">  api/▸
+</span><span style="color:#dcdcdc;">  features/▸
+</span><span style="color:#dcdcdc;">  lib/▸
+</span><span style="color:#dcdcdc;">  pages/▸
+</span><span style="color:#dcdcdc;">  ui/▸
+</span></pre><h2 id="1-feature-structure">1. <a href="https://t.me/feature_slices">Feature</a> structure:</h2>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">src/
+</span><span style="color:#dcdcdc;">  features/
+</span><span style="color:#dcdcdc;">    account/▸
+</span><span style="color:#dcdcdc;">    editor/▸
+</span><span style="color:#dcdcdc;">    settings/▸
+</span><span style="color:#dcdcdc;">    users/
+</span><span style="color:#dcdcdc;">      atoms/
+</span><span style="color:#dcdcdc;">        index.js
+</span><span style="color:#dcdcdc;">        avatar.js
+</span><span style="color:#dcdcdc;">      lib/
+</span><span style="color:#dcdcdc;">        lib-name/
+</span><span style="color:#dcdcdc;">          index.js
+</span><span style="color:#dcdcdc;">          test.js
+</span><span style="color:#dcdcdc;">          readme.md
+</span><span style="color:#dcdcdc;">      models/▸
+</span><span style="color:#dcdcdc;">      molecules/▸
+</span><span style="color:#dcdcdc;">      organisms/▸
+</span><span style="color:#dcdcdc;">      templates/▸
+</span><span style="color:#dcdcdc;">      index.js
+</span></pre>
+<p><a href="https://t.me/feature_slices">Feature</a> — it is useful functionality for user or suite of entities which are united by one idea. For instance: users, text-editor, account, articles.</p>
+<p><a href="https://t.me/feature_slices">Feature</a> cannot be grouped by type, too much abstract entity. Examples <strong>how not to do</strong>: roles, forms, validate.</p>
+<ol>
+<li>Every feature must have the same structure.</li>
+<li><code>users</code>, <code>account</code>, ... — arbitary name of the feature in cebab-case.</li>
+<li>The feature's content may be recieved only from <code>index.js</code>.</li>
+<li>Every section can only be created if it has content inside.</li>
+</ol>
+<ul>
+<li><code>lib/</code> it is <a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/">inner library</a> of feature. It must have tests and documentation.</li>
+<li><code>index.js</code> for re-export necessary elements outside.</li>
+<li><code>models/</code> — <a href="https://sova.dev/ru/effector-model-structure/">effector models</a>.</li>
+</ul>
+<h3 id="1-1-atomic-in-feature">1.1 <a href="http://atomicdesign.bradfrost.com">Atomic</a> in <a href="https://t.me/feature_slices">Feature</a></h3>
+<p><code>atoms</code>, <code>molecules</code>, <code>organisms</code>, <code>templates</code> — <a href="http://atomicdesign.bradfrost.com">atomic design</a>, <a href="https://t.me/feature_slices">feature</a>'s components.</p>
+<p>If every component asumes many files in such case you should create (<code>.test</code>, <code>.story</code>, <code>.md</code>, ...):</p>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">feature/
+</span><span style="color:#dcdcdc;">  users/
+</span><span style="color:#dcdcdc;">    atoms/▸
+</span><span style="color:#dcdcdc;">    molecules/
+</span><span style="color:#dcdcdc;">      personal-apply/▸
+</span><span style="color:#dcdcdc;">      user-card/
+</span><span style="color:#dcdcdc;">        index.js
+</span><span style="color:#dcdcdc;">        story.js
+</span><span style="color:#dcdcdc;">        test.js
+</span><span style="color:#dcdcdc;">        readme.md
+</span><span style="color:#dcdcdc;">    organisms/▸
+</span><span style="color:#dcdcdc;">    templates/▸
+</span></pre>
+<p>No need of directories if you don't have many files. Important, that in range of feature all look the same.</p>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">feature/
+</span><span style="color:#dcdcdc;">  settings/
+</span><span style="color:#dcdcdc;">    atoms/▸
+</span><span style="color:#dcdcdc;">    molecules/▸
+</span><span style="color:#dcdcdc;">    organisms/
+</span><span style="color:#dcdcdc;">      monitoring-editor.js
+</span><span style="color:#dcdcdc;">      monitoring-editor.test.js
+</span><span style="color:#dcdcdc;">      marketplace.js
+</span><span style="color:#dcdcdc;">      marketplace.test.js
+</span></pre><h2 id="2-page-s-structure">2. Page's structure:</h2>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">src/
+</span><span style="color:#dcdcdc;">  pages/
+</span><span style="color:#dcdcdc;">    post/
+</span><span style="color:#dcdcdc;">      model.js
+</span><span style="color:#dcdcdc;">      page.js
+</span><span style="color:#dcdcdc;">    posts/
+</span><span style="color:#dcdcdc;">      create/▸
+</span><span style="color:#dcdcdc;">      edit/▸
+</span><span style="color:#dcdcdc;">    auth/
+</span><span style="color:#dcdcdc;">      login/▸
+</span><span style="color:#dcdcdc;">      register/
+</span><span style="color:#dcdcdc;">        model.js
+</span><span style="color:#dcdcdc;">        page.js
+</span></pre>
+<ol>
+<li>Page's nesting must map routing of true url.</li>
+<li>There is source code of component in <code>page.js</code></li>
+<li>There is uniq logic of the page in <code>model.js</code></li>
+<li>There is any common logic in <a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/">library code</a> <code>src/lib/lib-name/</code></li>
+</ol>
+<p>Examples:</p>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">src/
+  pages/
+    post/
+      page.js
+      model.js
+    repo/
+      view/
+        pulls/▸
+        issues/
+          view/
+            page.js
+            model.js
+        page.js
+        model.js
+    index.js
+</span></pre>
+<ul>
+<li>Page of blog post
+<ul>
+<li>file: <code>src/pages/post/page.js</code></li>
+<li>route: <code>/post/:postSlug</code> (or <code>/:postSlug</code>)</li>
+<li>example: <code>/post/effector-model</code></li>
+</ul>
+</li>
+<li>Viewer of repository issue
+<ul>
+<li>file: <code>src/pages/repo/view/issues/view/page.js</code></li>
+<li>route: <code>/repo/:repoSlug/issues/:issueId</code></li>
+<li>example: <code>/repo/effector/issues/5</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-ui-structure">3. UI structure:</h2>
+<pre style="background-color:#1e1e1e;">
+<span style="color:#dcdcdc;">src/
+</span><span style="color:#dcdcdc;">  ui/
+</span><span style="color:#dcdcdc;">    atoms/
+</span><span style="color:#dcdcdc;">      index.js
+</span><span style="color:#dcdcdc;">      component-name/
+</span><span style="color:#dcdcdc;">        index.js
+</span><span style="color:#dcdcdc;">        readme.js
+</span><span style="color:#dcdcdc;">        story.js
+</span><span style="color:#dcdcdc;">        test.js
+</span><span style="color:#dcdcdc;">    molecules/▸
+</span><span style="color:#dcdcdc;">    organisms/▸
+</span><span style="color:#dcdcdc;">    templates/▸
+</span><span style="color:#dcdcdc;">    index.js
+</span></pre>
+<ol>
+<li><a href="http://atomicdesign.bradfrost.com">Atomic Design</a></li>
+<li>All UI are building blocks which allow to create any feature.</li>
+<li>UI must be disconnected from any global stores.</li>
+<li>Components must be maximally reusable and independent on context <em>(not React Context API)</em>.</li>
+</ol>
+
+</article>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v4.0&appId=715931972181656&autoLogAppEvents=1"></script>
+
+<div class="fb-comments" data-href="https://sova.dev/application-structure/" data-width="" data-numposts="10"></div>
+
+
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-67236238-5');
+  </script>
+
+</body>
+
+</html>

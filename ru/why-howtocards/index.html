@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>Why Howtocards — Sergey Sova</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;poole.css">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface" />
+  <link rel="alternate" type="application/rss+xml" title="Сова говорит…" href="https://feeds.simplecast.com/1xtMFVVp" />
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  
+<meta property="og:title" content="Why Howtocards" />
+<meta property="og:published_time" content="2019-02-20T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1550620800" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Why Howtocards" />
+
+<meta property="og:description" content="Какую проблему пытается решить сервис?" />
+<meta name="twitter:description" content="Какую проблему пытается решить сервис?" />
+
+<meta property="og:url" content="https://sova.dev/ru/why-howtocards/" />
+
+</head>
+
+<body class="theme-base-0d ">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
+  
+  <aside class="sidebar">
+    <div class="container sidebar-sticky">
+      <div class="sidebar-about">
+        
+        <a href="https:&#x2F;&#x2F;sova.dev">
+          <h1>Sergey Sova</h1>
+        </a>
+        
+        <p class="lead">Notes about development</p>
+         
+      </div>
+
+      <ul class="sidebar-nav">
+         
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;sergeysova">Github</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;sergeysova">Telegram</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;twitter.com&#x2F;_sergeysova">Twitter</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;podcast.sova.dev">Подкаст</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;vk.com&#x2F;sovadev">VK.com</a>
+        </li>
+         
+      </ul>
+    </div>
+  </aside>
+  
+
+  <div class="content container">
+    
+<article class="post">
+  <h2 class="post-title">Why Howtocards</h2>
+  <time datetime="2019-02-20T00:00:00+00:00"
+    class="post-date">February 20 2019</time>
+  
+  <ul>
+    
+    <li><a href="https://sova.dev/ru/why-howtocards/#kakuiu-problemu-pytaetsia-reshit-servis">Какую проблему пытается решить сервис?</a></li>
+    
+    <ul>
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#poisk-gotovogo-resheniia">Поиск готового решения</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#sokhranenie-reshennykh-keisov-na-budushchee">Сохранение решенных кейсов на будущее</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#podbor-resheniia-bez-poiskovogo-zaprosa">Подбор решения без поискового запроса</a></li>
+      
+      
+    </ul>
+    
+    
+    <li><a href="https://sova.dev/ru/why-howtocards/#resheniia">Решения</a></li>
+    
+    <ul>
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#poisk-gotovogo-resheniia-1">Поиск готового решения</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#sokhranenie-reshennykh-keisov-na-budushchee-1">Сохранение решенных кейсов на будущее</a></li>
+      
+      
+      <li><a href="https://sova.dev/ru/why-howtocards/#podbor-resheniia-bez-poiskovogo-zaprosa-1">Подбор решения без поискового запроса</a></li>
+      
+      
+    </ul>
+    
+    
+  </ul>
+  <hr />
+  
+  <h2 id="kakuiu-problemu-pytaetsia-reshit-servis">Какую проблему пытается решить сервис?</h2>
+<p>Есть несколько кейсов, которые я нашел для себя и не смог качественно решить существующими способами.</p>
+<h3 id="poisk-gotovogo-resheniia">Поиск готового решения</h3>
+<p>Не знаешь как решить какую-то задачу, например настроить SSL/TLS A+ на nginx. Начинаешь гуглить, открываешь StackOverflow, перечитываешь кучу вопросов и ответов в попытке подобрать рабочее решение. Или как именно нужно переконфигурировать postgres, при добавлении пользователя, чтобы можно было логиниться удаленно с паролем.</p>
+<h3 id="sokhranenie-reshennykh-keisov-na-budushchee">Сохранение решенных кейсов на будущее</h3>
+<p>После того как я настроил nginx и postgres, я хочу сохранить эти знания себе на будущее. Я хочу сохранить это в виде удобной мини-статьи, без кучи воды, только пояснения и код/команды.</p>
+<p>Я не могу писать это в блог, потому что нет удобной сортировки, тегирования и прочего. Я не могу сохранять это в заметки, так как нет возможности поделиться ссылкой. Я не могу сохранять это в gist, так как там очень кривой поиск и опять же нет тегов.</p>
+<h3 id="podbor-resheniia-bez-poiskovogo-zaprosa">Подбор решения без поискового запроса</h3>
+<p>Иногда я хочу найти конкретную карточку/статью, но не могу подобрать слова для поискового запроса и провожу десятки минут в гуглении. Добавление в закладки и поиск по ним занимает слишком много времени, так как хороших сервисов закладок слишком мало, а сами статьи могут быть переписаны или вовсе удалены. Плюс одна и та же статья не может находиться сразу в нескольких директориях в закладках.</p>
+<h2 id="resheniia">Решения</h2>
+<h3 id="poisk-gotovogo-resheniia-1">Поиск готового решения</h3>
+<p>Каждое решение сохраняется в карточке с подсветкой синтаксиса, embed песочницами, ссылками на другие карточки. Карточка имеет заголовок, теги и содержимое, по которым можно выполнять поиск. Тегами в карточке можно отмечать версии библиотек, операционных систем и другого окружения, для которого предоставляется решение. Так можно выбрать необходимую версию nginx, который требуется настроить.</p>
+<h3 id="sokhranenie-reshennykh-keisov-na-budushchee-1">Сохранение решенных кейсов на будущее</h3>
+<p>Каждый пользователь сервиса имеет личный кабинет/страницу/профиль, где отображаются все карточки, созданные им. В личном кабинете, отображаются также все теги, которые есть на всех карточках пользователя. Это позволит быстро найти нужную карточку не вспоминая ее название или содержимое.</p>
+<p>Любую карточку можно сохранить для себя на потом, нажав кнопку &quot;Сохранить&quot;. Сохраненные карточки также отображаются в личном кабинете, рядом с созданными. Теги сохраненных карточек также позволяют быстро и удобно искать/фильтровать сохраненные карточки.</p>
+<p>Сервис позволяет легко искать по пользователям, их карточкам и тегам. Поиск доступен из любого места сервиса. Каждая карточка имеет уровень полезности, которые определяется количеством сохранений карточки. Чем полезнее карточка для пользователей, тем выше она в поиске среди подобных ей. Этот подход позволит быстрее искать карточки, полезные для сообщества.</p>
+<h3 id="podbor-resheniia-bez-poiskovogo-zaprosa-1">Подбор решения без поискового запроса</h3>
+<p>В этом помогают те самые теги личного кабинета. В личном кабинете, нажимая на тег, пользователь добавляет в фильтр новое условие по наличию выбранного тега в карточке. Для сужения фильтра, можно расширять фильтр одним кликом: включать наличие тега или исключать наличие тега из поиска по карточкам.</p>
+<p>На странице личного кабинета пользователя в поиск добавляет фильтрация по пользователю, чтобы не нужно было совершать дополнительные действия для поиска карточки.</p>
+<p>На главной странице сервиса, отображаются только самые полезные карточки и теги в них. Но можно вручную добавить необходимые теги для фильтрации, если не подходят те, которые подсказал сервис.</p>
+
+</article>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v4.0&appId=715931972181656&autoLogAppEvents=1"></script>
+
+<div class="fb-comments" data-href="https://sova.dev/ru/why-howtocards/" data-width="" data-numposts="10"></div>
+
+
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-67236238-5');
+  </script>
+
+</body>
+
+</html>

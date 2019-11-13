@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>Почему utils &amp; helpers это свалка — Sergey Sova</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;poole.css">
+  <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface" />
+  <link rel="alternate" type="application/rss+xml" title="Сова говорит…" href="https://feeds.simplecast.com/1xtMFVVp" />
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Sergey Sova" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  <meta name="telegram:channel" content="@sergeysova">
+  <meta property="twitter:site" content="@_sergeysova" />
+  <meta property="twitter:creator" content="@_sergeysova" />
+  <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
+  
+<meta property="og:title" content="Почему utils & helpers это свалка" />
+<meta property="og:published_time" content="2018-10-07T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1538870400" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Почему utils & helpers это свалка" />
+
+<meta property="og:description" content="Забудьте о директориях &#96;utils&#96; и &#96;helpers&#96;. Эти названия никак не доносят суть содержимого." />
+<meta name="twitter:description" content="Забудьте о директориях &#96;utils&#96; и &#96;helpers&#96;. Эти названия никак не доносят суть содержимого." />
+
+<meta property="og:url" content="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/" />
+
+</head>
+
+<body class="theme-base-0d ">
+  <a style="display: none;" rel="me" href="https://mastodon.social/@sergeysova">Mastodon</a>
+  
+  
+  <aside class="sidebar">
+    <div class="container sidebar-sticky">
+      <div class="sidebar-about">
+        
+        <a href="https:&#x2F;&#x2F;sova.dev">
+          <h1>Sergey Sova</h1>
+        </a>
+        
+        <p class="lead">Notes about development</p>
+         
+      </div>
+
+      <ul class="sidebar-nav">
+         
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;sergeysova">Github</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;sergeysova">Telegram</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;twitter.com&#x2F;_sergeysova">Twitter</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;podcast.sova.dev">Подкаст</a>
+        </li>
+        
+        <li class="sidebar-nav-item">
+          <a href="https:&#x2F;&#x2F;vk.com&#x2F;sovadev">VK.com</a>
+        </li>
+         
+      </ul>
+    </div>
+  </aside>
+  
+
+  <div class="content container">
+    
+<article class="post">
+  <h2 class="post-title">Почему utils &amp; helpers это свалка</h2>
+  <time datetime="2018-10-07T00:00:00+00:00"
+    class="post-date">October 07 2018</time>
+  
+  <ul>
+    
+    <li><a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/#kak-eto-reshit">Как это решить?</a></li>
+    
+    
+    <li><a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/#chem-eto-otlichaetsia-ot-lib-i-helpers">Чем это отличается от lib и helpers?</a></li>
+    
+    
+  </ul>
+  <hr />
+  
+  <p>Начнем с того, как они появляются. Во время разработки проекта, программист старается выносить повторяющиеся куски кода в функции и переиспользовать их. В какой-то момент, в двух разных модулях требуется одна и та же функция, неопытный разработчик решает вынести функцию в отдельный модуль. Но почему-то останавливается на этом решении, создавая директорию/модуль <code>utils</code> или <code>helpers</code>, не думая о будущем этой части программы.</p>
+<p>С ростом проекта, количество функций в этой директории растет. Также растет и количество разработчиков в проекте. Функций появляется все больше и больше. Зачастую никто не следит за структурой этих модулей и вполне возможно появление дублирования кода.</p>
+<h4 id="kak-eto-reshit">Как это решить?</h4>
+<p>Забудьте о директориях <code>utils</code> и <code>helpers</code>. Эти названия никак не доносят суть содержимого. А из правил чистого кода мы помним, название должно быть однозначным и отражать назначение.
+Следует задуматься, почему вообще появилась необходимость в вынесении функции?
+Почему они используются в таких разных частях проекта?</p>
+<p>Возможно, ответом будет плохая организация кода всего проекта. Если хорошо поисследовать проект можно найти много кода, который достоин вынесения в отдельную библиотеку.
+Если же этот код нельзя или не нужно выносить в полноценную библиотеку, его можно вынести в библиотеку внутри проекта. В случае JS, это можно сделать, создав полноценную библиотку внутри <code>lib/</code>.</p>
+<p>Такой библиотеке нужно дать осмысленное однозначное название, написать документацию и тесты. Причем собрать в этой библиотеке весь связанный код. Например, вынести все функции работающие с датами во внутреннюю библиотеку <code>lib/datetime</code>. Префикс <code>lib/</code> позволит избежать конфликтов имен, а также можно будет использовать простые и понятные имена. Конечно же, можно сделать npm scope, чтобы упростить будущую публикацию в npm. Например, <code>@lib/datetime</code>.</p>
+<h4 id="chem-eto-otlichaetsia-ot-lib-i-helpers">Чем это отличается от <code>lib</code> и <code>helpers</code>?</h4>
+<ul>
+<li>весь код, выносится в полноценную библиотку с осмысленным названием, документацией и тестами</li>
+<li><code>lib</code> явно описывает содержимое: это библиотека</li>
+<li>рефакторинг, публикация или удаление этой библиотеки становятся тривиальными задачами</li>
+</ul>
+
+</article>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v4.0&appId=715931972181656&autoLogAppEvents=1"></script>
+
+<div class="fb-comments" data-href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/" data-width="" data-numposts="10"></div>
+
+
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-67236238-5');
+  </script>
+
+</body>
+
+</html>
