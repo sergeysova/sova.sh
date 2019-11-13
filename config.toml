@@ -33,6 +33,7 @@ hyde_links = [
   { url = "https://twitter.com/_sergeysova", name = "Twitter" },
   # { url = "/ru", name = "По-русски" },
   { url = "https://podcast.sova.dev", name = "Подкаст" },
+  { url = "https://vk.com/sovadev", name = "VK.com" }
 ]
 hyde_theme = "theme-base-0d"
 
