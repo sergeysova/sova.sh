@@ -5,6 +5,8 @@ date = 2019-08-20
 rss = true
 +++
 
+[![](https://img.shields.io/badge/feature/slices-0.1-orange)](https://featureslices.dev/v0.1)
+
 > Translated by [Murgut]
 
 I split my source code on `features/`, `ui/` and `pages/`.<br/>
