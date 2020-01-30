@@ -5,6 +5,8 @@ date = 2019-08-20
 rss = true
 +++
 
+[![](https://img.shields.io/badge/feature/slices-0.1-orange)](https://featureslices.dev/v0.1)
+
 Исходный код приложения я разделяю на `features/`, `ui/` и `pages/`.<br/>
 **Логика** может лежать только в `pages/` и в `features/`.
 
