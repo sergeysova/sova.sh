@@ -104,7 +104,7 @@ const $password = createStore(“”)
 export const $isLoginValid =  $login.map(loginValidator)
 export const $isPasswordValid =  $login.map(passwordValidator)
 export const $isFormValid = eachTrue([$isLoginValid, $isPasswordValid])
-export const $form = createStoreObject({ login: $login, password: $password })
+export const $form = combine({ login: $login, password: $password })
 ```
 
 ### Логика в виде связей
