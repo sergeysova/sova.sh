@@ -225,7 +225,7 @@
 </span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isLoginValid =  $login.map(loginValidator)
 </span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isPasswordValid =  $login.map(passwordValidator)
 </span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$isFormValid = eachTrue([$isLoginValid, $isPasswordValid])
-</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$form = createStoreObject({ login: $login, password: $password })
+</span><span style="color:#569cd6;">export const </span><span style="color:#dcdcdc;">$form = combine({ login: $login, password: $password })
 </span></pre><h3 id="logika-v-vide-sviazei">Логика в виде связей</h3>
 <ul>
 <li>Здесь только связи между определениями и импортами</li>
