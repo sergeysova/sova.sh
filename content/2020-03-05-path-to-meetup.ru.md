@@ -1,5 +1,5 @@
 +++
-title = "Effector SPB Meetup #1"
+title = "Effector Meetup SPb"
 description = "Как попасть на митап. Для начала нужно приехать на м. Петроградская и подойти к клубу А2"
 date = 2020-03-05
 +++
