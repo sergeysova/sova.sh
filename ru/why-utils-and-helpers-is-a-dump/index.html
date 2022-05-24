@@ -97,7 +97,7 @@
     <li><a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/#kak-eto-reshit">Как это решить?</a></li>
     
     
-    <li><a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/#chem-eto-otlichaetsia-ot-utils-i-helpers">Чем это отличается от utils и helpers?</a></li>
+    <li><a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/#chem-eto-otlichaetsia-ot-lib-i-helpers">Чем это отличается от lib и helpers?</a></li>
     
     
   </ul>
@@ -112,7 +112,7 @@
 <p>Возможно, ответом будет плохая организация кода всего проекта. Если хорошо поисследовать проект можно найти много кода, который достоин вынесения в отдельную библиотеку.
 Если же этот код нельзя или не нужно выносить в полноценную библиотеку, его можно вынести в библиотеку внутри проекта. В случае JS, это можно сделать, создав полноценную библиотку внутри <code>lib/</code>.</p>
 <p>Такой библиотеке нужно дать осмысленное однозначное название, написать документацию и тесты. Причем собрать в этой библиотеке весь связанный код. Например, вынести все функции работающие с датами во внутреннюю библиотеку <code>lib/datetime</code>. Префикс <code>lib/</code> позволит избежать конфликтов имен, а также можно будет использовать простые и понятные имена. Конечно же, можно сделать npm scope, чтобы упростить будущую публикацию в npm. Например, <code>@lib/datetime</code>.</p>
-<h4 id="chem-eto-otlichaetsia-ot-utils-i-helpers">Чем это отличается от <code>utils</code> и <code>helpers</code>?</h4>
+<h4 id="chem-eto-otlichaetsia-ot-lib-i-helpers">Чем это отличается от <code>lib</code> и <code>helpers</code>?</h4>
 <ul>
 <li>весь код, выносится в полноценную библиотку с осмысленным названием, документацией и тестами</li>
 <li><code>lib</code> явно описывает содержимое: это библиотека</li>
