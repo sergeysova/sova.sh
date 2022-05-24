@@ -160,3 +160,4 @@ $RECYCLE.BIN/
 ./public
 !./public/.gitkeep
 public
+.idea
