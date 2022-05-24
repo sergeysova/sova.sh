@@ -8,7 +8,7 @@
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
 
-  <title>Структура приложения — Sergey Sova</title>
+  <title>Структура приложения 2022 — Sergey Sova</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="https:&#x2F;&#x2F;sova.dev&#x2F;print.css" media="print">
@@ -26,11 +26,11 @@
   <meta property="twitter:creator" content="@_sergeysova" />
   <meta property="twitter:image" content="http://www.gravatar.com/avatar/7a4aef267d44e7dc69dcd66d4a99aae4.jpg?s=512" />
   
-<meta property="og:title" content="Структура приложения" />
-<meta property="og:published_time" content="2019-08-20T00:00:00+0000" />
-<meta property="telegram:unixtime" content="1566259200" />
+<meta property="og:title" content="Структура приложения 2022" />
+<meta property="og:published_time" content="2022-05-24T00:00:00+0000" />
+<meta property="telegram:unixtime" content="1653350400" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Структура приложения" />
+<meta name="twitter:title" content="Структура приложения 2022" />
 
 <meta property="og:description" content="Где искать файлики в проекте и куда класть новые" />
 <meta name="twitter:description" content="Где искать файлики в проекте и куда класть новые" />
@@ -88,187 +88,159 @@
   <div class="content container">
     
 <article class="post">
-  <h2 class="post-title">Структура приложения</h2>
-  <time datetime="2019-08-20T00:00:00+00:00"
-    class="post-date">August 20 2019</time>
+  <h2 class="post-title">Структура приложения 2022</h2>
+  <time datetime="2022-05-24T00:00:00+00:00"
+    class="post-date">May 24 2022</time>
   
   <ul>
     
-    <li><a href="https://sova.dev/ru/application-structure/#1-struktura-feature">1. Структура feature:</a></li>
-    
-    <ul>
-      
-      <li><a href="https://sova.dev/ru/application-structure/#1-1-atomic-in-feature">1.1 Atomic in Feature</a></li>
-      
-      
-    </ul>
-    
-    
-    <li><a href="https://sova.dev/ru/application-structure/#2-struktura-pages">2. Структура pages:</a></li>
-    
-    
-    <li><a href="https://sova.dev/ru/application-structure/#3-struktura-ui">3. Структура UI:</a></li>
+    <li><a href="https://sova.dev/ru/application-structure/#obshchaia-struktura">Общая структура</a></li>
     
     
   </ul>
   <hr />
   
-  <p><a href="https://featureslices.dev/v0.1"><img src="https://img.shields.io/badge/feature/slices-0.1-orange" alt="" /></a></p>
-<p>Исходный код приложения я разделяю на <code>features/</code>, <code>ui/</code> и <code>pages/</code>.<br/>
-<strong>Логика</strong> может лежать только в <code>pages/</code> и в <code>features/</code>.</p>
+  <p><a href="https://feature-sliced.design/"><img src="https://img.shields.io/badge/feature--sliced-1.0-green" alt="" /></a></p>
+<p>Исходный код приложения я разделяю на <code>features/</code>, <code>entities/</code>, <code>shared/</code> и <code>pages/</code>.<br/>
+Основная <strong>логика</strong> может лежать только в <code>pages/</code>.
+Переиспользуемая <strong>логика</strong>, компоненты и другой код располагается в <code>widgets/</code>, <code>features/</code>, <code>entities/</code>.</p>
 <p>Пример:</p>
 <blockquote>
 <p>▸ — значок свёрнутой директории в дереве</p>
 </blockquote>
 <pre style="background-color:#1e1e1e;">
 <span style="color:#dcdcdc;">src/
-</span><span style="color:#dcdcdc;">  api/▸
-</span><span style="color:#dcdcdc;">  features/▸
-</span><span style="color:#dcdcdc;">  lib/▸
-</span><span style="color:#dcdcdc;">  pages/▸
-</span><span style="color:#dcdcdc;">  ui/▸
-</span></pre><h2 id="1-struktura-feature">1. Структура <a href="https://t.me/feature_slices">feature</a>:</h2>
+  app/▸
+  pages/▸
+  widgets/▸
+  features/▸
+  entities/▸
+  shared/
+    app/▸
+    config/▸
+    lib/▸
+    ui/▸
+</span></pre><h2 id="obshchaia-struktura">Общая структура</h2>
+<p>Чтобы сократить повествование, я развернул в каждом слое все директории лишь одного слайса.</p>
 <pre style="background-color:#1e1e1e;">
 <span style="color:#dcdcdc;">src/
-</span><span style="color:#dcdcdc;">  features/
-</span><span style="color:#dcdcdc;">    account/▸
-</span><span style="color:#dcdcdc;">    editor/▸
-</span><span style="color:#dcdcdc;">    settings/▸
-</span><span style="color:#dcdcdc;">    users/
-</span><span style="color:#dcdcdc;">      atoms/
-</span><span style="color:#dcdcdc;">        index.js
-</span><span style="color:#dcdcdc;">        avatar.js
-</span><span style="color:#dcdcdc;">      lib/
-</span><span style="color:#dcdcdc;">        lib-name/
-</span><span style="color:#dcdcdc;">          index.js
-</span><span style="color:#dcdcdc;">          test.js
-</span><span style="color:#dcdcdc;">          readme.md
-</span><span style="color:#dcdcdc;">      models/▸
-</span><span style="color:#dcdcdc;">      molecules/▸
-</span><span style="color:#dcdcdc;">      organisms/▸
-</span><span style="color:#dcdcdc;">      templates/▸
-</span><span style="color:#dcdcdc;">      index.js
-</span></pre>
-<p><a href="https://t.me/feature_slices">Фича</a> — полезная функциональность для пользователя, или набор сущностей объединенных одной идеей. Например: пользователи, текстовый-редактор, аккаунт, статьи.</p>
-<p><a href="https://t.me/feature_slices">Фича</a> не может быть группировкой по типу, слишком абстрактной сущностью. Примеры <strong>как не надо</strong>: роли, формы, валидации.</p>
-<ol>
-<li>Каждая фича имеет одинаковую структуру.</li>
-<li><code>users</code>, <code>account</code>, ... — произвольное название фичи в param-case</li>
-<li>Содержимое фичи можно получать только через <code>index.js</code></li>
-<li>Каждый раздел создается, только если в нем есть содержимое.</li>
-</ol>
-<ul>
-<li><code>lib/</code> это <a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/">внутренняя библиотека</a> фичи. Должна иметь тесты и документацию.</li>
-<li><code>index.js</code> ре-экспортит необходимые элементы наружу.</li>
-<li><code>models/</code> — <a href="https://sova.dev/ru/effector-model-structure/">модели effector</a></li>
-</ul>
-<h3 id="1-1-atomic-in-feature">1.1 <a href="http://atomicdesign.bradfrost.com">Atomic</a> in <a href="https://t.me/feature_slices">Feature</a></h3>
-<p><code>atoms</code>, <code>molecules</code>, <code>organisms</code>, <code>templates</code> — <a href="http://atomicdesign.bradfrost.com">atomic design</a>, компоненты <a href="https://t.me/feature_slices">фичи</a>.</p>
-<p>Если предполагается много файлов на каждый компонент (<code>.test</code>, <code>.story</code>, <code>.md</code>, ...):</p>
-<pre style="background-color:#1e1e1e;">
-<span style="color:#dcdcdc;">feature/
-</span><span style="color:#dcdcdc;">  users/
-</span><span style="color:#dcdcdc;">    atoms/▸
-</span><span style="color:#dcdcdc;">    molecules/
-</span><span style="color:#dcdcdc;">      personal-apply/▸
-</span><span style="color:#dcdcdc;">      user-card/
-</span><span style="color:#dcdcdc;">        index.js
-</span><span style="color:#dcdcdc;">        story.js
-</span><span style="color:#dcdcdc;">        test.js
-</span><span style="color:#dcdcdc;">        readme.md
-</span><span style="color:#dcdcdc;">    organisms/▸
-</span><span style="color:#dcdcdc;">    templates/▸
-</span></pre>
-<p>Если файлов мало, можно не создавать директорию. Главное, чтобы в пределах фичи выглядело одинаково.</p>
-<pre style="background-color:#1e1e1e;">
-<span style="color:#dcdcdc;">feature/
-</span><span style="color:#dcdcdc;">  settings/
-</span><span style="color:#dcdcdc;">    atoms/▸
-</span><span style="color:#dcdcdc;">    molecules/▸
-</span><span style="color:#dcdcdc;">    organisms/
-</span><span style="color:#dcdcdc;">      monitoring-editor.js
-</span><span style="color:#dcdcdc;">      monitoring-editor.test.js
-</span><span style="color:#dcdcdc;">      marketplace.js
-</span><span style="color:#dcdcdc;">      marketplace.test.js
-</span></pre><h2 id="2-struktura-pages">2. Структура pages:</h2>
-<pre style="background-color:#1e1e1e;">
-<span style="color:#dcdcdc;">src/
-</span><span style="color:#dcdcdc;">  pages/
-</span><span style="color:#dcdcdc;">    post/
-</span><span style="color:#dcdcdc;">      model.js
-</span><span style="color:#dcdcdc;">      page.js
-</span><span style="color:#dcdcdc;">    posts/
-</span><span style="color:#dcdcdc;">      create/▸
-</span><span style="color:#dcdcdc;">      edit/▸
-</span><span style="color:#dcdcdc;">    auth/
-</span><span style="color:#dcdcdc;">      login/▸
-</span><span style="color:#dcdcdc;">      register/
-</span><span style="color:#dcdcdc;">        model.js
-</span><span style="color:#dcdcdc;">        page.js
-</span></pre>
-<ol>
-<li>Вложенность страниц должна отображать роутинг реального урла</li>
-<li>Исходник компонента лежит в <code>page.js</code></li>
-<li>Уникальная логика страницы лежит в <code>model.js</code></li>
-<li>Любая обобщенная логика выносится в <a href="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/">библиотечный код</a> <code>src/lib/lib-name/</code></li>
-</ol>
-<p>Примеры:</p>
-<pre style="background-color:#1e1e1e;">
-<span style="color:#dcdcdc;">src/
+  app/
+    application.tsx
+    application.css
+    client.tsx
+    server.tsx
   pages/
-    post/
-      page.js
-      model.js
-    repo/
-      view/
-        pulls/▸
-        issues/
-          view/
-            page.js
-            model.js
-        page.js
-        model.js
-    index.js
+    home/
+      index.ts
+      page.tsx
+      model.ts
+    login/▸
+    register/▸
+    product-view/▸
+    cart/▸
+    profile/▸
+    error401/▸
+    error404/▸
+    error500/▸
+  widgets/
+    header/
+      index.ts
+      ui/
+        panel.tsx
+        search.tsx
+      model.ts
+    products-recommendations/▸
+    products-recent/▸
+  features/
+    add-to-cart/
+      index.ts
+      ui/
+        add-button.tsx
+        modal-review-card.tsx
+        modal-confirmation.tsx
+      model/
+        add-to-cart.ts
+        review-and-confirm.ts
+      lib/
+        pricing/
+          index.ts
+          pricing.test.ts
+          readme.md
+    add-to-comparison/▸
+    stories-list/▸
+    price-comparison/▸
+    category-list/▸
+    onboarding/▸
+  entities/
+    product/
+      index.ts
+      ui/
+        card.tsx
+        expanded.tsx
+        modal.tsx
+        rate.tsx
+      lib/
+        dates/
+          index.ts
+          dates.test.ts
+        delivery/
+          index.ts
+          delivery.test.ts
+          readme.md
+        preview/▸
+        rate/▸
+      model/
+        preview.ts
+        rating.ts
+        comments.ts
+    filters/▸
+    delivery/▸
+    favourite/▸
+    comments/▸
+  shared/
+    api/
+      index.ts
+      generated.ts
+      request.ts
+    config/
+      index.ts
+    lib/
+      breadcrumbs/
+        index.ts
+        breadcrumbs.test.ts
+        readme.md
+      text-fit/▸
+      zoom-over/▸
+      properties-comparison/▸
+      comments-tree-calc/▸
+    ui/
+      atoms/
+        avatar/
+          index.tsx
+          avatar.test.tsx
+          avatar.stories.tsx
+          readme.md
+        badge/▸
+        button/▸
+        checkbox/▸
+        icon/▸
+        input/▸
+        image/▸
+        paper/▸
+      molecules/
+        button-group/▸
+        breadcrumbs/▸
+        calendar/▸
+        image-responsive/▸
+        logo/▸
+        range/▸
+        backdrop/▸
+      organisms/
+        content-viewer/▸
+        date-picker/▸
+        drawer/▸
+        modal/▸
 </span></pre>
-<ul>
-<li>Страница поста в блоге
-<ul>
-<li>file: <code>src/pages/post/page.js</code></li>
-<li>route: <code>/post/:postSlug</code> (или <code>/:postSlug</code>)</li>
-<li>example: <code>/post/effector-model</code></li>
-</ul>
-</li>
-<li>Просмотр issue репозитория
-<ul>
-<li>file: <code>src/pages/repo/view/issues/view/page.js</code></li>
-<li>route: <code>/repo/:repoSlug/issues/:issueId</code></li>
-<li>example: <code>/repo/effector/issues/5</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="3-struktura-ui">3. Структура UI:</h2>
-<pre style="background-color:#1e1e1e;">
-<span style="color:#dcdcdc;">src/
-</span><span style="color:#dcdcdc;">  ui/
-</span><span style="color:#dcdcdc;">    atoms/
-</span><span style="color:#dcdcdc;">      index.js
-</span><span style="color:#dcdcdc;">      component-name/
-</span><span style="color:#dcdcdc;">        index.js
-</span><span style="color:#dcdcdc;">        readme.js
-</span><span style="color:#dcdcdc;">        story.js
-</span><span style="color:#dcdcdc;">        test.js
-</span><span style="color:#dcdcdc;">    molecules/▸
-</span><span style="color:#dcdcdc;">    organisms/▸
-</span><span style="color:#dcdcdc;">    templates/▸
-</span><span style="color:#dcdcdc;">    index.js
-</span></pre>
-<ol>
-<li><a href="http://atomicdesign.bradfrost.com">Atomic Design</a></li>
-<li>Весь UI это базовые блоки из которых можно собрать любую фичу.</li>
-<li>UI должен быть оторван от фич и любых глобальных сторов</li>
-<li>Компоненты должны быть максимально переиспользуемыми, независимыми от контекста <em>(не React Context API)</em></li>
-</ol>
-
 </article>
 
 <div id="fb-root"></div>
