@@ -9,7 +9,7 @@ compile_sass = true
 highlight_code = true
 highlight_theme = "visual-studio-dark"
 
-build_search_index = false
+build_search_index = true
 generate_rss = false
 check_external_links = true
 
@@ -31,8 +31,7 @@ hyde_links = [
   { url = "https://github.com/sergeysova", name = "Github" },
   { url = "https://t.me/sergeysova", name = "Telegram" },
   { url = "https://twitter.com/_sergeysova", name = "Twitter" },
-  # { url = "/ru", name = "По-русски" },
-  { url = "https://podcast.sova.dev", name = "Подкаст" },
+  { url = "https://podcast.ru/1586738556", name = "Подкаст" },
   { url = "https://vk.com/sovadev", name = "VK.com" }
 ]
 hyde_theme = "theme-base-0d"
