@@ -8,8 +8,10 @@ import {getNews} from '../data/revue';
 
 const articles = await getUniqueArticles();
 const videos = await getVideos();
-const podcast = await getPodcast();
+const episodes = await getPodcast();
 const news = await getNews();
+
+console.log(episodes);
 ---
 
 <Layout title="Sergey Sova">
@@ -51,6 +53,25 @@ const news = await getNews();
       target="_blank"
       rel="noopener"
       ><span class="py-3 px-5">Read all</span>
+    </a>
+    <h2 class="text-3xl mt-10 mb-2">Podcast</h2>
+    <ul role="list" class="link-card-grid">
+      {
+        episodes.map((episode) => (
+          <Card
+            href={episode.link}
+            title={episode.title}
+            content={`<span>${episode.description}</span>`}
+          />
+        ))
+      }
+    </ul>
+    <a
+      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+      href="https://podcast.ru/1586738556/e"
+      target="_blank"
+      rel="noopener"
+      ><span class="py-3 px-5">Listen all</span>
     </a>
     <h2 class="text-3xl mt-10 mb-2">Youtube</h2>
     <ul role="list" class="link-card-grid">

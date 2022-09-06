@@ -3,10 +3,10 @@ export type Props = {
   title: string;
   href: string;
   body?: string;
-  html?: string;
+  content?: string;
 };
 
-const {href, title, body, html} = Astro.props;
+const {href, title, body, content} = Astro.props;
 ---
 
 <li class="link-card">
@@ -15,7 +15,7 @@ const {href, title, body, html} = Astro.props;
       {title}
       <span>→</span>
     </h2>
-    <p set:html={html}>
+    <p class="content" set:html={content}>
       {body}
     </p>
   </a>
@@ -52,9 +52,19 @@ const {href, title, body, html} = Astro.props;
     transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  p {
+  p.content {
     margin-top: 0.75rem;
     margin-bottom: 0;
+  }
+
+  .content p {
+    display: inline;
+    padding: 0;
+    margin: 0;
+  }
+
+  .content a {
+    display: none;
   }
 
   h2 span {
