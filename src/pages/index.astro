@@ -2,8 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import {Article, getUniqueArticles} from '../data/forem';
+import {getVideos} from '../data/youtube';
 
 const articles = await getUniqueArticles();
+const videos = await getVideos();
 ---
 
 <Layout title="Sergey Sova">
@@ -17,7 +19,35 @@ const articles = await getUniqueArticles();
         ))
       }
     </ul>
-    <h2 class="text-3xl mb-2 mt-10 mb-2">Youtube</h2>
+    <a
+      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+      href="https://dev.to/sergeysova"
+      target="_blank"
+      rel="noopener"
+      ><span class="py-3 px-5">Dev.to</span>
+    </a>
+    <a
+      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+      href="https://community.effector.dev/sergeysova"
+      target="_blank"
+      rel="noopener"
+      ><span class="py-3 px-5">Effector Community</span>
+    </a>
+    <h2 class="text-3xl mt-10 mb-2">Youtube</h2>
+    <ul role="list" class="link-card-grid">
+      {
+        videos.map((video) => (
+          <Card href={video.url} title={video.title} body={video.description} />
+        ))
+      }
+    </ul>
+    <a
+      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+      href="https://www.youtube.com/sergeysova"
+      target="_blank"
+      rel="noopener"
+      ><span class="py-3 px-5">Show all videos</span>
+    </a>
   </main>
 </Layout>
 
@@ -64,5 +94,28 @@ const articles = await getUniqueArticles();
     grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
     gap: 1rem;
     padding: 0;
+  }
+
+  .button {
+    background-image: linear-gradient(45deg, #4f39fa, #da62c4 30%, var(--color-border) 60%);
+    background-size: 400%;
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button span {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .button:is(:hover, :focus-within) {
+    background-position: 0;
+  }
+
+  .button:is(:hover, :focus-within) span {
+    background-color: rgba(255, 255, 255, 0.3);
   }
 </style>
