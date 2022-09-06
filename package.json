@@ -10,9 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@podverse/podcast-feed-parser": "^1.1.0",
     "astro": "^1.1.5",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@astrojs/mdx": "^0.11.1",

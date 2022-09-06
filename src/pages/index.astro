@@ -1,11 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
-import {Article, getUniqueArticles} from '../data/forem';
+import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
+import {getPodcast} from '../data/podcast';
+import {getNews} from '../data/revue';
 
 const articles = await getUniqueArticles();
 const videos = await getVideos();
+const podcast = await getPodcast();
+const news = await getNews();
 ---
 
 <Layout title="Sergey Sova">
@@ -32,6 +36,21 @@ const videos = await getVideos();
       target="_blank"
       rel="noopener"
       ><span class="py-3 px-5">Effector Community</span>
+    </a>
+    <h2 class="text-3xl mt-10 mb-2">News</h2>
+    <ul role="list" class="link-card-grid">
+      {
+        news.map((article) => (
+          <Card href={article.url} title={article.title} body={article.description} />
+        ))
+      }
+    </ul>
+    <a
+      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+      href="https://news.sova.dev"
+      target="_blank"
+      rel="noopener"
+      ><span class="py-3 px-5">Read all</span>
     </a>
     <h2 class="text-3xl mt-10 mb-2">Youtube</h2>
     <ul role="list" class="link-card-grid">

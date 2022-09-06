@@ -1,11 +1,12 @@
 ---
-export interface Props {
+export type Props = {
   title: string;
-  body: string;
   href: string;
-}
+  body?: string;
+  html?: string;
+};
 
-const {href, title, body} = Astro.props;
+const {href, title, body, html} = Astro.props;
 ---
 
 <li class="link-card">
@@ -14,7 +15,7 @@ const {href, title, body} = Astro.props;
       {title}
       <span>→</span>
     </h2>
-    <p>
+    <p set:html={html}>
       {body}
     </p>
   </a>

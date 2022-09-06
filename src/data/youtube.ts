@@ -49,6 +49,13 @@ function linkToVideo(id: string) {
 export function getVideos(): Promise<YoutubeVideo[]> {
   const url = createUrl();
   return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response;
+    })
     .then((response) => response.json())
-    .then((answer) => answer.items.map(mapVideo));
+    .then((answer) => answer.items.map(mapVideo))
+    .catch(() => []);
 }
