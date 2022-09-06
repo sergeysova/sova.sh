@@ -1,60 +1,23 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import {Article, getUniqueArticles} from '../data/forem';
 
-const services = {
-  "dev.to": {
-    url: "https://dev.to",
-    apiKey: "8EjZL9kV7AJAHdWbMnr6Ag7E",
-  },
-  "community.effector": {
-    url: "https://community.effector.dev",
-    apiKey: "QqQQHfKgt3tAdonrJJpy7UiF",
-  },
-};
-
-interface Article {
-  id: number;
-  title: string;
-  description: string;
-  slug: string;
-  url: string;
-  created_at: string;
-}
-
-async function getArticlesOf(serviceName: keyof typeof services): Promise<Array<Article>> {
-  const service = services[serviceName];
-  const url = new URL(service.url);
-  url.pathname = "/api/articles";
-  url.searchParams.set("username", "sergeysova");
-  url.searchParams.set("per_page", "1000");
-  const response = await fetch(url.toString(), {
-    headers: { Accept: "application/vnd.forem.api-v1+json", "api-key": service.apiKey },
-  });
-  return (await response.json()) as Array<Article>;
-}
-
-const uniqueNamesArticlesMap = new Map<String, Article>();
-
-const articles = await Promise.all([getArticlesOf("dev.to"), getArticlesOf("community.effector")])
-  .then(([dev, effector]) => [...dev, ...effector])
-  .then((articles) =>
-    articles.filter((article) => {
-      if (!uniqueNamesArticlesMap.has(article.title)) {
-        uniqueNamesArticlesMap.set(article.title, article);
-        return true;
-      }
-      return false;
-    })
-  );
+const articles = await getUniqueArticles();
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Sergey Sova">
   <main>
-    <h1 class="text-5xl">Welcome to <span class="text-gradient">Sova Blog</span></h1>
+    <h1 class="text-5xl">My name is <span class="text-gradient">Sergey Sova</span></h1>
+    <h2 class="text-3xl mb-2">Articles</h2>
     <ul role="list" class="link-card-grid">
-      {articles.map((article) => <Card href={article.url} title={article.title} body={article.description} />)}
+      {
+        articles.map((article) => (
+          <Card href={article.url} title={article.title} body={article.description} />
+        ))
+      }
     </ul>
+    <h2 class="text-3xl mb-2 mt-10 mb-2">Youtube</h2>
   </main>
 </Layout>
 
@@ -76,6 +39,8 @@ const articles = await Promise.all([getArticlesOf("dev.to"), getArticlesOf("comm
   .text-gradient {
     font-weight: 900;
     background-image: var(--astro-gradient);
+    background-clip: text;
+    text-fill-color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 100% 200%;
@@ -92,22 +57,6 @@ const articles = await Promise.all([getArticlesOf("dev.to"), getArticlesOf("comm
     50% {
       background-position-y: 80%;
     }
-  }
-
-  .instructions {
-    line-height: 1.6;
-    margin: 1rem 0;
-    background: #4f39fa;
-    padding: 1rem;
-    border-radius: 0.4rem;
-    color: var(--color-bg);
-  }
-
-  .instructions code {
-    font-size: 0.875em;
-    border: 0.1em solid var(--color-border);
-    border-radius: 4px;
-    padding: 0.15em 0.25em;
   }
 
   .link-card-grid {
