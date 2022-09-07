@@ -26,6 +26,10 @@ jobs:
 
       - name: 🔧 Build
         run: pnpm build
+        env:
+          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
+          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
 
       - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
