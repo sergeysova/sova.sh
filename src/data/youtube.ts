@@ -99,7 +99,7 @@ export function getVideos(): Promise<YoutubeVideo[]> {
     .then((answer) => Response.check(answer))
     .then((answer) =>
       answer.items
-        .sort((a, b) => b.snippet.position - a.snippet.position)
+        .sort((a, b) => a.snippet.position - b.snippet.position)
         .map((item) => ({
           id: item.snippet.resourceId.videoId,
           title: removeExtraFromSeparator(' | ', item.snippet.title),
