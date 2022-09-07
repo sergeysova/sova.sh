@@ -1,4 +1,5 @@
 ---
+import {getImage} from '@astrojs/image';
 export interface Article {
   title: string;
   url: string;
@@ -11,7 +12,21 @@ export interface Props {
   articles: Article[];
 }
 
-const {articles} = Astro.props;
+const originalArticles = Astro.props.articles;
+const articles = await Promise.all(
+  originalArticles.map(async (article) => {
+    if (article.cover) {
+      const image = await getImage({
+        src: article.cover,
+        width: 736,
+        aspectRatio: 2.5,
+        quality: 90,
+      });
+      article.cover = image.src!;
+    }
+    return article;
+  }),
+);
 ---
 
 <ul class="list">
@@ -21,7 +36,7 @@ const {articles} = Astro.props;
         <a href={article.url} target="_blank" rel="noopener">
           <div
             class:list={['cover', {empty: !article.cover}]}
-            style={article.cover ? `background-image: url(${article.cover}` : ''}
+            style={article.cover ? `background-image: url(${article.cover})` : ''}
           />
           <span>{article.title}</span>
           <p>{article.description}</p>
