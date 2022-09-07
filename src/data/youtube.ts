@@ -4,7 +4,7 @@ import {firstThreeLines, firstWords, removeCredits, removeExtraFromSeparator} fr
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {
-  apiKey: 'AIzaSyBTEvWnbk--80MfjHyWuqETiAD3y1O8Uf4',
+  apiKey: import.meta.env.YOUTUBE_API_KEY,
   channelId: 'UCQJ7pUY5jX8CQFDUAP-yjcw',
   playListId: 'UUQJ7pUY5jX8CQFDUAP-yjcw',
 };

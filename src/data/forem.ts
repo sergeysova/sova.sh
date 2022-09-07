@@ -1,11 +1,11 @@
 const foremServices = {
   'dev.to': {
     url: 'https://dev.to',
-    apiKey: '8EjZL9kV7AJAHdWbMnr6Ag7E',
+    apiKey: import.meta.env.DEVTO_API_KEY,
   },
   'community.effector': {
     url: 'https://community.effector.dev',
-    apiKey: 'QqQQHfKgt3tAdonrJJpy7UiF',
+    apiKey: import.meta.env.EFFECTOR_COMMUNITY_API_KEY,
   },
 };
 
