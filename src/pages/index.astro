@@ -9,6 +9,7 @@ import Articles from '../components/Articles.astro';
 import Section from '../components/Section.astro';
 import ButtonLink from '../components/ButtonLink.astro';
 import News from '../components/News.astro';
+import Podcasts from '../components/Podcasts.astro';
 
 const articles = await getUniqueArticles();
 const news = await getNews();
@@ -31,30 +32,17 @@ const videos = await getVideos();
       <ButtonLink text="Dev.to" href="https://dev.to/sergeysova" />
       <ButtonLink text="Effector Community" href="https://community.effector.dev/sergeysova" />
     </Section>
+
     <Section title="News">
       <News news={news} />
       <ButtonLink text="Read all" href="https://news.sova.dev" />
     </Section>
 
-    <h2 class="text-3xl mt-10 mb-2">Podcast</h2>
-    <ul role="list" class="link-card-grid">
-      {
-        episodes.map((episode) => (
-          <Card
-            href={episode.link}
-            title={episode.title}
-            content={`<span>${episode.description}</span>`}
-          />
-        ))
-      }
-    </ul>
-    <a
-      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
-      href="https://podcast.ru/1586738556/e"
-      target="_blank"
-      rel="noopener"
-      ><span class="py-3 px-5">Listen all</span>
-    </a>
+    <Section title="Podcast">
+      <Podcasts episodes={episodes} />
+      <ButtonLink text="Listen all" href="https://podcast.ru/1586738556/e" />
+    </Section>
+
     <h2 class="text-3xl mt-10 mb-2">Youtube</h2>
     <ul role="list" class="link-card-grid">
       {

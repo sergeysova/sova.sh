@@ -11,7 +11,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@astrojs/image": "^0.5.1",
     "@podverse/podcast-feed-parser": "^1.1.0",
+    "@sergeysova/podcast-feed-parser": "^1.0.5",
     "astro": "^1.1.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
