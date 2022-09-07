@@ -13,6 +13,7 @@ const episodes = await Promise.all(
       src: episode.imageURL,
       width: 736,
       aspectRatio: 1.48,
+      quality: 90,
     });
     return {
       ...episode,
