@@ -1,3 +1,4 @@
+import {cachedFetch} from './server-request';
 const foremServices = {
   'dev.to': {
     url: 'https://dev.to',
@@ -27,7 +28,7 @@ async function getArticlesOf(serviceName: keyof typeof foremServices): Promise<A
   url.pathname = '/api/articles';
   url.searchParams.set('username', 'sergeysova');
   url.searchParams.set('per_page', '1000');
-  const response = await fetch(url.toString(), {
+  const response = await cachedFetch(url, {
     headers: {Accept: 'application/vnd.forem.api-v1+json', 'api-key': service.apiKey},
   });
   return (await response.json()) as Array<Article>;

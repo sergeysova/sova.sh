@@ -2,12 +2,14 @@
 import {parseStringPromise} from 'xml2js';
 import {JSDOM} from 'jsdom';
 import {convertIntoText, firstWords} from './lib/text';
+import {cachedFetch} from './server-request';
 
 export async function getNews(): Promise<NewsIssue[]> {
   console.log('fetching news');
   const rss = 'https://news.sova.dev/?format=rss';
-  const response = await fetch(rss);
-  if (!response.ok || !response.headers.get('content-type')?.includes('xml')) {
+  const response = await cachedFetch(rss);
+  if (!response.ok) {
+    // || !response.headers.get('content-type')?.includes('xml')) {
     throw new Error('Failed to get podcast');
   }
   const textXml = await response.text();

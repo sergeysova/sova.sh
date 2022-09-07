@@ -1,6 +1,7 @@
 import * as t from 'runtypes';
 
 import {firstThreeLines, firstWords, removeCredits, removeExtraFromSeparator} from './lib/text';
+import {cachedFetch} from './server-request';
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {
@@ -85,12 +86,10 @@ const Response = t.Record({
 export function getVideos(): Promise<YoutubeVideo[]> {
   console.log('fetching youtube videos');
   const url = createUrl();
-  return fetch(url)
+  return cachedFetch(url)
     .then((response) => {
       if (!response.ok) {
-        response
-          .text()
-          .then((text) => console.info('failed to fetch videos', response.status, text));
+        console.info('failed to fetch videos', response.status, response.text());
         throw new Error(response.statusText);
       }
       return response;

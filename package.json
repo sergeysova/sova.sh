@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@11ty/eleventy-fetch": "^3.0.0",
     "@astrojs/image": "^0.5.1",
     "@podverse/podcast-feed-parser": "^1.1.0",
     "@sergeysova/podcast-feed-parser": "^1.0.5",
