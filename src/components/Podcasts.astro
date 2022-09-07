@@ -48,9 +48,15 @@ const episodes = await Promise.all(
     padding: 0;
   }
 
-  @media (min-width: 70ch) {
+  @media (min-width: 560px) {
     .list {
       grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    }
+  }
+
+  @media (max-width: 559px) {
+    .episode:nth-child(n + 4) {
+      display: none;
     }
   }
 
@@ -73,7 +79,7 @@ const episodes = await Promise.all(
   }
 
   .episode .cover kbd {
-    @apply float-right px-2 py-1 text-white bg-black/30 rounded-bl backdrop-blur;
+    @apply float-right px-2 py-1 text-white bg-black/30 rounded-bl rounded-tr-md backdrop-blur;
   }
 
   .episode h3 {

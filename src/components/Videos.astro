@@ -31,9 +31,15 @@ const {videos} = Astro.props;
     padding: 0;
   }
 
-  @media (min-width: 70ch) {
+  @media (min-width: 560px) {
     .list {
       grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    }
+  }
+
+  @media (max-width: 559px) {
+    .video:nth-child(n + 4) {
+      display: none;
     }
   }
 

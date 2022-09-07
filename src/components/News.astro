@@ -37,13 +37,19 @@ const issues = await Promise.all(
     padding: 0;
   }
 
-  @media (min-width: 70ch) {
+  @media (min-width: 560px) {
     .list {
       grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
     }
   }
 
-  @media (min-width: 50ch) {
+  @media (max-width: 559px) {
+    .issue:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 400px) {
     .list .issue {
       min-height: 10ch;
     }
@@ -58,7 +64,7 @@ const issues = await Promise.all(
   }
 
   .issue a {
-    @apply backdrop-blur-lg h-full text-white bg-black/50;
+    @apply backdrop-blur-lg h-full text-white bg-black/50 overflow-hidden rounded-md;
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -76,7 +82,7 @@ const issues = await Promise.all(
   }
 
   .issue span {
-    @apply px-4 py-2 font-light text-3xl float-right;
+    @apply px-4 py-2 font-light text-3xl float-right overflow-hidden;
   }
 
   .issue p {
