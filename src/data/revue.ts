@@ -3,6 +3,7 @@ import {parseStringPromise} from 'xml2js';
 import {convertIntoText, firstTwentyWords} from './lib/text';
 
 export async function getNews(): Promise<NewsIssue[]> {
+  console.log('fetching news');
   const rss = 'https://news.sova.dev/?format=rss';
   const response = await fetch(rss);
   if (!response.ok || !response.headers.get('content-type')?.includes('xml')) {

@@ -83,6 +83,7 @@ const Response = t.Record({
 });
 
 export function getVideos(): Promise<YoutubeVideo[]> {
+  console.log('fetching youtube videos');
   const url = createUrl();
   return fetch(url)
     .then((response) => {

@@ -1,0 +1,39 @@
+---
+export interface Props {
+  href: string;
+  text: string;
+}
+---
+
+<a
+  class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
+  href={Astro.props.href}
+  target="_blank"
+  rel="noopener"
+  ><span class="py-3 px-5">{Astro.props.text}</span>
+</a>
+
+<style>
+  .button {
+    background-image: linear-gradient(45deg, #4f39fa, #da62c4 30%, var(--color-border) 60%);
+    background-size: 400%;
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button span {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .button:is(:hover, :focus-within) {
+    background-position: 0;
+  }
+
+  .button:is(:hover, :focus-within) span {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+</style>

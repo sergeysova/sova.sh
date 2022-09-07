@@ -13,12 +13,15 @@ export interface Article {
   id: number;
   title: string;
   description: string;
+  cover_image: string | null;
+  tag_list: string[];
   slug: string;
   url: string;
   created_at: string;
 }
 
 async function getArticlesOf(serviceName: keyof typeof foremServices): Promise<Array<Article>> {
+  console.log('fetching articles of', serviceName);
   const service = foremServices[serviceName];
   const url = new URL(service.url);
   url.pathname = '/api/articles';

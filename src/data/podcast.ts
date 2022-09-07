@@ -3,6 +3,7 @@ import {getPodcastFromFeed} from '@podverse/podcast-feed-parser';
 import {convertIntoText} from './lib/text';
 
 export async function getPodcast(): Promise<Episode[]> {
+  console.log('fetching podcast');
   const rss = 'https://anchor.fm/s/4c5764fc/podcast/rss';
   const response = await fetch(rss);
   if (!response.ok || !response.headers.get('content-type')?.includes('xml')) {

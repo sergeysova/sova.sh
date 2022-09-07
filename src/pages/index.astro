@@ -5,6 +5,9 @@ import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
 import {getPodcast} from '../data/podcast';
 import {getNews} from '../data/revue';
+import Articles from '../components/Articles.astro';
+import Section from '../components/Section.astro';
+import ButtonLink from '../components/ButtonLink.astro';
 
 const articles = await getUniqueArticles();
 const videos = await getVideos();
@@ -15,28 +18,18 @@ const news = await getNews();
 <Layout title="Sergey Sova">
   <main>
     <h1 class="text-5xl">My name is <span class="text-gradient">Sergey Sova</span></h1>
-    <h2 class="text-3xl mb-2">Articles</h2>
-    <ul role="list" class="link-card-grid">
-      {
-        articles.map((article) => (
-          <Card href={article.url} title={article.title} body={article.description} />
-        ))
-      }
-    </ul>
-    <a
-      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
-      href="https://dev.to/sergeysova"
-      target="_blank"
-      rel="noopener"
-      ><span class="py-3 px-5">Dev.to</span>
-    </a>
-    <a
-      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
-      href="https://community.effector.dev/sergeysova"
-      target="_blank"
-      rel="noopener"
-      ><span class="py-3 px-5">Effector Community</span>
-    </a>
+    <Section title="Articles">
+      <Articles
+        articles={articles.map((source) => ({
+          title: source.title,
+          url: source.url,
+          description: source.description,
+          cover: source.cover_image,
+        }))}
+      />
+      <ButtonLink href="https://dev.to/sergeysova" text="Dev.to" />
+      <ButtonLink href="https://community.effector.dev/sergeysova" text="Effector Community" />
+    </Section>
     <h2 class="text-3xl mt-10 mb-2">News</h2>
     <ul role="list" class="link-card-grid">
       {
@@ -101,7 +94,7 @@ const news = await getNews();
   main {
     margin: auto;
     padding: 1em;
-    max-width: 60ch;
+    max-width: 70ch;
   }
 
   .text-gradient {
