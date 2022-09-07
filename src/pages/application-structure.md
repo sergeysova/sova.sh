@@ -45,13 +45,13 @@ Example:
           templates/▸
           index.js
 
-[Feature] — it is useful functionality for user or suite of entities which are united by one idea. For instance: users, text-editor, account, articles.
+[Feature] — it is useful functionality for users or it is a suite of entities that are united by one idea. For example users, text-editor, accounts, and articles.
 
-[Feature] cannot be grouped by type, too much abstract entity. Examples **how not to do**: roles, forms, validate.
+[Feature] cannot be grouped by type, it should not be too abstract. Examples **how not to do**: roles, forms, validate.
 
 1. Every feature must have the same structure.
-2. `users`, `account`, ... — arbitary name of the feature in cebab-case.
-3. The feature's content may be recieved only from `index.js`.
+2. `users`, `account`, ... — the arbitrary name of the feature in kebab-case.
+3. The feature's content may be received only from `index.js`.
 4. Every section can only be created if it has content inside.
 
 - `lib/` it is [inner library] of feature. It must have tests and documentation.
@@ -62,7 +62,7 @@ Example:
 
 `atoms`, `molecules`, `organisms`, `templates` — [atomic design], [feature]'s components.
 
-If every component asumes many files in such case you should create (`.test`, `.story`, `.md`, ...):
+If every component assumes many files in such case you should create (`.test`, `.story`, `.md`, ...):
 
     feature/
       users/
@@ -156,9 +156,9 @@ src/
         index.js
 
 1. [Atomic Design]
-2. All UI are building blocks which allow to create any feature.
+2. All UI are building blocks that allow to the creation of any feature.
 3. UI must be disconnected from any global stores.
-4. Components must be maximally reusable and independent on context _(not React Context API)_.
+4. Components must be maximally reusable and independent of context _(not React Context API)_.
 
 > Translated by [Murgut]
 
