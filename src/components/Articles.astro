@@ -34,9 +34,14 @@ const {articles} = Astro.props;
 <style>
   .list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
     gap: 1rem;
     padding: 0;
+  }
+
+  @media (min-width: 70ch) {
+    .list {
+      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    }
   }
 
   .article {
@@ -53,7 +58,8 @@ const {articles} = Astro.props;
   }
 
   .article .cover {
-    @apply block h-32 bg-cover bg-center;
+    @apply block bg-cover bg-center;
+    aspect-ratio: 2.5;
   }
 
   .article .cover.empty {

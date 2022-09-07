@@ -44,9 +44,14 @@ const episodes = await Promise.all(
 <style>
   .list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
     gap: 1rem;
     padding: 0;
+  }
+
+  @media (min-width: 70ch) {
+    .list {
+      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    }
   }
 
   .episode {
@@ -63,7 +68,8 @@ const episodes = await Promise.all(
   }
 
   .episode .cover {
-    @apply block h-64 bg-cover bg-center relative;
+    @apply block bg-cover bg-center relative;
+    aspect-ratio: 1.9;
   }
 
   .episode .cover kbd {

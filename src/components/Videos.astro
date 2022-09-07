@@ -27,9 +27,14 @@ const {videos} = Astro.props;
 <style>
   .list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
     gap: 1rem;
     padding: 0;
+  }
+
+  @media (min-width: 70ch) {
+    .list {
+      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    }
   }
 
   .video {
@@ -46,7 +51,8 @@ const {videos} = Astro.props;
   }
 
   .video .cover {
-    @apply h-52 bg-cover bg-center relative flex flex-col justify-end;
+    @apply bg-cover bg-center relative flex flex-col justify-end;
+    aspect-ratio: 1.7;
     background-size: 115%;
   }
 
