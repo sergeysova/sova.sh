@@ -11,5 +11,11 @@ export function firstThreeLines(text: string) {
 }
 
 export function firstWords(count: number, text: string) {
-  return text.split(' ').slice(0, count).join(' ').trim() + '…';
+  const words = text.split(' ');
+  const moreThanRequired = words.length > count;
+  const result = words.slice(0, count).join(' ').trim();
+  if (moreThanRequired) {
+    return result + '…';
+  }
+  return result;
 }
