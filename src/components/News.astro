@@ -21,7 +21,7 @@ const issues = await Promise.all(
   {
     issues.map((issue) => (
       <li class="issue" style={`background-image: url(${issue.image})`}>
-        <a href={issue.url} target="_blank" rel="noopener">
+        <a href={issue.url} rel="noopener">
           <span>#{issue.id}</span>
           <p>{issue.description}</p>
         </a>

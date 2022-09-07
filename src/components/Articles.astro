@@ -18,7 +18,7 @@ const {articles} = Astro.props;
   {
     articles.map((article) => (
       <li class="article">
-        <a href={article.url} target="_blank" rel="noopener">
+        <a href={article.url} rel="noopener">
           <div
             class:list={['cover', {empty: !article.cover}]}
             style={article.cover ? `background-image: url(${article.cover})` : ''}

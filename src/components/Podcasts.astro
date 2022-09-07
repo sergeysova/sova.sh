@@ -27,7 +27,7 @@ const episodes = await Promise.all(
   {
     episodes.map((episode) => (
       <li class="episode">
-        <a href={episode.link} target="_blank" rel="noopener">
+        <a href={episode.link} rel="noopener">
           <div class="cover" style={`background-image: url(${episode.imageURL})`}>
             <kbd>
               S{episode.season}:E{episode.episode}
