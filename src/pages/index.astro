@@ -10,6 +10,7 @@ import Section from '../components/Section.astro';
 import ButtonLink from '../components/ButtonLink.astro';
 import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
+import Videos from '../components/Videos.astro';
 
 const articles = await getUniqueArticles();
 const news = await getNews();
@@ -43,21 +44,10 @@ const videos = await getVideos();
       <ButtonLink text="Listen all" href="https://podcast.ru/1586738556/e" />
     </Section>
 
-    <h2 class="text-3xl mt-10 mb-2">Youtube</h2>
-    <ul role="list" class="link-card-grid">
-      {
-        videos.map((video) => (
-          <Card href={video.url} title={video.title} body={video.description} />
-        ))
-      }
-    </ul>
-    <a
-      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
-      href="https://www.youtube.com/sergeysova"
-      target="_blank"
-      rel="noopener"
-      ><span class="py-3 px-5">Show all videos</span>
-    </a>
+    <Section title="Youtube">
+      <Videos videos={videos} />
+      <ButtonLink text="View all videos" href="https://www.youtube.com/sergeysova" />
+    </Section>
   </main>
 </Layout>
 
@@ -74,6 +64,7 @@ const videos = await getVideos();
     margin: auto;
     padding: 1em;
     max-width: 70ch;
+    @apply flex flex-col gap-10;
   }
 
   .text-gradient {

@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 
-import {firstThreeLines, firstWords} from './lib/text';
+import {firstThreeLines, firstWords, removeCredits} from './lib/text';
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {
@@ -24,11 +24,11 @@ function createUrl() {
   return url.toString();
 }
 
-interface YoutubeVideo {
+export interface YoutubeVideo {
   id: string;
   title: string;
   description: string;
-  thumbnails: Record<'default' | 'medium' | 'high', Thumbnail>;
+  thumbnails: Record<'default' | 'medium' | 'high' | 'standard' | 'maxres', Thumbnail>;
   url: string;
 }
 
@@ -98,12 +98,14 @@ export function getVideos(): Promise<YoutubeVideo[]> {
     .then((response) => response.json())
     .then((answer) => Response.check(answer))
     .then((answer) =>
-      answer.items.map((item) => ({
-        id: item.snippet.resourceId.videoId,
-        title: item.snippet.title,
-        description: firstWords(20, firstThreeLines(item.snippet.description)),
-        thumbnails: item.snippet.thumbnails,
-        url: linkToVideo(item.snippet.resourceId.videoId),
-      })),
+      answer.items
+        .sort((a, b) => b.snippet.position - a.snippet.position)
+        .map((item) => ({
+          id: item.snippet.resourceId.videoId,
+          title: item.snippet.title,
+          description: firstWords(20, firstThreeLines(removeCredits(item.snippet.description))),
+          thumbnails: item.snippet.thumbnails,
+          url: linkToVideo(item.snippet.resourceId.videoId),
+        })),
     );
 }
