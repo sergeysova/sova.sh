@@ -10,6 +10,6 @@ export function firstThreeLines(text: string) {
   return text.split('\n').slice(0, 3).join('\n').trim();
 }
 
-export function firstTwentyWords(text: string) {
-  return text.split(' ').slice(0, 20).join(' ').trim() + '…';
+export function firstWords(count: number, text: string) {
+  return text.split(' ').slice(0, count).join(' ').trim() + '…';
 }

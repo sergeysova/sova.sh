@@ -1,6 +1,6 @@
 // @ts-ignore
 import {parseStringPromise} from 'xml2js';
-import {convertIntoText, firstTwentyWords} from './lib/text';
+import {convertIntoText, firstWords} from './lib/text';
 
 export async function getNews(): Promise<NewsIssue[]> {
   console.log('fetching news');
@@ -16,15 +16,20 @@ export async function getNews(): Promise<NewsIssue[]> {
     .map(
       (item: any) =>
         ({
+          id: item.link[0].match(/issues\/(\d+)/)[1],
           title: item.title[0],
           url: item.link[0].replace('www.getrevue.co/profile/_sergeysova', 'news.sova.dev'),
-          description: firstTwentyWords(convertIntoText(item.description[0]['_'])),
+          description: firstWords(
+            25,
+            convertIntoText(item.description[0]['_'].replace(/></gm, '>&nbsp;<')),
+          ),
         } as NewsIssue),
     )
     .slice(0, 6);
 }
 
-interface NewsIssue {
+export interface NewsIssue {
+  id: string;
   title: string;
   url: string;
   description: any;

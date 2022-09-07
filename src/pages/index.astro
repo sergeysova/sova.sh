@@ -8,11 +8,12 @@ import {getNews} from '../data/revue';
 import Articles from '../components/Articles.astro';
 import Section from '../components/Section.astro';
 import ButtonLink from '../components/ButtonLink.astro';
+import News from '../components/News.astro';
 
 const articles = await getUniqueArticles();
-const videos = await getVideos();
-const episodes = await getPodcast();
 const news = await getNews();
+const episodes = await getPodcast();
+const videos = await getVideos();
 ---
 
 <Layout title="Sergey Sova">
@@ -27,24 +28,14 @@ const news = await getNews();
           cover: source.cover_image,
         }))}
       />
-      <ButtonLink href="https://dev.to/sergeysova" text="Dev.to" />
-      <ButtonLink href="https://community.effector.dev/sergeysova" text="Effector Community" />
+      <ButtonLink text="Dev.to" href="https://dev.to/sergeysova" />
+      <ButtonLink text="Effector Community" href="https://community.effector.dev/sergeysova" />
     </Section>
-    <h2 class="text-3xl mt-10 mb-2">News</h2>
-    <ul role="list" class="link-card-grid">
-      {
-        news.map((article) => (
-          <Card href={article.url} title={article.title} body={article.description} />
-        ))
-      }
-    </ul>
-    <a
-      class="inline-block mt-3 rounded border-2 border-violet-200 transition button"
-      href="https://news.sova.dev"
-      target="_blank"
-      rel="noopener"
-      ><span class="py-3 px-5">Read all</span>
-    </a>
+    <Section title="News">
+      <News news={news} />
+      <ButtonLink text="Read all" href="https://news.sova.dev" />
+    </Section>
+
     <h2 class="text-3xl mt-10 mb-2">Podcast</h2>
     <ul role="list" class="link-card-grid">
       {

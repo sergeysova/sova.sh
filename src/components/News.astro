@@ -1,0 +1,50 @@
+---
+import type {NewsIssue} from '../data/revue';
+
+export interface Props {
+  news: NewsIssue[];
+}
+---
+
+<ul class="list">
+  {
+    Astro.props.news.map((issue) => (
+      <li class="issue">
+        <a href={issue.url} target="_blank" rel="noopener">
+          <span>#{issue.id}</span>
+          <p>{issue.description}</p>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .issue {
+    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden;
+
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .issue:hover {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 8px, rgba(0, 0, 0, 0.2) 0px 13px 26px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+
+  .issue span {
+    @apply px-4 py-2 font-light text-3xl float-right;
+  }
+
+  .issue p {
+    @apply px-4 py-3;
+  }
+</style>

@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 
-import {firstThreeLines, firstTwentyWords} from './lib/text';
+import {firstThreeLines, firstWords} from './lib/text';
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {
@@ -101,7 +101,7 @@ export function getVideos(): Promise<YoutubeVideo[]> {
       answer.items.map((item) => ({
         id: item.snippet.resourceId.videoId,
         title: item.snippet.title,
-        description: firstTwentyWords(firstThreeLines(item.snippet.description)),
+        description: firstWords(20, firstThreeLines(item.snippet.description)),
         thumbnails: item.snippet.thumbnails,
         url: linkToVideo(item.snippet.resourceId.videoId),
       })),
