@@ -14,7 +14,6 @@ export async function getPodcast(): Promise<Episode[]> {
     getPodcastFromFeed(textXml)
       .episodes.slice(0, 6)
       .map(async (episode: Episode) => {
-        console.log(episode);
         if (episode.description.includes('<p')) {
           const parsed = convertIntoText(episode.description);
           episode.description = parsed;

@@ -1,5 +1,4 @@
 ---
-import {getImage} from '@astrojs/image';
 export interface Article {
   title: string;
   url: string;
@@ -12,21 +11,7 @@ export interface Props {
   articles: Article[];
 }
 
-const originalArticles = Astro.props.articles;
-const articles = await Promise.all(
-  originalArticles.map(async (article) => {
-    if (article.cover) {
-      const image = await getImage({
-        src: article.cover,
-        width: 736,
-        aspectRatio: 2.5,
-        quality: 90,
-      });
-      article.cover = image.src!;
-    }
-    return article;
-  }),
-);
+const {articles} = Astro.props;
 ---
 
 <ul class="list">
