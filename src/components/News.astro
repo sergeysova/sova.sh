@@ -1,15 +1,27 @@
 ---
-import type {NewsIssue} from '../data/revue';
+import {fetchIssueImage, NewsIssue} from '../data/revue';
 
 export interface Props {
   news: NewsIssue[];
 }
+
+const originalIssues = Astro.props.news;
+const issues = await Promise.all(
+  originalIssues.map(async (issue) => {
+    const image = await fetchIssueImage(issue);
+    console.log('image', image);
+    return {
+      ...issue,
+      image,
+    };
+  }),
+);
 ---
 
 <ul class="list">
   {
-    Astro.props.news.map((issue) => (
-      <li class="issue">
+    issues.map((issue) => (
+      <li class="issue" style={`background-image: url(${issue.image})`}>
         <a href={issue.url} target="_blank" rel="noopener">
           <span>#{issue.id}</span>
           <p>{issue.description}</p>
@@ -28,16 +40,29 @@ export interface Props {
   }
 
   .issue {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden;
+    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden bg-cover bg-center;
 
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  .issue a {
+    @apply backdrop-blur-lg h-full text-white bg-black/50;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .issue:hover {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 8px, rgba(0, 0, 0, 0.2) 0px 13px 26px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+
+  .issue:hover a {
+    color: transparent;
+    background-color: transparent;
+    backdrop-filter: none;
+    /* opacity: 0; */
   }
 
   .issue span {

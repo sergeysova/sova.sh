@@ -1,5 +1,6 @@
 // @ts-ignore
 import {parseStringPromise} from 'xml2js';
+import {JSDOM} from 'jsdom';
 import {convertIntoText, firstWords} from './lib/text';
 
 export async function getNews(): Promise<NewsIssue[]> {
@@ -33,4 +34,15 @@ export interface NewsIssue {
   title: string;
   url: string;
   description: any;
+}
+
+export async function fetchIssueImage(issue: NewsIssue) {
+  const response = await fetch(issue.url);
+  if (!response.ok) {
+    return null;
+  }
+  const html = await response.text();
+  const dom = new JSDOM(html);
+  const meta = dom.window.document.querySelector('[property="twitter:issue:image:src"]');
+  return meta?.attributes.getNamedItem('content')?.textContent ?? null;
 }
