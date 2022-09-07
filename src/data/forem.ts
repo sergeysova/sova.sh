@@ -41,6 +41,7 @@ export const getUniqueArticles = () => {
       throw error;
     })
     .then(([dev, effector]) => [...effector, ...dev])
+    .then((articles) => articles.filter((article) => !article.tag_list.includes('video')))
     .then((articles) =>
       articles.filter((article) => {
         if (!uniqueNamesArticlesMap.has(article.title)) {
