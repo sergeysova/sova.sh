@@ -20,7 +20,15 @@ const videos = await getVideos();
 
 <Layout title="Sergey Sova">
   <main>
-    <h1 class="text-5xl">My name is <span class="text-gradient">Sergey Sova</span></h1>
+    <div class="about">
+      <h1 class="text-5xl">My name is <span class="text-gradient">Sergey Sova</span></h1>
+      <p>
+        I had made a bunch of packages for the effector ecosystem: patronum, logger, inspector, etc.
+        I'm consulting people and companies for frontend architecture principles and React
+        optimizations. I made a podcast on Russian, Twitter, and Telegram with 3K subscribers in
+        total.
+      </p>
+    </div>
     <Section title="Articles">
       <Articles
         articles={articles.map((source) => ({
