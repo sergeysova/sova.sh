@@ -59,8 +59,8 @@ const issues = await Promise.all(
     @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden bg-cover bg-center;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    /* aspect-ratio: 3; */
+    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .issue a {
@@ -72,6 +72,7 @@ const issues = await Promise.all(
   .issue:hover {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 8px, rgba(0, 0, 0, 0.2) 0px 13px 26px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transform: translateY(-3px);
   }
 
   .issue:hover a {
