@@ -1,0 +1,178 @@
+---
+import './prism-one-light.css'
+import Layout from './Layout.astro'
+const {frontmatter, headings} = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+  <main>
+    <h1>{frontmatter.title}</h1>
+    <slot />
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: 0 auto;
+    max-width: 620px;
+    margin-top: 4ch;
+    margin-bottom: 10ch;
+  }
+
+  @media (max-width: 654px) {
+    main {
+      @apply px-4;
+    }
+  }
+</style>
+
+<style is:global>
+  h1 {
+    @apply text-3xl mt-6 mb-6 font-medium;
+    line-height: 1;
+  }
+
+  h1:not(:first-child) {
+    @apply mt-8;
+  }
+
+  h2 {
+    @apply text-2xl mb-2 font-medium;
+    line-height: 1;
+  }
+
+  h2:not(:first-child) {
+    @apply mt-8;
+  }
+
+  h3 {
+    @apply text-xl mb-2 font-medium;
+    line-height: 1;
+  }
+
+  h3:not(:first-child) {
+    @apply mt-6;
+  }
+
+  h4 {
+    @apply text-lg mb-2 font-medium;
+    line-height: 1;
+  }
+
+  h4:not(:first-child) {
+    @apply mt-4;
+  }
+
+  h1, h2, h3, h4, h5, h6, h7 {
+    @apply block relative;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
+    opacity: 1;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+    position: absolute;
+    left: -1.5ch;
+    display: inline-block;
+    opacity: 0;
+    width: 2rem;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
+    text-align: left;
+    display: inline-block;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
+    content: '#';
+  }
+
+  @media (max-width: 654px) {
+    :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+      position: relative;
+      left: auto;
+      opacity: 1;
+      width: 1.2rem;
+    }
+  }
+
+  #table-of-contents {
+    display: none;
+  }
+
+  code {
+    @apply px-2 py-1 bg-red-50 text-red-800 rounded;
+    font-size: 0.9em;
+  }
+
+  ul, ol, dl {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  ul, ol, dl {
+    margin-block: 0.5em;
+    margin-inline: 0;
+    padding-inline-start: 1.5em;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  :where(ul, ol, dl) > li > p {
+    margin-block: 0;
+  }
+
+  :where(ul, ol, dl) li:not(:first-child) {
+    margin-top: 0.3em;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  :where(ul, ol) ::marker {
+    @apply text-sky-500;
+  }
+
+  p {
+    margin-block: 1em;
+  }
+
+  strong, b {
+    @apply font-bold;
+  }
+
+  blockquote {
+    @apply text-gray-500 border-l-4 border-gray-300;
+
+    padding-block: 0;
+    margin: 0.8em 0;
+  }
+
+  @media (min-width: 30em) {
+    blockquote {
+        padding-right: 4em;
+        padding-left: 1.25rem;
+    }
+  }
+
+  pre > code {
+    font-size: 0.8em;
+    padding: 0;
+  }
+
+  pre > code[class*="language-"] {
+    font-family: "JetBrains Mono",Menlo,Monaco,"Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;
+  }
+
+  a {
+    @apply text-sky-600 underline;
+  }
+  a:hover {
+    @apply no-underline;
+  }
+</style>
