@@ -1,7 +1,6 @@
 // @ts-ignore
 import {getPodcastFromFeed} from '@podverse/podcast-feed-parser';
-// @ts-ignore
-import {parseStringPromise} from 'xml2js';
+import {convertIntoText} from './lib/text';
 
 export async function getPodcast(): Promise<Episode[]> {
   const rss = 'https://anchor.fm/s/4c5764fc/podcast/rss';
@@ -15,8 +14,8 @@ export async function getPodcast(): Promise<Episode[]> {
       .episodes.slice(0, 6)
       .map(async (episode: Episode) => {
         if (episode.description.includes('<p')) {
-          const parsed = await parseStringPromise(episode.description);
-          episode.description = parsed.p;
+          const parsed = convertIntoText(episode.description);
+          episode.description = parsed;
         }
         return episode;
       }),

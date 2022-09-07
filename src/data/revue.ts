@@ -1,5 +1,6 @@
 // @ts-ignore
 import {parseStringPromise} from 'xml2js';
+import {convertIntoText, firstTwentyWords} from './lib/text';
 
 export async function getNews(): Promise<NewsIssue[]> {
   const rss = 'https://news.sova.dev/?format=rss';
@@ -16,12 +17,7 @@ export async function getNews(): Promise<NewsIssue[]> {
         ({
           title: item.title[0],
           url: item.link[0].replace('www.getrevue.co/profile/_sergeysova', 'news.sova.dev'),
-          description:
-            item.description[0]['_']
-              .replace(/\<\/?\w+\>/gm, ' ')
-              .split(' ')
-              .slice(0, 20)
-              .join(' ') + '…',
+          description: firstTwentyWords(convertIntoText(item.description[0]['_'])),
         } as NewsIssue),
     )
     .slice(0, 6);
