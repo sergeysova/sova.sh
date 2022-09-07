@@ -1,6 +1,6 @@
 import * as t from 'runtypes';
 
-import {firstThreeLines, firstWords, removeCredits} from './lib/text';
+import {firstThreeLines, firstWords, removeCredits, removeExtraFromSeparator} from './lib/text';
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {
@@ -102,7 +102,7 @@ export function getVideos(): Promise<YoutubeVideo[]> {
         .sort((a, b) => b.snippet.position - a.snippet.position)
         .map((item) => ({
           id: item.snippet.resourceId.videoId,
-          title: item.snippet.title,
+          title: removeExtraFromSeparator(' | ', item.snippet.title),
           description: firstWords(20, firstThreeLines(removeCredits(item.snippet.description))),
           thumbnails: item.snippet.thumbnails,
           url: linkToVideo(item.snippet.resourceId.videoId),

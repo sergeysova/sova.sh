@@ -14,9 +14,10 @@ const {videos} = Astro.props;
       <li class="video">
         <a href={video.url} target="_blank" rel="noopener">
           <div class="cover" style={`background-image: url(${video.thumbnails.standard.url})`}>
-            <h3>{video.title}</h3>
+            <div class="blind">
+              <h3>{video.title}</h3>
+            </div>
           </div>
-          <p>{video.description}</p>
         </a>
       </li>
     ))
@@ -45,14 +46,15 @@ const {videos} = Astro.props;
   }
 
   .video .cover {
-    @apply block h-64 bg-cover bg-center relative;
+    @apply h-52 bg-cover bg-center relative flex flex-col justify-end;
+    background-size: 115%;
   }
 
-  .video h3 {
-    @apply absolute bottom-0 text-white block px-4 py-2 font-light backdrop-blur-xl bg-black/30 w-full;
+  .video .cover .blind {
+    @apply font-light backdrop-blur-xl bg-black/30;
   }
 
-  .video p {
-    @apply px-4 py-3;
+  .video .cover h3 {
+    @apply text-white block px-4 py-1 w-full;
   }
 </style>

@@ -11,7 +11,11 @@ export function firstThreeLines(text: string) {
 }
 
 export function removeCredits(text: string) {
-  return text.split('———\n', 2)[0];
+  return removeExtraFromSeparator('———\n', text);
+}
+
+export function removeExtraFromSeparator(separator: string, text: string) {
+  return text.split(separator, 2)[0];
 }
 
 export function firstWords(count: number, text: string) {
