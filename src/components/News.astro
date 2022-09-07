@@ -9,7 +9,6 @@ const originalIssues = Astro.props.news;
 const issues = await Promise.all(
   originalIssues.map(async (issue) => {
     const image = await fetchIssueImage(issue);
-    console.log('image', image);
     return {
       ...issue,
       image,
