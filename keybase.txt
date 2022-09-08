@@ -1,0 +1,82 @@
+==================================================================
+https://keybase.io/sergeysova
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://sova.dev
+  * I am sergeysova (https://keybase.io/sergeysova) on keybase.
+  * I have a public key with fingerprint 85E4 8503 A975 DC9E 0103  794A 7234 B5F9 938F CAC0
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0101c1a78f46c2df89453704984d7fc583f070161663fbe4a201fe3a2f82ff77c8250a",
+      "fingerprint": "85e48503a975dc9e0103794a7234b5f9938fcac0",
+      "host": "keybase.io",
+      "key_id": "7234b5f9938fcac0",
+      "kid": "0101c1a78f46c2df89453704984d7fc583f070161663fbe4a201fe3a2f82ff77c8250a",
+      "uid": "fb596e13fd83a23a10ae2dfb7adae519",
+      "username": "sergeysova"
+    },
+    "merkle_root": {
+      "ctime": 1662627744,
+      "hash_meta": "6075de266ad1525ba7f5e0b92771cd4be940c4dd76952f901c4c6f70c942e34c",
+      "seqno": 23159790
+    },
+    "revoke": {
+      "sig_ids": [
+        "5e16dc6df0e5d2e512ef124304310b6ddcf6c0f8a8d69fa2444b616fe8bee98b0f"
+      ]
+    },
+    "service": {
+      "hostname": "sova.dev",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1662627765,
+  "expire_in": 157680000,
+  "prev": "a2301c323582b59f899d49a6f03f7e01319ab413c00c565a12cc35c072d900d6",
+  "seqno": 20,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.13
+Comment: https://keybase.io/crypto
+
+yMK9AnicrVNdbBVFGG0pWGyCGPBBY0LMBlMSSjM7Oz87t5pofDESEvWBYtBcZme+
+uV3a3r3d3XvbWgtC0Vr0WhVThRcfFNA0lZdWoQhoAwRS0UZNxDQxTRpfWqKhagRj
+orONJMb46Lzs7OR855zvfDPn19TVNNT+FrQePPP5xt2101Plco2658REnxNEutfJ
+9TntsPyBDg1Jmm8PtZNzkItc5UruG8IU1sYXhHocEeETzY2ivmcQRy5zGfNMAERi
+5BrwJDY+NoZz5WOKpNPkmLBYgLgUh8XU0voUiE+RJwWnWgmwMh4XRHLskYAaITzf
+KKmQLWyLkqzCmgtkAs1hZM/sT37Z3n/g/2ff5WU6E1DBwPWM9i3Gky6SYFkDLrUE
+6ooMmEBclJ1g0XZXgN4kqkinv8nphLi9A/JxFKVZvCoNM5AVxgxzTohtUSZt+U5I
+pa1lyCYCmDGpXYppILmhgAJhoa7SJABBkCJacyYoNsJ2SRQzHClBMHhEWScJdBUj
+J4c9lwoukLUQQyVqh0w9CQs2ucTJ7XQouEwrpg0CqrHtAoNxMfEQ8VwUMK2VYQoZ
+X/qaCSMxISSweRnwAwDhB8g4z/RnanElVMvk2ahuRWCbb9ZQsXZKcZRGKuqwp21p
+WkpyWShpbymDdUOQ/5sgH4RFbS+JrahAnIRR0YZkkf/Ki9EmB3pKYQz5MENQznxk
+V6Zj5XKOHY8NxcMe9bGdmp280ERIZpBnuL1onitkQFxPIaQoo9LFSnlUIY61QEiz
+fwRoSVNZyLoJC0WZlmNw+qc+fXplTW1DzW2rVmSvp6bh9jtvvanFyfo/9a74q8uv
+rVpTefOH2fruC/6enulj298Z3/r22hOvDFYnGod7+07tKFdzpwcuHbq7efuDLVcu
+rN08tmLrq7S6a2Do3ucuz7V2Xh8cTVaPfPLN/PDjO8a/nd3QHXx39eRd9x2pOzz5
+wNz6D4//uPj70Gffv9915fzSpurXv84/OX+Ojm85tbnv5IH9Y5eWzk7OXPtgXfyY
+Pw1HX//p7MZ9z395Y2zLe3z6kdlfBmYOND118WB+bnRi6g1x/x3PPuHImb0v7Vl4
+seXh8qGpvX+8e3HlzdGR4a7qRw8t7N6weGxnI3l58q26fXWPblOth8X+6+skv5Y/
+vXCzMV66OvjF0OoXIvj5yI2PR7a19Gw6Wn/uL4w6iks=
+=kTHJ
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/sergeysova
+
+==================================================================
+
