@@ -22,13 +22,13 @@ To do so, I am signing this object:
       "username": "sergeysova"
     },
     "merkle_root": {
-      "ctime": 1662627744,
-      "hash_meta": "6075de266ad1525ba7f5e0b92771cd4be940c4dd76952f901c4c6f70c942e34c",
-      "seqno": 23159790
+      "ctime": 1662628088,
+      "hash_meta": "3bc520cfa1a3e47a10c8714c2345cde89195264bd0e36b2fc7e0a5c516fd03ec",
+      "seqno": 23159806
     },
     "revoke": {
       "sig_ids": [
-        "5e16dc6df0e5d2e512ef124304310b6ddcf6c0f8a8d69fa2444b616fe8bee98b0f"
+        "7b4babad5844aca07f51e7b4452fa3aa61fa85902cf2fd8f3a8b4fda5c48e5e70f"
       ]
     },
     "service": {
@@ -38,10 +38,10 @@ To do so, I am signing this object:
     "type": "web_service_binding",
     "version": 1
   },
-  "ctime": 1662627765,
+  "ctime": 1662628115,
   "expire_in": 157680000,
-  "prev": "a2301c323582b59f899d49a6f03f7e01319ab413c00c565a12cc35c072d900d6",
-  "seqno": 20,
+  "prev": "35377f50e91f44b5edd1cedca4dbb8e348963cc237ef128f20c82051511c1581",
+  "seqno": 21,
   "tag": "signature"
 }
 
@@ -51,26 +51,26 @@ which yields the signature:
 Version: Keybase OpenPGP v2.1.13
 Comment: https://keybase.io/crypto
 
-yMK9AnicrVNdbBVFGG0pWGyCGPBBY0LMBlMSSjM7Oz87t5pofDESEvWBYtBcZme+
-uV3a3r3d3XvbWgtC0Vr0WhVThRcfFNA0lZdWoQhoAwRS0UZNxDQxTRpfWqKhagRj
-orONJMb46Lzs7OR855zvfDPn19TVNNT+FrQePPP5xt2101Plco2658REnxNEutfJ
-9TntsPyBDg1Jmm8PtZNzkItc5UruG8IU1sYXhHocEeETzY2ivmcQRy5zGfNMAERi
-5BrwJDY+NoZz5WOKpNPkmLBYgLgUh8XU0voUiE+RJwWnWgmwMh4XRHLskYAaITzf
-KKmQLWyLkqzCmgtkAs1hZM/sT37Z3n/g/2ff5WU6E1DBwPWM9i3Gky6SYFkDLrUE
-6ooMmEBclJ1g0XZXgN4kqkinv8nphLi9A/JxFKVZvCoNM5AVxgxzTohtUSZt+U5I
-pa1lyCYCmDGpXYppILmhgAJhoa7SJABBkCJacyYoNsJ2SRQzHClBMHhEWScJdBUj
-J4c9lwoukLUQQyVqh0w9CQs2ucTJ7XQouEwrpg0CqrHtAoNxMfEQ8VwUMK2VYQoZ
-X/qaCSMxISSweRnwAwDhB8g4z/RnanElVMvk2ahuRWCbb9ZQsXZKcZRGKuqwp21p
-WkpyWShpbymDdUOQ/5sgH4RFbS+JrahAnIRR0YZkkf/Ki9EmB3pKYQz5MENQznxk
-V6Zj5XKOHY8NxcMe9bGdmp280ERIZpBnuL1onitkQFxPIaQoo9LFSnlUIY61QEiz
-fwRoSVNZyLoJC0WZlmNw+qc+fXplTW1DzW2rVmSvp6bh9jtvvanFyfo/9a74q8uv
-rVpTefOH2fruC/6enulj298Z3/r22hOvDFYnGod7+07tKFdzpwcuHbq7efuDLVcu
-rN08tmLrq7S6a2Do3ucuz7V2Xh8cTVaPfPLN/PDjO8a/nd3QHXx39eRd9x2pOzz5
-wNz6D4//uPj70Gffv9915fzSpurXv84/OX+Ojm85tbnv5IH9Y5eWzk7OXPtgXfyY
-Pw1HX//p7MZ9z395Y2zLe3z6kdlfBmYOND118WB+bnRi6g1x/x3PPuHImb0v7Vl4
-seXh8qGpvX+8e3HlzdGR4a7qRw8t7N6weGxnI3l58q26fXWPblOth8X+6+skv5Y/
-vXCzMV66OvjF0OoXIvj5yI2PR7a19Gw6Wn/uL4w6iks=
-=kTHJ
+yMK5AnicrVNdaBxVFN7UaOliqxDbmEofMihIm6T3d+bOtlTQKqQEfBAqNabbO/ee
+u5lusrPOzK6Na6yKVhMfrNQiGii1VbC1qAsRNWBJo9BaDf7E4A+KYqwKfWygIJR4
+J1hQ8NF5mZnDd873c8/9ePU1uXzL5eD+8Q8/u3Vvy6cztVpOdTTbGk4Q6RGn0HDK
+sPyCIQ1JWiyH2ik4CCOssPSEYa4i2gifceoh5gumPaO4oAZ5CLvYdakJgEmCsAEq
+iRHEGM9TgnAknS7HhJUSxNU4rKR2rODABEdU+h7XygdLQz2fSY9QFnDj+1QYJRWy
+jYNRknVYcYFMoCeMbM3+FJfl/Qf+f9ZdWx5nAu67gKnRwmKoxEiCnRp4Ukvg2M+A
+CcQVOQwWbb9KMJJEdemMdjnDEJeHoBhHUZrFq9IwA1li4hKBhLAWZTJYHIZU2l4a
+KE6QMhJLCsyzTEp4mClrlCsNwsc+Jy4LNALqBsQoD5DkimPXaERBWSUJPFSJnAKh
+mPsCuVZCDPWoDBl7EpZscolT6He8gAUykJoLxqSSyDMcgy0yToykUrrYSMF9RJQh
+1rehUgTMaEvGBHDwkHEGRjO2uB6q5eHZUV2NwJrv0VC3cqpxlEYqGrLVwTStJoUs
+lHSkmsEehqD494BiEFa0XRLbUYc4CaOKDcki/50XxrzLgX3VMIZimCG45wpkn4zH
+0tkA7TlbKwh8bJhdDtAaK9BKMh0EAigTvkuVzdMDg4kwNmxBEMcc24XhAv8jQGx1
+ylLmJixVZFqLwRmdmX6wNdeSz1137Yrs9uTyq268eqfao5VLeuxn8sCVo3fnju39
+I/7KHNy15d5kYPadrdNzUwPfTyzu3PR52/kt7s6py5Ozi31fNM5sP7lhsvjWmj9/
++frIe21r0kvNPX3fPnvn6x0dF1dNDT6xfu3Y+Azxzrx7aEV48yu77jvXfsubw4/+
+eGzikbWnL6xc2PBYcsOTnxTPLXX21MY3do9MvnB9d2fvXdtKZ5tnD7z93elnetZd
+eq3y/JXDq3967rcP9pTbHh86MX+iudS90Jy4aXRufvcB+uupHcd7zy/e1rp5f+HV
+xlTnqfV9Ow6Wbz908cund8/P3vHUR9Mvbu7r/T2/sG1sf/6Hl3ONIzOHX+p39n3T
+38nemMPrNrbzrUvb7+nqbZ18PzzKLvwFq45/1g==
+=aNU6
 -----END PGP MESSAGE-----
 
 And finally, I am proving ownership of this host by posting or
@@ -79,4 +79,3 @@ appending to this document.
 View my publicly-auditable identity here: https://keybase.io/sergeysova
 
 ==================================================================
-
