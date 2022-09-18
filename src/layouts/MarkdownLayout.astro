@@ -34,57 +34,57 @@ const {frontmatter, headings} = Astro.props;
 </style>
 
 <style is:global>
-  h1 {
+  main h1 {
     @apply text-3xl mt-6 mb-6 font-medium;
     line-height: 1;
   }
 
-  h1:not(:first-child) {
+  main h1:not(:first-child) {
     @apply mt-8;
   }
 
-  h2 {
+  main h2 {
     @apply text-2xl mb-2 font-medium;
     line-height: 1;
   }
 
-  h2:not(:first-child) {
+  main h2:not(:first-child) {
     @apply mt-8;
   }
 
-  h3 {
+  main h3 {
     @apply text-xl mb-2 font-medium;
     line-height: 1;
   }
 
-  h3:not(:first-child) {
+  main h3:not(:first-child) {
     @apply mt-6;
   }
 
-  h4 {
+  main h4 {
     @apply text-lg mb-2 font-medium;
     line-height: 1;
   }
 
-  h4:not(:first-child) {
+  main h4:not(:first-child) {
     @apply mt-4;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  h7 {
+  main h1,
+  main h2,
+  main h3,
+  main h4,
+  main h5,
+  main h6,
+  main h7 {
     @apply block relative;
   }
 
-  :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
+  main :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
     opacity: 1;
   }
 
-  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+  main :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
     position: absolute;
     left: -1.5ch;
     display: inline-block;
@@ -92,17 +92,17 @@ const {frontmatter, headings} = Astro.props;
     width: 2rem;
   }
 
-  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
+  main :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
     text-align: left;
     display: inline-block;
   }
 
-  :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
+  main :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
     content: '#';
   }
 
   @media (max-width: 654px) {
-    :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+    main :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
       position: relative;
       left: auto;
       opacity: 1;
@@ -110,61 +110,61 @@ const {frontmatter, headings} = Astro.props;
     }
   }
 
-  #table-of-contents {
+  main #table-of-contents {
     display: none;
   }
 
-  code {
+  main code {
     @apply px-2 py-1 bg-red-50 text-red-800 rounded;
     font-size: 0.9em;
   }
 
-  ul,
-  ol,
-  dl {
+  main ul,
+  main ol,
+  main dl {
     margin-top: 0;
     margin-bottom: 1rem;
     display: block;
   }
 
-  ul,
-  ol,
-  dl {
+  main ul,
+  main ol,
+  main dl {
     margin-block: 0.5em;
     margin-inline: 0;
     padding-inline-start: 1.5em;
   }
 
-  ul {
+  main ul {
     list-style-type: disc;
   }
 
-  :where(ul, ol, dl) > li > p {
+  main :where(ul, ol, dl) > li > p {
     margin-block: 0;
   }
 
-  :where(ul, ol, dl) li:not(:first-child) {
+  main :where(ul, ol, dl) li:not(:first-child) {
     margin-top: 0.3em;
   }
 
-  ol {
+  main ol {
     list-style-type: decimal;
   }
 
-  :where(ul, ol) ::marker {
+  main :where(ul, ol) ::marker {
     @apply text-sky-500;
   }
 
-  p {
+  main p {
     margin-block: 1em;
   }
 
-  strong,
-  b {
+  main strong,
+  main b {
     @apply font-bold;
   }
 
-  blockquote {
+  main blockquote {
     @apply text-gray-500 border-l-4 border-gray-300;
 
     padding-block: 0;
@@ -172,26 +172,26 @@ const {frontmatter, headings} = Astro.props;
   }
 
   @media (min-width: 30em) {
-    blockquote {
+    main blockquote {
       padding-right: 4em;
       padding-left: 1.25rem;
     }
   }
 
-  pre > code {
+  main pre > code {
     font-size: 0.8em;
     padding: 0;
   }
 
-  pre > code[class*='language-'] {
+  main pre > code[class*='language-'] {
     font-family: 'JetBrains Mono', Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
       'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
   }
 
-  a {
+  main a {
     @apply text-sky-600 underline;
   }
-  a:hover {
+  main a:hover {
     @apply no-underline;
   }
 </style>
