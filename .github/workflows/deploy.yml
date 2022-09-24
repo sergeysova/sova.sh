@@ -24,14 +24,16 @@ jobs:
       - name: 🔍 Installation
         run: pnpm install
 
-      - name: 🔧 Build
+      - name: 🔧 Build RU — sova.dev
         run: pnpm build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
           EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
+          PUBLIC_SITE: https://sova.dev
+          PUBLIC_LANGUAGE: ru
 
-      - name: 🚀 Deploy
+      - name: 🚀 Deploy RU — sova.dev
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
