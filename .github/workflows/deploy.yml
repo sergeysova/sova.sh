@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  ru:
     runs-on: ubuntu-22.04
     steps:
       - name: 🛎️ Checkout
