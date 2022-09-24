@@ -4,7 +4,7 @@ import Layout from './Layout.astro';
 const {frontmatter, headings} = Astro.props;
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={frontmatter.title + ' | Sergey Sova'}>
   <main class="markdown">
     <div class="go-back">
       <a href="/">{frontmatter.language === 'ru' ? 'На главную' : 'Open home page'}</a>

@@ -16,7 +16,6 @@ export async function getPodcast(): Promise<Episode[]> {
   const answer = Podcast.check(getPodcastFromFeed(textXml));
   return answer.episodes
     .sort((a, b) => b.episode - a.episode)
-    .slice(0, 6)
     .map((episode) => {
       if (episode.description.includes('<p')) {
         const parsed = convertIntoText(episode.description);

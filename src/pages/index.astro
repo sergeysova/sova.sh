@@ -1,10 +1,10 @@
 ---
+import AssetArticles from '../assets/articles.svg';
+import AssetNews from '../assets/news.svg';
+import AssetPodcast from '../assets/podcast.svg';
+import AssetYoutube from '../assets/youtube.svg';
+
 import Layout from '../layouts/Layout.astro';
-import {getUniqueArticles} from '../data/forem';
-import {getVideos} from '../data/youtube';
-import {getPodcast} from '../data/podcast';
-import {getNews} from '../data/revue';
-import {getPages} from '../data/markdown';
 
 import Articles from '../components/Articles.astro';
 import Section from '../components/Section.astro';
@@ -13,10 +13,13 @@ import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
 
-import AssetArticles from '../assets/articles.svg';
-import AssetNews from '../assets/news.svg';
-import AssetPodcast from '../assets/podcast.svg';
-import AssetYoutube from '../assets/youtube.svg';
+import {getUniqueArticles} from '../data/forem';
+import {getVideos} from '../data/youtube';
+import {getPodcast} from '../data/podcast';
+import {getNews} from '../data/revue';
+import {getPages} from '../data/markdown';
+
+const COUNT_OF_CONTENT = 6;
 
 const forem = await getUniqueArticles();
 const news = await getNews();
@@ -25,7 +28,7 @@ const videos = await getVideos();
 
 const articles = [...forem, ...(await getPages())]
   .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
-  .slice(0, 6);
+  .slice(0, COUNT_OF_CONTENT);
 ---
 
 <Layout title="Sergey Sova">
@@ -54,17 +57,17 @@ const articles = [...forem, ...(await getPages())]
     </Section>
 
     <Section titleImage={AssetNews}>
-      <News news={news} />
+      <News news={news.slice(0, COUNT_OF_CONTENT)} />
       <ButtonLink text="Read all" href="https://news.sova.dev" />
     </Section>
 
     <Section titleImage={AssetPodcast}>
-      <Podcasts episodes={episodes} />
+      <Podcasts episodes={episodes.slice(0, COUNT_OF_CONTENT)} />
       <ButtonLink text="Listen all" href="https://podcast.ru/1586738556/e" />
     </Section>
 
     <Section titleImage={AssetYoutube}>
-      <Videos videos={videos} />
+      <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
       <ButtonLink text="View all" href="https://www.youtube.com/sergeysova" />
     </Section>
   </main>

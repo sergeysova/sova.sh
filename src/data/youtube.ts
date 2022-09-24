@@ -21,7 +21,7 @@ function createUrl() {
   url.searchParams.set('playlistId', secrets.playListId);
   url.searchParams.set('part', 'snippet');
   url.searchParams.set('order', 'date');
-  url.searchParams.set('maxResults', '6');
+  url.searchParams.set('maxResults', '600');
   return url.toString();
 }
 
@@ -80,7 +80,7 @@ const ResponseItem = t.Record({
 
 const Response = t.Record({
   etag: t.String,
-  nextPageToken: t.String,
+  nextPageToken: t.String.optional(),
   items: t.Array(ResponseItem),
 });
 

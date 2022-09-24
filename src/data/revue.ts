@@ -15,21 +15,19 @@ export async function getNews(): Promise<NewsIssue[]> {
   const textXml = await response.text();
   const parsed = await parseStringPromise(textXml);
 
-  return parsed.rss.channel[0].item
-    .map(
-      (item: any) =>
-        ({
-          id: item.link[0].match(/issues\/(\d+)/)[1],
-          title: item.title[0],
-          url: item.link[0].replace('www.getrevue.co/profile/_sergeysova', 'news.sova.dev'),
-          description: firstWords(
-            25,
-            convertIntoText(item.description[0]['_'].replace(/></gm, '>&nbsp;<')),
-          ),
-          publishedAt: new Date(item.pubDate[0]).toISOString(),
-        } as NewsIssue),
-    )
-    .slice(0, 6);
+  return parsed.rss.channel[0].item.map(
+    (item: any) =>
+      ({
+        id: item.link[0].match(/issues\/(\d+)/)[1],
+        title: item.title[0],
+        url: item.link[0].replace('www.getrevue.co/profile/_sergeysova', 'news.sova.dev'),
+        description: firstWords(
+          25,
+          convertIntoText(item.description[0]['_'].replace(/></gm, '>&nbsp;<')),
+        ),
+        publishedAt: new Date(item.pubDate[0]).toISOString(),
+      } as NewsIssue),
+  );
 }
 
 export interface NewsIssue {
