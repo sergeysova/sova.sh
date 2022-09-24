@@ -16,14 +16,13 @@
       gtag('config', 'UA-67236238-5');
     </script>
   <link rel="stylesheet" href="/assets/3f14cbb3.ce35e91d.css" />
-<link rel="stylesheet" href="/assets/7147dfea.42031b5b.css" />
-<link rel="stylesheet" href="/assets/4b501556.ba20573b.css" /><script type="module" src="/page.3aa82516.js"></script></head>
+<link rel="stylesheet" href="/assets/43887250.8e8095f9.css" /><script type="module" src="/page.3aa82516.js"></script></head>
   <body class="astro-DBY5N2ED">
-    <main class="astro-QQL77MFF">
-    <div class="go-back astro-QQL77MFF">
-      <a href="/" class="astro-QQL77MFF">Open home page</a>
+    <main class="markdown astro-DOFAKTZW">
+    <div class="go-back astro-DOFAKTZW">
+      <a href="/" class="astro-DOFAKTZW">На главную</a>
     </div>
-    <h1 class="astro-QQL77MFF">Используйте логические переменные</h1>
+    <h1 class="astro-DOFAKTZW">Используйте логические переменные</h1>
     <blockquote><p>Вместо простой проверки логического выражения, лучше присвоить его значение переменной, которая сделает смысл проверки очевидным.</p></blockquote><pre class="language-js"><code is:raw="" class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span>elementIndex <span class="token operator">&#x3C;</span> <span class="token number">0</span> <span class="token operator">||</span> <span class="token constant">MAX_ELEMENTS</span> <span class="token operator">&#x3C;</span> elementIndex <span class="token operator">||</span> elementIndex <span class="token operator">===</span> lastElementIndex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token comment">// ...</span>
 <span class="token punctuation">}</span></code></pre><p>Что тут написано?</p><p>Скорее всего рядовой разработчик пропустит эту строку и даже читать не будет. Хорошо, если автор оставил поясняющий комментарий.</p><p>Исправить ситуацию, можно, присвоив проверкам имена:</p><pre class="language-js"><code is:raw="" class="language-js"><span class="token keyword">const</span> finished <span class="token operator">=</span> elementIndex <span class="token operator">&#x3C;</span> <span class="token number">0</span> <span class="token operator">||</span> <span class="token constant">MAX_ELEMENTS</span> <span class="token operator">&#x3C;</span> elementIndex<span class="token punctuation">;</span>
