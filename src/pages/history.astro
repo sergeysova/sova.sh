@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AssetHistory from '../assets/history.svg';
+
+import {getUniqueArticles} from '../data/forem';
+import {getPages} from '../data/markdown';
+import {getVideos} from '../data/youtube';
+import {getEpisodes} from '../data/podcast';
+import {getNews} from '../data/revue';
+
+interface HistoryRecord {
+  type: 'article' | 'video' | 'podcast' | 'news';
+  title: string;
+  description: string;
+  url: string;
+  publishedAt: Date;
+}
+
+const [articles, pages, videos, episodes, news] = await Promise.all([
+  getUniqueArticles(),
+  getPages(),
+  getVideos(),
+  getEpisodes(),
+  getNews(),
+]);
+
+const records: HistoryRecord[] = [];
+
+articles.forEach((article) =>
+  records.push({
+    type: 'article',
+    title: article.title,
+    description: article.description,
+    url: article.url,
+    publishedAt: new Date(article.published_at),
+  }),
+);
+
+pages.forEach((page) =>
+  records.push({
+    type: 'article',
+    title: page.title,
+    description: page.description,
+    url: page.url,
+    publishedAt: new Date(page.published_at),
+  }),
+);
+
+videos.forEach((video) =>
+  records.push({
+    type: 'video',
+    title: video.title,
+    description: video.description,
+    publishedAt: new Date(video.publishedAt),
+    url: video.url,
+  }),
+);
+
+episodes.forEach((episode) =>
+  records.push({
+    type: 'podcast',
+    title: episode.title,
+    description: episode.description,
+    publishedAt: new Date(episode.pubDate),
+    url: episode.link,
+  }),
+);
+
+news.forEach((issue) =>
+  records.push({
+    type: 'news',
+    title: issue.title,
+    description: issue.description,
+    publishedAt: new Date(issue.publishedAt),
+    url: issue.url,
+  }),
+);
+
+records.sort((a, b) => b.publishedAt.valueOf() - a.publishedAt.valueOf());
+---
+
+<Layout title="Publish history | Sergey Sova">
+  <main>
+    <img src={AssetHistory} class="title-image" />
+    <div class="space-y-5">
+      {
+        records.map((record) => (
+          <a class="block hover:text-blue-700" href={record.url} rel="noopener">
+            <div class="text-2xl">{record.title}</div>
+            <span class="text-sm">
+              {record.publishedAt.toLocaleString('en-US')} — [{record.type}]
+            </span>
+            <p>{record.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</Layout>
+<style>
+  main {
+    margin: auto;
+    padding: 1em;
+    max-width: 70ch;
+    @apply flex flex-col gap-10;
+  }
+
+  .title-image {
+    @apply max-h-14 my-2;
+  }
+
+  @media (min-width: 560px) {
+    .title-image {
+      @apply max-h-20 my-3 mr-6;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .title-image {
+      @apply max-h-24 my-4 -ml-20;
+    }
+  }
+</style>
