@@ -31,6 +31,7 @@ export interface YoutubeVideo {
   description: string;
   thumbnails: Record<'default' | 'medium' | 'high' | 'standard' | 'maxres', Thumbnail>;
   url: string;
+  publishedAt: string;
 }
 
 interface Thumbnail {
@@ -95,7 +96,14 @@ export function getVideos(): Promise<YoutubeVideo[]> {
       return response;
     })
     .then((response) => response.json())
-    .then((answer) => Response.check(answer))
+    .then((answer) => {
+      try {
+        return Response.check(answer);
+      } catch (error) {
+        console.error('Failed to check youtube response', answer);
+        throw error;
+      }
+    })
     .then((answer) =>
       answer.items
         .sort((a, b) => a.snippet.position - b.snippet.position)
@@ -105,6 +113,7 @@ export function getVideos(): Promise<YoutubeVideo[]> {
           description: firstWords(20, firstThreeLines(removeCredits(item.snippet.description))),
           thumbnails: item.snippet.thumbnails,
           url: linkToVideo(item.snippet.resourceId.videoId),
+          publishedAt: item.snippet.publishedAt,
         })),
     );
 }

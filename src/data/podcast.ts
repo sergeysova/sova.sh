@@ -1,3 +1,4 @@
+import * as t from 'runtypes';
 // @ts-ignore
 import {getPodcastFromFeed} from '@sergeysova/podcast-feed-parser';
 import {convertIntoText} from './lib/text';
@@ -12,30 +13,60 @@ export async function getPodcast(): Promise<Episode[]> {
     throw new Error('Failed to get podcast');
   }
   const textXml = await response.text();
-  return Promise.all(
-    getPodcastFromFeed(textXml)
-      .episodes.sort((a: Episode, b: Episode) => b.episode - a.episode)
-      .slice(0, 6)
-      .map(async (episode: Episode) => {
-        if (episode.description.includes('<p')) {
-          const parsed = convertIntoText(episode.description);
-          episode.description = parsed;
-        }
-        return episode;
-      }),
-  );
+  const answer = Podcast.check(getPodcastFromFeed(textXml));
+  return answer.episodes
+    .sort((a, b) => b.episode - a.episode)
+    .slice(0, 6)
+    .map((episode) => {
+      if (episode.description.includes('<p')) {
+        const parsed = convertIntoText(episode.description);
+        episode.description = parsed;
+      }
+      return episode;
+    });
 }
 
-interface Podcast {
-  meta: {};
-  episodes: Episode[];
-}
+const Episode = t.Record({
+  title: t.String,
+  description: t.String,
+  duration: t.Number,
+  enclosure: t.Record({
+    length: t.String,
+    type: t.String,
+    url: t.String,
+  }),
+  explicit: t.Boolean,
+  season: t.Number,
+  episode: t.Number,
+  guid: t.String,
+  imageURL: t.String,
+  link: t.String,
+  pubDate: t.String,
+  summary: t.String,
+});
 
-export interface Episode {
-  title: string;
-  description: string;
-  imageURL: string;
-  link: string;
-  season: number;
-  episode: number;
-}
+export type Episode = t.Static<typeof Episode>;
+
+const Meta = t.Record({
+  title: t.String,
+  author: t.Array(t.String),
+  categories: t.Array(t.String),
+  description: t.String,
+  explicit: t.Boolean,
+  imageURL: t.String,
+  language: t.String,
+  lastBuildDate: t.String,
+  link: t.String,
+  owner: t.Record({
+    name: t.String,
+    email: t.String,
+  }),
+  subtitle: t.String.optional(),
+  summary: t.String,
+  type: t.Union(t.Literal('episodic')),
+});
+
+const Podcast = t.Record({
+  meta: Meta,
+  episodes: t.Array(Episode),
+});

@@ -1,6 +1,7 @@
 ---
 title: Why Howtocards
 layout: ../../layouts/MarkdownLayout.astro
+description: Как появился этот сервис и какие проблемы решает
 date: 2019-02-20
 language: ru
 ---

@@ -2,6 +2,7 @@
 title: Application structure
 description: Where to look for files and where to put new
 date: 2019-08-20
+language: en
 layout: ../layouts/MarkdownLayout.astro
 ---
 

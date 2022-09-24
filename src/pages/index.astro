@@ -4,6 +4,7 @@ import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
 import {getPodcast} from '../data/podcast';
 import {getNews} from '../data/revue';
+import {getPages} from '../data/markdown';
 
 import Articles from '../components/Articles.astro';
 import Section from '../components/Section.astro';
@@ -12,13 +13,14 @@ import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
 
-const articles = await getUniqueArticles();
+const forem = await getUniqueArticles();
 const news = await getNews();
 const episodes = await getPodcast();
 const videos = await getVideos();
 
-const mdFiles = await Astro.glob('./**/*.md');
-const mdxFiles = await Astro.glob('./**/*.mdx');
+const articles = [...forem /*...(await getPages())*/].sort(
+  (a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf(),
+);
 ---
 
 <Layout title="Sergey Sova">
@@ -39,6 +41,7 @@ const mdxFiles = await Astro.glob('./**/*.mdx');
           url: source.url,
           description: source.description,
           cover: source.cover_image,
+          published_at: source.published_at,
         }))}
       />
       <ButtonLink text="Dev.to" href="https://dev.to/sergeysova" />

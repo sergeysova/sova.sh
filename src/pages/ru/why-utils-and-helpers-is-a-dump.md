@@ -1,6 +1,7 @@
 ---
 title: Почему utils & helpers это свалка
 layout: ../../layouts/MarkdownLayout.astro
+description: Почему мы продолжаем так относиться к своему коду?
 date: 2018-10-07
 language: ru
 ---

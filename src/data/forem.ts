@@ -1,3 +1,4 @@
+import * as t from 'runtypes';
 import {cachedFetch} from './server-request';
 const foremServices = {
   'dev.to': {
@@ -10,31 +11,7 @@ const foremServices = {
   },
 };
 
-export interface Article {
-  id: number;
-  title: string;
-  description: string;
-  cover_image: string | null;
-  tag_list: string[];
-  slug: string;
-  url: string;
-  created_at: string;
-}
-
-async function getArticlesOf(serviceName: keyof typeof foremServices): Promise<Array<Article>> {
-  console.log('fetching articles of', serviceName);
-  const service = foremServices[serviceName];
-  const url = new URL(service.url);
-  url.pathname = '/api/articles';
-  url.searchParams.set('username', 'sergeysova');
-  url.searchParams.set('per_page', '1000');
-  const response = await cachedFetch(url, {
-    headers: {Accept: 'application/vnd.forem.api-v1+json', 'api-key': service.apiKey},
-  });
-  return (await response.json()) as Array<Article>;
-}
-
-export const getUniqueArticles = () => {
+export function getUniqueArticles(): Promise<Article[]> {
   const uniqueNamesArticlesMap = new Map<string, Article>();
   return Promise.all([getArticlesOf('dev.to'), getArticlesOf('community.effector')])
     .catch((error) => {
@@ -52,4 +29,38 @@ export const getUniqueArticles = () => {
         return false;
       }),
     );
-};
+}
+
+const Article = t.Record({
+  id: t.Number,
+  title: t.String,
+  description: t.String,
+  cover_image: t.String.nullable(),
+  tag_list: t.Array(t.String),
+  slug: t.String,
+  url: t.String,
+  created_at: t.String,
+  published_at: t.String,
+});
+
+export type Article = t.Static<typeof Article>;
+
+const Response = t.Array(Article);
+
+async function getArticlesOf(serviceName: keyof typeof foremServices): Promise<Array<Article>> {
+  console.log('fetching articles of', serviceName);
+  const service = foremServices[serviceName];
+  const url = new URL(service.url);
+  url.pathname = '/api/articles';
+  url.searchParams.set('username', 'sergeysova');
+  url.searchParams.set('per_page', '1000');
+  const response = await cachedFetch(url, {
+    headers: {Accept: 'application/vnd.forem.api-v1+json', 'api-key': service.apiKey},
+  });
+  try {
+    return Response.check(await response.json());
+  } catch (error) {
+    console.error('Failed to check articles of', serviceName);
+    throw error;
+  }
+}

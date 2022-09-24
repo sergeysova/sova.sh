@@ -26,6 +26,7 @@ export async function getNews(): Promise<NewsIssue[]> {
             25,
             convertIntoText(item.description[0]['_'].replace(/></gm, '>&nbsp;<')),
           ),
+          publishedAt: new Date(item.pubDate[0]).toISOString(),
         } as NewsIssue),
     )
     .slice(0, 6);
@@ -36,6 +37,7 @@ export interface NewsIssue {
   title: string;
   url: string;
   description: any;
+  publishedAt: string;
 }
 
 export async function fetchIssueImage(issue: NewsIssue) {
