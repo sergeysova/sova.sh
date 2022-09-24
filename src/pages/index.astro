@@ -21,12 +21,15 @@ import {getPages} from '../data/markdown';
 
 const COUNT_OF_CONTENT = 6;
 
-const forem = await getUniqueArticles();
-const news = await getNews();
-const episodes = await getEpisodes();
-const videos = await getVideos();
+const [forem, pages, videos, episodes, news] = await Promise.all([
+  getUniqueArticles(),
+  getPages(),
+  getVideos(),
+  getEpisodes(),
+  getNews(),
+]);
 
-const articles = [...forem, ...(await getPages())]
+const articles = [...forem, ...pages]
   .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
   .slice(0, COUNT_OF_CONTENT);
 ---
