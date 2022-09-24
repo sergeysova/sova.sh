@@ -58,7 +58,10 @@ sample({
   target: waitFx,
 });
 
-$counter.on(waitFx.done, (list, {params: name}) => [...list, `fx done ${name}`]);
+$counter.on(waitFx.done, (list, {params: name}) => [
+  ...list,
+  `fx done ${name}`,
+]);
 
 $counter.watch((i) => console.log('counter', i));
 // counter []
@@ -186,7 +189,10 @@ test('player can grow level', async () => {
   await allSettled(munchkin.playerJoined, {scope, params: Alba});
 
   await allSettled(munchkin.levelUp, {scope, params: John.id});
-  expect(scope.getState(munchkin.$players)).toStrictEqual([{...John, level: 2}, Alba]);
+  expect(scope.getState(munchkin.$players)).toStrictEqual([
+    {...John, level: 2},
+    Alba,
+  ]);
 });
 
 test('player can lose level', async () => {
@@ -272,21 +278,23 @@ munchkin.common.onCreateEvent((event) => {
 На сервере все гораздо проще, когда прилетает событие, я нахожу в объекте событие с нужным `.sid` и вызываю его на скоупе комнаты через `allSettled`.
 
 ```tsx
-import * as munchkin from '../common/munchkin'
+import * as munchkin from '../common/munchkin';
 
 switch (type) {
   case 'gameEvent': {
-    const { sid, payload } = value;
+    const {sid, payload} = value;
     const room = getRoomOfPlayer(me);
     if (room) {
       for (const unit of munchkin.common.history.events) {
         if (unit.sid === sid) {
-          await allSettled(unit, { scope: room.scope, params: payload });
+          await allSettled(unit, {scope: room.scope, params: payload});
         }
       }
     }
     break;
   }
+  // ...
+}
 ```
 
 ## Скоупы комнат
@@ -391,36 +399,35 @@ split({
 Метод `spread` из патронум перенаправит соответствующие значения из объекта в сторы по их `.sid`
 
 ```tsx
-import * as munchkin from '../common/munchkin'
+import * as munchkin from '../common/munchkin';
 
 // ручная обработка по .sid
 spread({
-	source: gameUpdated,
-	targets {
-		[munchkin.$players.sid]: munchkin.$players,
-		[munchkin.$gameMode.sid]: munchkin.$gameMode,
-	},
-})
+  source: gameUpdated,
+  targets: {
+    [munchkin.$players.sid]: munchkin.$players,
+    [munchkin.$gameMode.sid]: munchkin.$gameMode,
+  },
+});
 
 // создание всех веток через цикл
 spread({
   source: gameUpdated,
   targets: Object.fromEntries(
-		Object
-			.values(munchkin)
-			.filter(unit => is.store(unit))
-			.map(unit => [unit.sid, unit])
-	),
-})
+    Object.values(munchkin)
+      .filter((unit) => is.store(unit))
+      .map((unit) => [unit.sid, unit]),
+  ),
+});
 
 // на каждый стор создается один sample
 munchkin.common.onCreateStore((store) => {
   sample({
-		clock: gameUpdated,
-		filter: (states) => typeof states[store.sid] !== 'undefined',
+    clock: gameUpdated,
+    filter: (states) => typeof states[store.sid] !== 'undefined',
     target: store,
-	})
-})
+  });
+});
 ```
 
 Но используя домен, можно обойтись и без `spread`. Еще один плюс хуков.

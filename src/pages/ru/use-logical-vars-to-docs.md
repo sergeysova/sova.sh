@@ -9,7 +9,11 @@ layout: ../../layouts/MarkdownLayout.astro
 > Вместо простой проверки логического выражения, лучше присвоить его значение переменной, которая сделает смысл проверки очевидным.
 
 ```js
-if (elementIndex < 0 || MAX_ELEMENTS < elementIndex || elementIndex === lastElementIndex) {
+if (
+  elementIndex < 0 ||
+  MAX_ELEMENTS < elementIndex ||
+  elementIndex === lastElementIndex
+) {
   // ...
 }
 ```

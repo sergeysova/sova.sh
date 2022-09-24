@@ -16,5 +16,17 @@ module.exports = {
         parser: 'astro',
       },
     },
+    {
+      files: '*.md',
+      options: {
+        printWidth: 66,
+      },
+    },
+    {
+      files: '*.mdx',
+      options: {
+        printWidth: 66,
+      },
+    },
   ],
 };

@@ -58,7 +58,11 @@ layout: ../../layouts/MarkdownLayout.astro
 
 ```ts
 type InputEvent = SyntheticEvent<HTMLInputElement>;
-type Form = {login: string; password: string; remember: boolean};
+type Form = {
+  login: string;
+  password: string;
+  remember: boolean;
+};
 
 const MINIMUM_TIMEOUT = 100;
 ```
@@ -76,7 +80,9 @@ const MINIMUM_TIMEOUT = 100;
 export const pageMounted = createEvent<void>();
 export const loginChanged = createEvent<InputEvent>();
 export const buttonPressed = createEvent<ButtonEvent>();
-const buttonTypePressed = submitPressed.map((event) => event.currentTarget.type);
+const buttonTypePressed = submitPressed.map(
+  (event) => event.currentTarget.type,
+);
 
 const loginSaveFailed = createEvent<string>();
 ```
@@ -90,10 +96,10 @@ const loginSaveFailed = createEvent<string>();
 - При необходимости под каждым эффектом описываю его fetching.
 
 ```ts
-export const saveLogin = createEffect()
-const saveLoginFetching = createFetching(saveLogin, “loading”)
+export const saveLogin = createEffect();
+const saveLoginFetching = createFetching(saveLogin, 'loading');
 
-export const loadLogin = createEffect()
+export const loadLogin = createEffect();
 ```
 
 ### Сторы и вычисляемые сторы
@@ -104,13 +110,19 @@ export const loadLogin = createEffect()
 - Вычисляемые сторы ниже обычных и отделены пустой строкой.
 
 ```ts
-const $login = createStore(“”)
-const $password = createStore(“”)
+const $login = createStore('');
+const $password = createStore('');
 
-export const $isLoginValid =  $login.map(loginValidator)
-export const $isPasswordValid =  $login.map(passwordValidator)
-export const $isFormValid = eachTrue([$isLoginValid, $isPasswordValid])
-export const $form = combine({ login: $login, password: $password })
+export const $isLoginValid = $login.map(loginValidator);
+export const $isPasswordValid = $login.map(passwordValidator);
+export const $isFormValid = eachTrue([
+  $isLoginValid,
+  $isPasswordValid,
+]);
+export const $form = combine({
+  login: $login,
+  password: $password,
+});
 ```
 
 ### Логика в виде связей
@@ -119,7 +131,8 @@ export const $form = combine({ login: $login, password: $password })
 - Я группирую и сортирую блоки кода так, чтобы логика модели читалась сверху вниз
 
 ```ts
-$login.on(loginChanged.map(trimEvent), (_, login) => login).reset(pageMounted);
+$login.on(loginChanged.map(trimEvent), (_, login) => login);
+$login.reset(pageMounted);
 
 sample($form, submitPressed).watch(loginUser);
 
