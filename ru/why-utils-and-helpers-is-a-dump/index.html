@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <link rel="icon" href="/favicon.png">
-    <title>Почему utils &amp; helpers это свалка</title>
+    <title>Почему utils &amp; helpers это свалка | Sergey Sova</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
     <script type="application/javascript">
@@ -15,14 +15,14 @@
 
       gtag('config', 'UA-67236238-5');
     </script>
-  <link rel="stylesheet" href="/assets/3f14cbb3.6e0b2a6e.css" />
-<link rel="stylesheet" href="/assets/43887250.fe149645.css" /><script type="module" src="/page.3aa82516.js"></script></head>
+  <link rel="stylesheet" href="/assets/1c67243b.9a523856.css" />
+<link rel="stylesheet" href="/assets/41a78ed3.6a5de192.css" /><script type="module" src="/page.3aa82516.js"></script></head>
   <body class="astro-DBY5N2ED">
-    <main class="markdown astro-DOFAKTZW">
-    <div class="go-back astro-DOFAKTZW">
-      <a href="/" class="astro-DOFAKTZW">На главную</a>
+    <main class="markdown astro-AGSZCZMY">
+    <div class="go-back astro-AGSZCZMY">
+      <a href="/" class="astro-AGSZCZMY">На главную</a>
     </div>
-    <h1 class="astro-DOFAKTZW">Почему utils &amp; helpers это свалка</h1>
+    <h1 class="astro-AGSZCZMY">Почему utils &amp; helpers это свалка</h1>
     <p>Начнем с того, как они появляются. Во время разработки проекта, программист старается выносить повторяющиеся куски кода в функции и переиспользовать их. В какой-то момент, в двух разных модулях требуется одна и та же функция, неопытный разработчик решает вынести функцию в отдельный модуль. Но почему-то останавливается на этом решении, создавая директорию/модуль <code>utils</code> или <code>helpers</code>, не думая о будущем этой части программы.</p><p>С ростом проекта, количество функций в этой директории растет. Также растет и количество разработчиков в проекте. Функций появляется все больше и больше. Зачастую никто не следит за структурой этих модулей и вполне возможно появление дублирования кода.</p><h4 id="как-это-решить"><a aria-hidden="true" href="#как-это-решить" tabindex="-1"><span class="icon icon-link"></span></a>Как это решить?</h4><p>Забудьте о директориях <code>utils</code> и <code>helpers</code>. Эти названия никак не доносят суть содержимого. А из правил чистого кода мы помним, название должно быть однозначным и отражать назначение. Следует задуматься, почему вообще появилась необходимость в вынесении функции? Почему они используются в таких разных частях проекта?</p><p>Возможно, ответом будет плохая организация кода всего проекта. Если хорошо поисследовать проект можно найти много кода, который достоин вынесения в отдельную библиотеку. Если же этот код нельзя или не нужно выносить в полноценную библиотеку, его можно вынести в библиотеку внутри проекта. В случае JS, это можно сделать, создав полноценную библиотку внутри <code>lib/</code>.</p><p>Такой библиотеке нужно дать осмысленное однозначное название, написать документацию и тесты. Причем собрать в этой библиотеке весь связанный код. Например, вынести все функции работающие с датами во внутреннюю библиотеку <code>lib/datetime</code>. Префикс <code>lib/</code> позволит избежать конфликтов имен, а также можно будет использовать простые и понятные имена. Конечно же, можно сделать npm scope, чтобы упростить будущую публикацию в npm. Например, <code>@lib/datetime</code>.</p><h4 id="чем-это-отличается-от-utils-и-helpers"><a aria-hidden="true" href="#чем-это-отличается-от-utils-и-helpers" tabindex="-1"><span class="icon icon-link"></span></a>Чем это отличается от <code>utils</code> и <code>helpers</code>?</h4><ul><li>весь код, выносится в полноценную библиотку с осмысленным названием, документацией и тестами</li><li><code>lib</code> явно описывает содержимое: это библиотека</li><li>рефакторинг, публикация или удаление этой библиотеки становятся тривиальными задачами</li></ul>
   </main>
     
