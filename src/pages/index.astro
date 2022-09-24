@@ -16,6 +16,9 @@ const articles = await getUniqueArticles();
 const news = await getNews();
 const episodes = await getPodcast();
 const videos = await getVideos();
+
+const mdFiles = await Astro.glob('./**/*.md');
+const mdxFiles = await Astro.glob('./**/*.mdx');
 ---
 
 <Layout title="Sergey Sova">

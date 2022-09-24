@@ -2,6 +2,7 @@
 title: Why Howtocards
 layout: ../../layouts/MarkdownLayout.astro
 date: 2019-02-20
+language: ru
 ---
 
 #### Table of contents

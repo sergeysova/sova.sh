@@ -2,6 +2,7 @@
 title: Структура приложения
 description: Где искать файлики в проекте и куда класть новые
 date: 2019-08-20
+language: ru
 layout: ../../layouts/MarkdownLayout.astro
 ---
 
