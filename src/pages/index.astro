@@ -84,6 +84,14 @@ const articles = [...forem, ...pages]
           подписчиков.
         </IfLang>
       </p>
+      <p>
+        <IfLang equals="en">
+          Этот сайт также есть в <a href="https://sova.dev">русской локализации</a>.
+        </IfLang>
+        <IfLang equals="ru">
+          This site is also available in <a href="https://sergeysova.com">English localization</a>.
+        </IfLang>
+      </p>
     </div>
     <Section titleImage={AssetArticles}>
       <Articles
@@ -139,6 +147,10 @@ const articles = [...forem, ...pages]
     padding: 1em;
     max-width: 70ch;
     @apply flex flex-col gap-10;
+  }
+
+  main .about p + p {
+    @apply pt-2;
   }
 
   main .about p a {
