@@ -33,8 +33,43 @@ jobs:
           PUBLIC_SITE: https://sova.dev
           PUBLIC_LANGUAGE: ru
 
-      - name: 🚀 Deploy RU — sova.dev
+      - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
           folder: ./dist
+
+  en:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: 🐧 Use Node.js v18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: v18.x
+          cache: 'pnpm'
+
+      - name: 🔍 Installation
+        run: pnpm install
+
+      - name: 🔧 Build EN — sergeysova.com
+        run: pnpm build
+        env:
+          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
+          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
+          PUBLIC_SITE: https://sergeysova.com
+          PUBLIC_LANGUAGE: en
+
+      - name: 🚀 Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: ./dist
+          repository-name: sergeysova/sergeysova.com
+          token: '${{ secrets.ACCESS_TOKEN }}'
