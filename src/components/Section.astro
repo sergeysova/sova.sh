@@ -1,12 +1,32 @@
 ---
 export interface Props {
-  title: string;
+  title?: string;
+  titleImage?: string;
 }
 
-const {title} = Astro.props;
+const {title, titleImage} = Astro.props;
 ---
 
 <section>
-  <h1 class="text-3xl mb-2">{title}</h1>
+  {title ? <h1 class="text-3xl mb-2">{title}</h1> : null}
+  {titleImage ? <img src={titleImage} class="title-image" /> : null}
   <slot />
 </section>
+
+<style>
+  .title-image {
+    @apply max-h-14 -mb-2;
+  }
+
+  @media (min-width: 560px) {
+    .title-image {
+      @apply max-h-20 -mb-3 mr-6;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .title-image {
+      @apply max-h-24 -mb-4 -ml-20;
+    }
+  }
+</style>

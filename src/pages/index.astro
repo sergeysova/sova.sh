@@ -13,6 +13,11 @@ import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
 
+import AssetArticles from '../assets/articles.svg';
+import AssetNews from '../assets/news.svg';
+import AssetPodcast from '../assets/podcast.svg';
+import AssetYoutube from '../assets/youtube.svg';
+
 const forem = await getUniqueArticles();
 const news = await getNews();
 const episodes = await getPodcast();
@@ -34,7 +39,7 @@ const articles = [...forem, ...(await getPages())]
         total.
       </p>
     </div>
-    <Section title="Articles">
+    <Section titleImage={AssetArticles}>
       <Articles
         articles={articles.map((source) => ({
           title: source.title,
@@ -48,17 +53,17 @@ const articles = [...forem, ...(await getPages())]
       <ButtonLink text="Effector Community" href="https://community.effector.dev/sergeysova" />
     </Section>
 
-    <Section title="News">
+    <Section titleImage={AssetNews}>
       <News news={news} />
       <ButtonLink text="Read all" href="https://news.sova.dev" />
     </Section>
 
-    <Section title="Podcast">
+    <Section titleImage={AssetPodcast}>
       <Podcasts episodes={episodes} />
       <ButtonLink text="Listen all" href="https://podcast.ru/1586738556/e" />
     </Section>
 
-    <Section title="Youtube">
+    <Section titleImage={AssetYoutube}>
       <Videos videos={videos} />
       <ButtonLink text="View all" href="https://www.youtube.com/sergeysova" />
     </Section>
