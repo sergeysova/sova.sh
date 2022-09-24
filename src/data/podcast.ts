@@ -4,7 +4,7 @@ import {getPodcastFromFeed} from '@sergeysova/podcast-feed-parser';
 import {convertIntoText} from './lib/text';
 import {cachedFetch} from './server-request';
 
-export async function getPodcast(): Promise<Episode[]> {
+export async function getEpisodes(): Promise<Episode[]> {
   console.log('fetching podcast');
   const rss = 'https://anchor.fm/s/4c5764fc/podcast/rss';
   const response = await cachedFetch(rss);

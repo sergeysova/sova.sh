@@ -15,7 +15,7 @@ import Videos from '../components/Videos.astro';
 
 import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
-import {getPodcast} from '../data/podcast';
+import {getEpisodes} from '../data/podcast';
 import {getNews} from '../data/revue';
 import {getPages} from '../data/markdown';
 
@@ -23,7 +23,7 @@ const COUNT_OF_CONTENT = 6;
 
 const forem = await getUniqueArticles();
 const news = await getNews();
-const episodes = await getPodcast();
+const episodes = await getEpisodes();
 const videos = await getVideos();
 
 const articles = [...forem, ...(await getPages())]
