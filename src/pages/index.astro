@@ -12,12 +12,14 @@ import ButtonLink from '../components/ButtonLink.astro';
 import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
+import IfLang from '../components/IfLang.astro';
 
 import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
 import {getEpisodes} from '../data/podcast';
 import {getNews} from '../data/revue';
 import {getPages} from '../data/markdown';
+import {switchLang} from '../lib/language';
 
 const COUNT_OF_CONTENT = 6;
 
@@ -34,15 +36,53 @@ const articles = [...forem, ...pages]
   .slice(0, COUNT_OF_CONTENT);
 ---
 
-<Layout title="Sergey Sova">
+<Layout
+  path="/"
+  description={switchLang({
+    en: "I'm open source developer, podcaster, effector contributor.",
+    ru: 'Я участник команды разработчиков effector, подкастер и frontend архитектор.',
+  })}
+>
   <main>
     <div class="about">
-      <h1 class="text-5xl">My name is <span class="text-gradient">Sergey Sova</span></h1>
+      <h1 class="text-5xl">
+        <IfLang equals="ru">Привет, я</IfLang>
+        <IfLang equals="en">My name is</IfLang>
+        <span class="text-gradient">{switchLang({ru: 'Сергей Сова', en: 'Sergey Sova'})}</span>
+      </h1>
       <p>
-        I had made a bunch of packages for the effector ecosystem: patronum, logger, inspector, etc.
-        I'm consulting people and companies for frontend architecture principles and React
-        optimizations. I made a podcast on Russian, Twitter, and Telegram with 3K subscribers in
-        total.
+        <IfLang equals="en">
+          I had made a bunch of packages for the effector ecosystem: <a
+            href="https://github.com/effector/patronum"
+            rel="noopener"
+            target="_blank">patronum</a
+          >, <a href="https://github.com/effector/logger" rel="noopener" target="_blank">logger</a>,
+          <a href="https://github.com/effector/inspector" rel="noopener" target="_blank"
+            >inspector</a
+          >, etc. I'm consulting people and companies for front-end architecture principles and
+          React optimizations. I made a podcast on Russian, made <a
+            href="https://twitter.com/_sergeysova"
+            rel="noopener"
+            target="_blank">Twitter</a
+          >, and <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> with 3K
+          subscribers in total.
+        </IfLang>
+        <IfLang equals="ru">
+          Я сделал несколько пакетов для экосистемы effector: <a
+            href="https://github.com/effector/patronum"
+            rel="noopener"
+            target="_blank">patronum</a
+          >, <a href="https://github.com/effector/logger" rel="noopener" target="_blank">logger</a>,
+          <a href="https://github.com/effector/inspector" rel="noopener" target="_blank"
+            >inspector</a
+          > и т.д. Я консультирую людей и компании по принципам архитектуры frontend и React оптимизации.
+          Я сделал подкаст на русском, собрал в <a
+            href="https://twitter.com/_sergeysova"
+            rel="noopener"
+            target="_blank">Twitter</a
+          > и <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> около 3 тыс.
+          подписчиков.
+        </IfLang>
       </p>
     </div>
     <Section titleImage={AssetArticles}>
@@ -61,17 +101,26 @@ const articles = [...forem, ...pages]
 
     <Section titleImage={AssetNews}>
       <News news={news.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink text="Read all" href="https://news.sova.dev" />
+      <ButtonLink
+        text={switchLang({ru: 'Прочесть все', en: 'Read all'})}
+        href="https://news.sova.dev"
+      />
     </Section>
 
     <Section titleImage={AssetPodcast}>
       <Podcasts episodes={episodes.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink text="Listen all" href="https://podcast.ru/1586738556/e" />
+      <ButtonLink
+        text={switchLang({ru: 'Прослушать все', en: 'Listen all'})}
+        href="https://podcast.ru/1586738556/e"
+      />
     </Section>
 
     <Section titleImage={AssetYoutube}>
       <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink text="View all" href="https://www.youtube.com/sergeysova" />
+      <ButtonLink
+        text={switchLang({ru: 'Посмотреть все', en: 'View all'})}
+        href="https://www.youtube.com/sergeysova"
+      />
     </Section>
   </main>
 </Layout>
@@ -90,6 +139,13 @@ const articles = [...forem, ...pages]
     padding: 1em;
     max-width: 70ch;
     @apply flex flex-col gap-10;
+  }
+
+  main .about p a {
+    @apply text-sky-600 underline;
+  }
+  main .about p a:hover {
+    @apply text-sky-600 no-underline;
   }
 
   .text-gradient {

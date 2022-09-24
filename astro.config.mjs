@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import {defineConfig} from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
@@ -14,7 +15,7 @@ import rehypePresetMinify from 'rehype-preset-minify';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sova.dev',
+  site: process.env.PUBLIC_SITE,
   markdown: {
     remarkPlugins: [remarkToc, remarkGfm],
     rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings, ...rehypePresetMinify.plugins],

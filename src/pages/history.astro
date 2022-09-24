@@ -11,6 +11,7 @@ import {getPages} from '../data/markdown';
 import {getVideos} from '../data/youtube';
 import {getEpisodes} from '../data/podcast';
 import {getNews} from '../data/revue';
+import {switchLang} from '../lib/language';
 
 interface HistoryRecord {
   type: 'article' | 'video' | 'podcast' | 'news';
@@ -90,7 +91,17 @@ const icon: {[key in HistoryRecord['type']]: string} = {
 };
 ---
 
-<Layout title="Publish history | Sergey Sova">
+<Layout
+  title={switchLang({
+    en: 'Publish history',
+    ru: 'История публикаций',
+  })}
+  description={switchLang({
+    en: 'All my published content in chronological order',
+    ru: 'Весь мой контент в хронологическом порядке',
+  })}
+  path="/history"
+>
   <main class="relative">
     <img src={AssetHistory} class="title-image z-10" />
     <div class="space-y-5 relative">

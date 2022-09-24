@@ -1,18 +1,43 @@
 ---
+import {switchLang} from '../lib/language';
+
 export interface Props {
-  title: string;
+  title?: string;
+  path: string;
+  description?: string;
+  type?: 'website' | 'article' | 'profile';
+  image?: string;
+  locale?: 'ru' | 'en';
 }
 
-const {title} = Astro.props;
+const siteName = switchLang({
+  ru: 'Сергей Сова',
+  en: 'Sergey Sova',
+});
+const {
+  title,
+  path,
+  description,
+  type = 'website',
+  image,
+  locale = import.meta.env.PUBLIC_LANGUAGE,
+} = Astro.props;
+const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale} prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.png" />
-    <title>{title}</title>
+    <title>{title ? `${title} · ${siteName}` : siteName}</title>
+    {type !== 'website' ? <meta property="og:site_name" content={siteName} /> : null}
+    <meta property="og:title" content={title} />
+    {description ? <meta property="og:description" content={description} /> : null}
+    {image ? <meta property="og:image" content={image} /> : null}
+    <meta content="og:locale" content={realLocale} />
+    <meta property="og:url" content={`${import.meta.env.PUBLIC_SITE}${path}`} />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
     <script type="application/javascript">

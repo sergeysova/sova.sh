@@ -1,13 +1,23 @@
 ---
 import './prism-one-light.css';
 import Layout from './Layout.astro';
-const {frontmatter, headings} = Astro.props;
+import IfLang from '../components/IfLang.astro';
+const {frontmatter} = Astro.props;
 ---
 
-<Layout title={frontmatter.title + ' | Sergey Sova'}>
+<Layout
+  title={frontmatter.title}
+  path={frontmatter.url}
+  description={frontmatter.description}
+  type="article"
+  locale={frontmatter.language}
+>
   <main class="markdown">
     <div class="go-back">
-      <a href="/">{frontmatter.language === 'ru' ? 'На главную' : 'Open home page'}</a>
+      <a href="/">
+        <IfLang equals="ru">На главную</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
     </div>
     <h1>{frontmatter.title}</h1>
     <slot />
