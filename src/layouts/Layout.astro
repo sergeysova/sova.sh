@@ -80,6 +80,20 @@ const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
         font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
           Bitstream Vera Sans Mono, Courier New, monospace;
       }
+
+      :root {
+        /* --shadow-color: 122deg 22% 5%; */
+        --shadow-color: 0, 0, 0;
+        --shadow-elevation: rgba(var(--shadow-color), 0.1) 0px 1px 2px,
+          rgba(var(--shadow-color), 0.1) 0px 2px 6px,
+          rgba(var(--shadow-color), 0.3) 0px 8px 10px -3px;
+
+        --shadow-elevation-hover: rgba(var(--shadow-color), 0.1) 0px 4px 6px,
+          rgba(var(--shadow-color), 0.1) 0px 8px 8px,
+          rgba(var(--shadow-color), 0.2) 0px 13px 26px -3px;
+
+        --shadow-inset: rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      }
     </style>
   </body>
 </html>
