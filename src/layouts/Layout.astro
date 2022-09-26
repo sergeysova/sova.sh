@@ -23,6 +23,14 @@ const {
   locale = import.meta.env.PUBLIC_LANGUAGE,
 } = Astro.props;
 const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
+
+const gtagSource = `window.dataLayer = window.dataLayer || [];
+function gtag() {
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
 ---
 
 <!DOCTYPE html>
@@ -39,16 +47,13 @@ const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
     <meta content="og:locale" content={realLocale} />
     <meta property="og:url" content={`${import.meta.env.PUBLIC_SITE}${path}`} />
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
-    <script type="application/javascript">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'UA-67236238-5');
-    </script>
+    <script
+      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}
+    ></script>
+    <script type={import.meta.env.PROD ? 'application/javascript' : 'skip'} set:html={gtagSource}
+    ></script>
   </head>
   <body>
     <slot />

@@ -32,6 +32,7 @@ jobs:
           EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
           PUBLIC_SITE: https://sova.dev
           PUBLIC_LANGUAGE: ru
+          PUBLIC_GTAG: UA-67236238-5
 
       - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
@@ -65,6 +66,7 @@ jobs:
           EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
           PUBLIC_SITE: https://sergeysova.com
           PUBLIC_LANGUAGE: en
+          PUBLIC_GTAG: G-PHKCHPT847
 
       - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
