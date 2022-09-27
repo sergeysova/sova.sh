@@ -290,27 +290,6 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
     @apply max-h-14 my-2;
   }
 
-  .line {
-    @apply absolute w-1 bg-slate-400 top-0 bottom-0 left-6 rounded;
-    z-index: -1;
-  }
-
-  .year {
-    @apply block top-0 sticky px-6 py-2 -mx-4 bg-black text-white;
-    z-index: 90;
-    box-shadow: 0px 0.8px 0.7px rgba(0, 0, 0, 0.017), 0px 2px 1.6px rgba(0, 0, 0, 0.024),
-      0px 3.8px 3px rgba(0, 0, 0, 0.03), 0px 6.7px 5.4px rgba(0, 0, 0, 0.036),
-      0px 12.5px 10px rgba(0, 0, 0, 0.043), 0px 30px 24px rgba(0, 0, 0, 0.06);
-  }
-
-  .year:not(:first-child) {
-    margin-top: 4rem !important;
-  }
-
-  .month {
-    @apply inline-block ml-10 text-slate-600 font-medium py-0.5 px-2 rounded hover:bg-slate-500 hover:text-white;
-  }
-
   @media (min-width: 560px) {
     .title-image {
       @apply max-h-20 my-3 mr-6;
@@ -319,8 +298,36 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
 
   @media (min-width: 960px) {
     .title-image {
-      @apply max-h-24 my-4 -ml-20;
+      @apply max-h-24 my-4 -ml-24;
     }
+  }
+
+  .line {
+    @apply absolute w-1 bg-slate-400 top-0 bottom-0 left-6 rounded;
+    z-index: -1;
+  }
+
+  .year {
+    @apply block top-1 sticky px-5 py-2 -mx-3 bg-black text-white;
+    border-radius: 50px;
+    z-index: 90;
+    transition: scale 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+  }
+
+  @media (min-width: 560px) {
+    .year:hover {
+      scale: 1.03;
+    }
+  }
+
+  .year:not(:first-child) {
+    margin-top: 4rem !important;
+  }
+
+  .month {
+    @apply inline-block ml-10 text-slate-600 font-medium py-0.5 px-2 rounded hover:bg-slate-500 hover:text-white;
+    transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .record {
