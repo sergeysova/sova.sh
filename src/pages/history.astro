@@ -256,7 +256,13 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
                   {dayjs(record.publishedAt).format('MMMM')}
                 </a>
               ) : null}
-              <a class="record z-50 static" href={record.url} rel="noopener" target="_blank">
+              <a
+                data-type={record.type}
+                class="record z-50 static"
+                href={record.url}
+                rel="noopener"
+                target="_blank"
+              >
                 <div class="text-xl px-4 flex space-x-2">
                   <img src={icon[record.type]} class="w-5 inline-block" />
                   <span>{record.title}</span>
@@ -317,7 +323,8 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
   }
 
   .record {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden py-3;
+    --border-brand-color: transparent;
+    @apply relative bg-white rounded-md flex flex-col gap-1 overflow-hidden py-3;
 
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
@@ -329,5 +336,26 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 8px, rgba(0, 0, 0, 0.2) 0px 13px 26px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     transform: translateY(-3px);
+  }
+
+  .record::after {
+    content: '';
+    @apply top-0 left-0 bottom-0 w-1 absolute;
+    background-color: var(--border-brand-color);
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .record:hover::after {
+    @apply w-1.5;
+  }
+
+  .record[data-type='video'] {
+    --border-brand-color: #ff0000;
+  }
+  .record[data-type='podcast'] {
+    --border-brand-color: #3369e7;
+  }
+  .record[data-type='news'] {
+    --border-brand-color: #2a2a2a;
   }
 </style>
