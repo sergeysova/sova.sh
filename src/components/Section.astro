@@ -1,5 +1,5 @@
 ---
-import {switchLang} from '../lib/language';
+import {optionalTranslate, switchLang} from '../lib/language';
 import ButtonLink from './ButtonLink.astro';
 
 interface Link {
@@ -29,10 +29,7 @@ const {title, titleImage, description, links} = Astro.props;
     links ? (
       <div>
         {links.map((link) => (
-          <ButtonLink
-            text={typeof link.text === 'string' ? link.text : switchLang(link.text)}
-            href={link.url}
-          />
+          <ButtonLink text={optionalTranslate(link.text)} href={link.url} />
         ))}
       </div>
     ) : null
