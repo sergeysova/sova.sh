@@ -7,7 +7,6 @@ const {frontmatter} = Astro.props;
 
 <Layout
   title={frontmatter.title}
-  path={frontmatter.url}
   description={frontmatter.description}
   type="article"
   locale={frontmatter.language}
@@ -124,7 +123,7 @@ const {frontmatter} = Astro.props;
     display: none;
   }
 
-  main.markdown :not(pre) code {
+  main.markdown :not(pre, .astro-debug) code {
     @apply px-2 py-1 bg-red-50 text-red-800 rounded;
     font-size: 0.9em;
   }

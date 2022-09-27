@@ -3,7 +3,6 @@ import {switchLang} from '../lib/language';
 
 export interface Props {
   title?: string;
-  path: string;
   description?: string;
   type?: 'website' | 'article' | 'profile';
   image?: string;
@@ -16,7 +15,6 @@ const siteName = switchLang({
 });
 const {
   title,
-  path,
   description,
   type = 'website',
   image,
@@ -45,7 +43,7 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
     {description ? <meta property="og:description" content={description} /> : null}
     {image ? <meta property="og:image" content={image} /> : null}
     <meta content="og:locale" content={realLocale} />
-    <meta property="og:url" content={`${import.meta.env.PUBLIC_SITE}${path}`} />
+    <meta property="og:url" content={`${Astro.url.toString()}`} />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
