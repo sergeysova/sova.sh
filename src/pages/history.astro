@@ -1,4 +1,6 @@
 ---
+import dayjs from 'dayjs';
+
 import Layout from '../layouts/Layout.astro';
 import AssetHistory from '../assets/history.svg';
 import IconMicrophone from '../assets/icons/microphone.svg';
@@ -29,7 +31,127 @@ const [articles, pages, videos, episodes, news] = await Promise.all([
   getNews(),
 ]);
 
-const records: HistoryRecord[] = [];
+const records: HistoryRecord[] = [
+  {
+    type: 'video',
+    title: 'State Management Talks',
+    description:
+      'Зачем нужны стейт-менеджеры на фронтенде, что за стейт хранится в них и где место бизнес- и не только логике, разберем на Tver.io.',
+    url: 'https://www.youtube.com/watch?v=cUSyJk6k2rk',
+    publishedAt: new Date('2020-07-23T15:30:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Интеллектуальное шоу про frontend',
+    description:
+      'Сергей Сова участвует в effector core team, занимается развитием экосистемы. Делится опытом проектирования фронтенда в feature-sliced core team. Дмитрий Карловский большой любитель реактивности, виртуализации, распределённых систем, логики и, конечно, скоростных велосипедов.',
+    url: 'https://www.youtube.com/watch?v=NhPjUO6trGY',
+    publishedAt: new Date('2021-10-08T20:00:00Z'),
+  },
+  {
+    type: 'podcast',
+    title: 'Пятиминутка React — Effector',
+    description:
+      'В этом выпуске Сергей Сова расскажет про библиотеку управления состоянием Effector, плюсы, основные фишки и удобства, статус проекта, личный опыт использования.',
+    url: 'https://soundcloud.com/5minreact/063-effector',
+    publishedAt: new Date('2019-12-23T12:30:00Z'),
+  },
+  {
+    type: 'podcast',
+    title: 'Дизайн-системы и ui-киты',
+    description:
+      'Что такое дизайн-система, и как она строится и кому это нужно. Плюсы использования дизайн-системы, про наследование компонентов. Документация для ui-кита и как делать это проще.',
+    url: 'https://spb-frontend.ru/podcast/11',
+    publishedAt: new Date('2017-10-06T22:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Argumentarium: Effector, Reatom и Redux',
+    description:
+      'Автор Reatom Артём Арутюнян, Сергей Головин и Сергей Сова обсудят стейт-менеджмент в целом и Reatom, Redux и Effector в частности.',
+    url: 'https://www.youtube.com/watch?v=Ble1JXIb_hE',
+    publishedAt: new Date('2019-12-25T16:25:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Podlodka Frontend Crew #2',
+    description:
+      'Круглый стол: CSS-in-JS (не)нужен | Андрей Ситник, Артем Зверев, Сергей Сова, Александр Зубов',
+    url: 'https://podlodka.io/crew-records',
+    publishedAt: new Date('2021-08-03T14:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Argumentarium: хуки, декларативность и классы',
+    description:
+      'Так ли хороши хуки, как о них говорят, и можно ли полноценно заменить хуками методы жизненного цикла и не страдать? В нужном ли направлении развивается React или пора искать ему замену? Будем спорить и разбираться',
+    url: 'https://www.youtube.com/watch?v=-KgCcIzP4Ys',
+    publishedAt: new Date('2019-10-03T14:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Effector SPb Meetup #2',
+    description:
+      'В современной frontend-разработке мы сталкиваемся с задачами уменьшения зависимостей между модулями и наглядного описания их внутренних и внешних связей, желая снизить количество ошибок и упростить тестирование. На этом митапе мы расскажем и покажем на практике, как стать эффективнее с помощью effector.',
+    url: 'https://www.youtube.com/watch?v=nLYc4PaTXYk',
+    publishedAt: new Date('2021-04-29T12:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Effector SPb Meetup #1',
+    description:
+      'Effector — менеджер состояний frontend-приложений на javascript/typescript. Докладчики расскажут кому он может понадобиться, какие сущности имеет, как их комбинировать, как строить серверный рендеринг, и как устроено всё "под капотом".',
+    url: 'https://www.youtube.com/watch?v=IacUIo9fXhI',
+    publishedAt: new Date('2020-03-05T10:00:00Z'),
+  },
+  {
+    type: 'article',
+    title: 'React: особенности, перспективы, ситуация на рынке труда',
+    description:
+      'В объявлениях о поиске программистов часто встречается требование уметь работать с React. Иногда работодатели ожидают знания React не только от фронтендеров, но и от бэкенд-разработчиков. Почему эта библиотека настолько популярная, стоит ли изучать её сегодня, каковы её перспективы по мнению опытных программистов? Ответы на эти и другие вопросы читайте в обзорной статье.',
+    url: 'https://ru.hexlet.io/blog/posts/biblioteka-react-review-article',
+    publishedAt: new Date('2020-07-10T11:05:48.012+04:00'),
+  },
+  {
+    type: 'video',
+    title: '307 пакетов: Про личный бренд, комьюнити и DevRel',
+    description:
+      'Поговорили с Сергеем Совой о персональном бренде, обмазались новыми фичами, обсудили комьюнити вне комьюнити, а также узнали, кто на самом деле автор эффектора.',
+    url: 'https://www.youtube.com/watch?v=QtsH31LD79c',
+    publishedAt: new Date('2021-11-23T19:00:00+04:00'),
+  },
+  {
+    type: 'video',
+    title: 'Фронтенд Юность #216',
+    description: 'В гостях Сергей Сова',
+    url: 'https://www.youtube.com/watch?v=3QyrM02MLT4',
+    publishedAt: new Date('2021-12-01T19:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Съебастьян: Ереван',
+    description:
+      'Продолжаем наше путешествие и рассказываем о жизни российских айтишников за пределами России. Наш гость, Frontend-архитектор Сергей Сова поделился своими впечатлениями от жизни в Ереване и рассказал, правда ли в Армении все играют в нарды:)',
+    url: 'https://www.youtube.com/watch?v=s6atItVtGxE',
+    publishedAt: new Date('2022-05-24T10:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Тяжелое утро с HolyJS: архитектура и архитекторы',
+    description:
+      'Архитектор и архитектура – два слова которые часто вызывают споры, непонимание и холивары. Ведущие «Тяжёлого утра» позовут экспертов и архитекторов, чтобы определить, что такое архитектура и кто такие архитекторы, чему учиться и что тренировать, чтобы стать им.',
+    url: 'https://live.jugru.org/video?v=MTAwMTI0ijIwMDAwMTAwijA',
+    publishedAt: new Date('2022-06-10T13:50:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'Podlodka #286 — Архитектура фронтенда',
+    description:
+      'Какие есть абстракции, какие есть подходы, как они между собой связаны. В первой части поговорили в верхнеуровневом разрезе уровня флоу данных, а во второй про низкоуровневые компоненты – кэши, хранилища, верстка и другие.',
+    url: 'https://podlodka.io/286',
+    publishedAt: new Date('2022-09-18T16:00:00Z'),
+  },
+];
 
 articles.forEach((article) =>
   records.push({
@@ -112,7 +234,9 @@ const icon: {[key in HistoryRecord['type']]: string} = {
               <img src={icon[record.type]} class="w-5 inline-block" />
               <span>{record.title}</span>
             </div>
-            <span class="text-sm pr-4 pl-12">{record.publishedAt.toLocaleString('en-US')}</span>
+            <span class="text-sm pr-4 pl-12">
+              {dayjs(record.publishedAt).format('DD MMMM YYYY')}
+            </span>
             <p class="pr-4 pl-12">{record.description}</p>
           </a>
         ))
