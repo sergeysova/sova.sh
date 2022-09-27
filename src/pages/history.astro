@@ -226,7 +226,7 @@ const icon: {[key in HistoryRecord['type']]: string} = {
   <main class="relative">
     <img src={AssetHistory} class="title-image z-10" />
     <div class="space-y-5 relative">
-      <div class="absolute w-1 bg-slate-400 top-0 bottom-0 left-6 z-0"></div>
+      <div class="absolute w-1 bg-slate-400 top-0 bottom-0 left-6 z-0 rounded"></div>
       {
         records.map((record) => (
           <a class="record z-50 relative" href={record.url} rel="noopener">
