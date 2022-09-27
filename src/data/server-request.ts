@@ -15,7 +15,7 @@ export type CachedFetchOptions = {
 export async function cachedFetch(
   url: string | URL,
   fetchOptions = {},
-  {duration = '5m', verbose = false}: CachedFetchOptions = {},
+  {duration = '1h', verbose = false}: CachedFetchOptions = {},
 ) {
   let status = 200;
   let statusText = 'OK';
