@@ -1,16 +1,42 @@
 ---
+import {switchLang} from '../lib/language';
+import ButtonLink from './ButtonLink.astro';
+
+interface Link {
+  text: {ru: string; en: string} | string;
+  url: string;
+}
+
 export interface Props {
   title?: string;
   titleImage?: string;
+  description?: {
+    ru: string;
+    en: string;
+  };
+  links?: Link[];
 }
 
-const {title, titleImage} = Astro.props;
+const {title, titleImage, description, links} = Astro.props;
 ---
 
 <section>
   {title ? <h1 class="text-3xl mb-2">{title}</h1> : null}
   {titleImage ? <img src={titleImage} class="title-image" /> : null}
   <slot />
+  {description ? <p class="pt-4">{switchLang(description)}</p> : null}
+  {
+    links ? (
+      <div>
+        {links.map((link) => (
+          <ButtonLink
+            text={typeof link.text === 'string' ? link.text : switchLang(link.text)}
+            href={link.url}
+          />
+        ))}
+      </div>
+    ) : null
+  }
 </section>
 
 <style>

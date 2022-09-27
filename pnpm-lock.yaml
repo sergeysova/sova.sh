@@ -5,6 +5,7 @@ specifiers:
   '@astrojs/image': ^0.5.1
   '@astrojs/mdx': ^0.11.1
   '@astrojs/prefetch': ^0.0.7
+  '@astrojs/prism': ^1.0.1
   '@astrojs/react': ^1.1.1
   '@astrojs/sitemap': ^1.0.0
   '@astrojs/tailwind': ^1.0.0
@@ -58,6 +59,7 @@ dependencies:
 devDependencies:
   '@astrojs/mdx': 0.11.1_rollup@2.77.3
   '@astrojs/prefetch': 0.0.7
+  '@astrojs/prism': 1.0.1
   '@astrojs/react': 1.1.1_biqbaboplfbrettd7655fr4n2y
   '@astrojs/sitemap': 1.0.0
   '@astrojs/tailwind': 1.0.0_ts-node@10.9.1

@@ -27,6 +27,7 @@
   "devDependencies": {
     "@astrojs/mdx": "^0.11.1",
     "@astrojs/prefetch": "^0.0.7",
+    "@astrojs/prism": "^1.0.1",
     "@astrojs/react": "^1.1.1",
     "@astrojs/sitemap": "^1.0.0",
     "@astrojs/tailwind": "^1.0.0",

@@ -8,7 +8,6 @@ import Layout from '../layouts/Layout.astro';
 
 import Articles from '../components/Articles.astro';
 import Section from '../components/Section.astro';
-import ButtonLink from '../components/ButtonLink.astro';
 import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
@@ -93,7 +92,13 @@ const articles = [...forem, ...pages]
         </IfLang>
       </p>
     </div>
-    <Section titleImage={AssetArticles}>
+    <Section
+      titleImage={AssetArticles}
+      links={[
+        {text: 'Dev.to', url: 'https://dev.to/sergeysova'},
+        {text: 'Effector Community', url: 'https://community.effector.dev/sergeysova'},
+      ]}
+    >
       <Articles
         articles={articles.map((source) => ({
           title: source.title,
@@ -103,32 +108,39 @@ const articles = [...forem, ...pages]
           published_at: source.published_at,
         }))}
       />
-      <ButtonLink text="Dev.to" href="https://dev.to/sergeysova" />
-      <ButtonLink text="Effector Community" href="https://community.effector.dev/sergeysova" />
     </Section>
 
-    <Section titleImage={AssetNews}>
+    <Section
+      titleImage={AssetNews}
+      description={{
+        ru: 'Подписчики получают подборку полезных статей об устройстве Web-платформы, движков JavaScript и необычных техник в программировании.',
+        en: 'Subscribers receive a selection of useful articles about the structure of the Web platform, JavaScript engines, and unusual techniques in programming.',
+      }}
+      links={[{text: {ru: 'Прочесть все', en: 'Read all'}, url: 'https://news.sova.dev'}]}
+    >
       <News news={news.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink
-        text={switchLang({ru: 'Прочесть все', en: 'Read all'})}
-        href="https://news.sova.dev"
-      />
     </Section>
 
-    <Section titleImage={AssetPodcast}>
+    <Section
+      titleImage={AssetPodcast}
+      description={{
+        ru: 'Нерегулярные выпуски подкаста «Под куполом» это записи моих размышлений об устройстве мира, личных переживаний и открытии нового в формате ночных посиделок.',
+        en: 'The occasional podcast “Under the Dome” is a recording of my reflections on the world is being, personal experiences, and favorite discoveries in the format of midnight insights.',
+      }}
+      links={[
+        {text: {ru: 'Прослушать все', en: 'Listen all'}, url: 'https://podcast.ru/1586738556/e'},
+      ]}
+    >
       <Podcasts episodes={episodes.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink
-        text={switchLang({ru: 'Прослушать все', en: 'Listen all'})}
-        href="https://podcast.ru/1586738556/e"
-      />
     </Section>
 
-    <Section titleImage={AssetYoutube}>
+    <Section
+      titleImage={AssetYoutube}
+      links={[
+        {text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/sergeysova'},
+      ]}
+    >
       <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
-      <ButtonLink
-        text={switchLang({ru: 'Посмотреть все', en: 'View all'})}
-        href="https://www.youtube.com/sergeysova"
-      />
     </Section>
   </main>
 </Layout>
