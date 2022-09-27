@@ -229,11 +229,24 @@ const icon: {[key in HistoryRecord['type']]: string} = {
       {
         records.map((record, index) => {
           const recordYear = record.publishedAt.getUTCFullYear();
+          const recordMonth = record.publishedAt.getUTCMonth();
           const previousYear = records[index - 1]?.publishedAt.getUTCFullYear() ?? recordYear + 1;
+          const previousMonth = records[index - 1]?.publishedAt.getUTCMonth() ?? recordMonth + 1;
           return (
             <Fragment>
               {recordYear !== previousYear ? (
-                <div class="year">{record.publishedAt.getUTCFullYear()}</div>
+                <a href={`#r-${recordYear}`} id={`r-${recordYear}`} class="year">
+                  {record.publishedAt.getUTCFullYear()}
+                </a>
+              ) : null}
+              {recordMonth !== previousMonth || recordYear !== previousYear ? (
+                <a
+                  href={`#r-${recordYear}-${recordMonth}`}
+                  id={`r-${recordYear}-${recordMonth}`}
+                  class="month"
+                >
+                  {dayjs(record.publishedAt).format('MMMM')}
+                </a>
               ) : null}
               <a class="record z-50 static" href={record.url} rel="noopener">
                 <div class="text-xl px-4 flex space-x-2">
@@ -271,7 +284,7 @@ const icon: {[key in HistoryRecord['type']]: string} = {
   }
 
   .year {
-    @apply top-0 sticky z-10 px-6 py-2 -mx-4 bg-black text-white;
+    @apply block top-0 sticky z-10 px-6 py-2 -mx-4 bg-black text-white;
     box-shadow: 0px 0.8px 0.7px rgba(0, 0, 0, 0.017), 0px 2px 1.6px rgba(0, 0, 0, 0.024),
       0px 3.8px 3px rgba(0, 0, 0, 0.03), 0px 6.7px 5.4px rgba(0, 0, 0, 0.036),
       0px 12.5px 10px rgba(0, 0, 0, 0.043), 0px 30px 24px rgba(0, 0, 0, 0.06);
@@ -279,6 +292,10 @@ const icon: {[key in HistoryRecord['type']]: string} = {
 
   .year:not(:first-child) {
     margin-top: 4rem !important;
+  }
+
+  .month {
+    @apply inline-block ml-10 text-slate-600 font-medium py-0.5 px-2 rounded hover:bg-slate-500 hover:text-white;
   }
 
   @media (min-width: 560px) {
