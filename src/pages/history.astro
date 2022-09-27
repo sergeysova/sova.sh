@@ -251,12 +251,12 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
                 <a
                   href={`#r-${recordYear}-${recordMonth}`}
                   id={`r-${recordYear}-${recordMonth}`}
-                  class="month"
+                  class="month capitalize"
                 >
                   {dayjs(record.publishedAt).format('MMMM')}
                 </a>
               ) : null}
-              <a class="record z-50 static" href={record.url} rel="noopener">
+              <a class="record z-50 static" href={record.url} rel="noopener" target="_blank">
                 <div class="text-xl px-4 flex space-x-2">
                   <img src={icon[record.type]} class="w-5 inline-block" />
                   <span>{record.title}</span>
