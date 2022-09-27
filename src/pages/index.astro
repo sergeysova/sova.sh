@@ -11,7 +11,9 @@ import Section from '../components/Section.astro';
 import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
+
 import IfLang from '../components/IfLang.astro';
+import LinkTo from '../components/LinkTo.astro';
 
 import {getUniqueArticles} from '../data/forem';
 import {getVideos} from '../data/youtube';
@@ -51,38 +53,23 @@ const articles = [...forem, ...pages]
       </h1>
       <p>
         <IfLang equals="en">
-          I had made a bunch of packages for the effector ecosystem: <a
-            href="https://github.com/effector/patronum"
-            rel="noopener"
-            target="_blank">patronum</a
-          >, <a href="https://github.com/effector/logger" rel="noopener" target="_blank">logger</a>,
-          <a href="https://github.com/effector/inspector" rel="noopener" target="_blank"
-            >inspector</a
-          >, etc. I'm consulting people and companies for front-end architecture principles and
-          React optimizations. I made a podcast on Russian, made <a
-            href="https://twitter.com/_sergeysova"
-            rel="noopener"
-            target="_blank">Twitter</a
-          >, and <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> with 3K
-          subscribers in total.
+          I had made a bunch of packages for the effector ecosystem:
+          <LinkTo name="patronum" />, <LinkTo name="logger" />,
+          <LinkTo name="inspector" />, etc. I'm consulting people and companies for front-end
+          architecture principles and React optimizations. I made a podcast on Russian, made <LinkTo
+            name="twitter"
+          />, and <LinkTo name="telegram" /> with 3K subscribers in total.
         </IfLang>
         <IfLang equals="ru">
-          Я сделал несколько пакетов для экосистемы effector: <a
-            href="https://github.com/effector/patronum"
-            rel="noopener"
-            target="_blank">patronum</a
-          >, <a href="https://github.com/effector/logger" rel="noopener" target="_blank">logger</a>,
-          <a href="https://github.com/effector/inspector" rel="noopener" target="_blank"
-            >inspector</a
-          > и т.д. Я консультирую людей и компании по принципам архитектуры frontend и React оптимизации.
-          Я сделал подкаст на русском, собрал в <a
-            href="https://twitter.com/_sergeysova"
-            rel="noopener"
-            target="_blank">Twitter</a
-          > и <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> около 3 тыс.
-          подписчиков.
+          Я сделал несколько пакетов для экосистемы effector:
+          <LinkTo name="patronum" />, <LinkTo name="logger" />,
+          <LinkTo name="inspector" /> и т.д. Я консультирую людей и компании по принципам архитектуры
+          frontend и React оптимизации. Я сделал подкаст на русском, собрал в <LinkTo
+            name="twitter"
+          /> и <LinkTo name="telegram" /> около 3 тыс. подписчиков.
         </IfLang>
       </p>
+
       <p>
         <IfLang equals="en">
           Этот сайт также есть в <a href="https://sova.dev">русской локализации</a>.
@@ -165,10 +152,10 @@ const articles = [...forem, ...pages]
     @apply pt-2;
   }
 
-  main .about p a {
+  main .about p :global(a) {
     @apply text-sky-600 underline;
   }
-  main .about p a:hover {
+  main .about p :global(a):hover {
     @apply text-sky-600 no-underline;
   }
 

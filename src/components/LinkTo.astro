@@ -1,0 +1,30 @@
+---
+import {optionalTranslate} from '../lib/language';
+
+const Links = {
+  patronum: {url: 'https://github.com/effector/patronum'},
+  logger: {url: 'https://github.com/effector/logger'},
+  inspector: {url: 'https://github.com/effector/inspector'},
+  twitter: {url: 'https://twitter.com/_sergeysova', text: 'Twitter'},
+  telegram: {url: 'https://t.me/sergeysova', text: 'Telegram'},
+} as const;
+
+export interface Props {
+  name: keyof typeof Links;
+  text?: string | {ru: string; en: string};
+}
+
+interface Link {
+  url: string;
+  text?: string | {ru: string; en: string};
+}
+
+const link = Links[Astro.props.name] as Link;
+const text = Astro.props.text
+  ? optionalTranslate(Astro.props.text)
+  : link.text
+  ? optionalTranslate(link.text)
+  : Astro.props.name;
+---
+
+<a href={link.url} rel="noopener" target="_blank">{text}</a>
