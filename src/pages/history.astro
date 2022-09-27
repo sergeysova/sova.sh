@@ -25,6 +25,7 @@ interface HistoryRecord {
   description: string;
   url: string;
   publishedAt: Date;
+  invited: boolean;
 }
 
 const [articles, pages, videos, episodes, news] = await Promise.all([
@@ -43,6 +44,7 @@ const records: HistoryRecord[] = [
       'Зачем нужны стейт-менеджеры на фронтенде, что за стейт хранится в них и где место бизнес- и не только логике, разберем на Tver.io.',
     url: 'https://www.youtube.com/watch?v=cUSyJk6k2rk',
     publishedAt: new Date('2020-07-23T15:30:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -51,6 +53,7 @@ const records: HistoryRecord[] = [
       'Сергей Сова участвует в effector core team, занимается развитием экосистемы. Делится опытом проектирования фронтенда в feature-sliced core team. Дмитрий Карловский большой любитель реактивности, виртуализации, распределённых систем, логики и, конечно, скоростных велосипедов.',
     url: 'https://www.youtube.com/watch?v=NhPjUO6trGY',
     publishedAt: new Date('2021-10-08T20:00:00Z'),
+    invited: true,
   },
   {
     type: 'podcast',
@@ -59,6 +62,7 @@ const records: HistoryRecord[] = [
       'В этом выпуске Сергей Сова расскажет про библиотеку управления состоянием Effector, плюсы, основные фишки и удобства, статус проекта, личный опыт использования.',
     url: 'https://soundcloud.com/5minreact/063-effector',
     publishedAt: new Date('2019-12-23T12:30:00Z'),
+    invited: true,
   },
   {
     type: 'podcast',
@@ -67,6 +71,7 @@ const records: HistoryRecord[] = [
       'Что такое дизайн-система, и как она строится и кому это нужно. Плюсы использования дизайн-системы, про наследование компонентов. Документация для ui-кита и как делать это проще.',
     url: 'https://spb-frontend.ru/podcast/11',
     publishedAt: new Date('2017-10-06T22:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -75,6 +80,7 @@ const records: HistoryRecord[] = [
       'Автор Reatom Артём Арутюнян, Сергей Головин и Сергей Сова обсудят стейт-менеджмент в целом и Reatom, Redux и Effector в частности.',
     url: 'https://www.youtube.com/watch?v=Ble1JXIb_hE',
     publishedAt: new Date('2019-12-25T16:25:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -83,6 +89,7 @@ const records: HistoryRecord[] = [
       'Круглый стол: CSS-in-JS (не)нужен | Андрей Ситник, Артем Зверев, Сергей Сова, Александр Зубов',
     url: 'https://podlodka.io/crew-records',
     publishedAt: new Date('2021-08-03T14:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -91,6 +98,7 @@ const records: HistoryRecord[] = [
       'Так ли хороши хуки, как о них говорят, и можно ли полноценно заменить хуками методы жизненного цикла и не страдать? В нужном ли направлении развивается React или пора искать ему замену? Будем спорить и разбираться',
     url: 'https://www.youtube.com/watch?v=-KgCcIzP4Ys',
     publishedAt: new Date('2019-10-03T14:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -99,6 +107,7 @@ const records: HistoryRecord[] = [
       'В современной frontend-разработке мы сталкиваемся с задачами уменьшения зависимостей между модулями и наглядного описания их внутренних и внешних связей, желая снизить количество ошибок и упростить тестирование. На этом митапе мы расскажем и покажем на практике, как стать эффективнее с помощью effector.',
     url: 'https://www.youtube.com/watch?v=nLYc4PaTXYk',
     publishedAt: new Date('2021-04-29T12:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -107,6 +116,7 @@ const records: HistoryRecord[] = [
       'Effector — менеджер состояний frontend-приложений на javascript/typescript. Докладчики расскажут кому он может понадобиться, какие сущности имеет, как их комбинировать, как строить серверный рендеринг, и как устроено всё "под капотом".',
     url: 'https://www.youtube.com/watch?v=IacUIo9fXhI',
     publishedAt: new Date('2020-03-05T10:00:00Z'),
+    invited: true,
   },
   {
     type: 'article',
@@ -115,6 +125,7 @@ const records: HistoryRecord[] = [
       'В объявлениях о поиске программистов часто встречается требование уметь работать с React. Иногда работодатели ожидают знания React не только от фронтендеров, но и от бэкенд-разработчиков. Почему эта библиотека настолько популярная, стоит ли изучать её сегодня, каковы её перспективы по мнению опытных программистов? Ответы на эти и другие вопросы читайте в обзорной статье.',
     url: 'https://ru.hexlet.io/blog/posts/biblioteka-react-review-article',
     publishedAt: new Date('2020-07-10T11:05:48.012+04:00'),
+    invited: true,
   },
   {
     type: 'video',
@@ -123,6 +134,7 @@ const records: HistoryRecord[] = [
       'Поговорили с Сергеем Совой о персональном бренде, обмазались новыми фичами, обсудили комьюнити вне комьюнити, а также узнали, кто на самом деле автор эффектора.',
     url: 'https://www.youtube.com/watch?v=QtsH31LD79c',
     publishedAt: new Date('2021-11-23T19:00:00+04:00'),
+    invited: true,
   },
   {
     type: 'video',
@@ -130,6 +142,7 @@ const records: HistoryRecord[] = [
     description: 'В гостях Сергей Сова',
     url: 'https://www.youtube.com/watch?v=3QyrM02MLT4',
     publishedAt: new Date('2021-12-01T19:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -138,6 +151,7 @@ const records: HistoryRecord[] = [
       'Продолжаем наше путешествие и рассказываем о жизни российских айтишников за пределами России. Наш гость, Frontend-архитектор Сергей Сова поделился своими впечатлениями от жизни в Ереване и рассказал, правда ли в Армении все играют в нарды:)',
     url: 'https://www.youtube.com/watch?v=s6atItVtGxE',
     publishedAt: new Date('2022-05-24T10:00:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -146,6 +160,7 @@ const records: HistoryRecord[] = [
       'Архитектор и архитектура – два слова которые часто вызывают споры, непонимание и холивары. Ведущие «Тяжёлого утра» позовут экспертов и архитекторов, чтобы определить, что такое архитектура и кто такие архитекторы, чему учиться и что тренировать, чтобы стать им.',
     url: 'https://live.jugru.org/video?v=MTAwMTI0ijIwMDAwMTAwijA',
     publishedAt: new Date('2022-06-10T13:50:00Z'),
+    invited: true,
   },
   {
     type: 'video',
@@ -154,6 +169,7 @@ const records: HistoryRecord[] = [
       'Какие есть абстракции, какие есть подходы, как они между собой связаны. В первой части поговорили в верхнеуровневом разрезе уровня флоу данных, а во второй про низкоуровневые компоненты – кэши, хранилища, верстка и другие.',
     url: 'https://podlodka.io/286',
     publishedAt: new Date('2022-09-18T16:00:00Z'),
+    invited: true,
   },
 ];
 
@@ -164,6 +180,7 @@ articles.forEach((article) =>
     description: article.description,
     url: article.url,
     publishedAt: new Date(article.published_at),
+    invited: false,
   }),
 );
 
@@ -174,6 +191,7 @@ pages.forEach((page) =>
     description: page.description,
     url: page.url,
     publishedAt: new Date(page.published_at),
+    invited: false,
   }),
 );
 
@@ -184,6 +202,7 @@ videos.forEach((video) =>
     description: video.description,
     publishedAt: new Date(video.publishedAt),
     url: video.url,
+    invited: false,
   }),
 );
 
@@ -194,6 +213,7 @@ episodes.forEach((episode) =>
     description: episode.description,
     publishedAt: new Date(episode.pubDate),
     url: episode.link,
+    invited: false,
   }),
 );
 
@@ -204,6 +224,7 @@ news.forEach((issue) =>
     description: issue.description,
     publishedAt: new Date(issue.publishedAt),
     url: issue.url,
+    invited: false,
   }),
 );
 
@@ -258,7 +279,12 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
               ) : null}
               <a
                 data-type={record.type}
-                class="record z-50 static"
+                class:list={[
+                  'record z-50',
+                  {
+                    invited: record.invited,
+                  },
+                ]}
                 href={record.url}
                 rel="noopener"
                 target="_blank"
@@ -333,23 +359,26 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
   .record {
     --border-brand-color: transparent;
     @apply relative bg-white rounded-md flex flex-col gap-1 overflow-hidden py-3;
+    --shadow-color: 0deg 0% 0%;
 
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
-      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    box-shadow: hsla(var(--shadow-color) / 0.4) 0px 2px 4px,
+      hsla(var(--shadow-color) / 0.3) 0px 7px 13px -3px,
+      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
     transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .record:hover {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 8px, rgba(0, 0, 0, 0.2) 0px 13px 26px -3px,
-      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    box-shadow: hsla(var(--shadow-color) / 0.2) 0px 8px 8px,
+      hsla(var(--shadow-color) / 0.2) 0px 13px 26px -3px,
+      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
     transform: translateY(-3px);
   }
 
   .record::after {
     content: '';
     @apply top-0 left-0 bottom-0 w-1 absolute;
-    background-color: var(--border-brand-color);
+    background-color: hsl(var(--border-brand-color));
     transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -358,12 +387,15 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
   }
 
   .record[data-type='video'] {
-    --border-brand-color: #ff0000;
+    --border-brand-color: 0deg 100% 50%;
   }
   .record[data-type='podcast'] {
-    --border-brand-color: #3369e7;
+    --border-brand-color: 222deg 79% 55%;
   }
   .record[data-type='news'] {
-    --border-brand-color: #2a2a2a;
+    --border-brand-color: 0deg 0% 16%;
+  }
+  .record.invited {
+    --shadow-color: var(--border-brand-color);
   }
 </style>
