@@ -1,5 +1,9 @@
 ---
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/en';
+import LocaleData from 'dayjs/plugin/localeData';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 import Layout from '../layouts/Layout.astro';
 import AssetHistory from '../assets/history.svg';
@@ -211,6 +215,10 @@ const icon: {[key in HistoryRecord['type']]: string} = {
   podcast: IconMicrophone,
   news: IconNews,
 };
+
+dayjs.extend(LocaleData);
+dayjs.extend(LocalizedFormat);
+dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
 ---
 
 <Layout
@@ -253,9 +261,7 @@ const icon: {[key in HistoryRecord['type']]: string} = {
                   <img src={icon[record.type]} class="w-5 inline-block" />
                   <span>{record.title}</span>
                 </div>
-                <span class="text-sm pr-4 pl-12">
-                  {dayjs(record.publishedAt).format('DD MMMM YYYY')}
-                </span>
+                <span class="text-sm pr-4 pl-12">{dayjs(record.publishedAt).format('LL')}</span>
                 <p class="pr-4 pl-12">{record.description}</p>
               </a>
             </Fragment>
