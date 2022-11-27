@@ -117,18 +117,14 @@ const articles = [...forem, ...pages]
         ru: 'Нерегулярные выпуски подкаста «Под куполом» это записи моих размышлений об устройстве мира, личных переживаний и открытии нового в формате ночных посиделок.',
         en: 'The occasional podcast “Under the Dome” is a recording of my reflections on the world is being, personal experiences, and favorite discoveries in the format of midnight insights.',
       }}
-      links={[
-        {text: {ru: 'Прослушать все', en: 'Listen all'}, url: 'https://podcast.ru/1586738556/e'},
-      ]}
+      links={[{text: {ru: 'Прослушать все', en: 'Listen all'}, url: 'https://podcast.sova.dev/'}]}
     >
       <Podcasts episodes={episodes.slice(0, COUNT_OF_CONTENT)} />
     </Section>
 
     <Section
       titleImage={AssetYoutube}
-      links={[
-        {text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/@sova'},
-      ]}
+      links={[{text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/@sova'}]}
     >
       <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
     </Section>
