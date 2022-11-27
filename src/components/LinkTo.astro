@@ -8,11 +8,13 @@ const Links = {
   twitter: {url: 'https://twitter.com/_sergeysova', text: 'Twitter'},
   telegram: {url: 'https://t.me/sergeysova', text: 'Telegram'},
   github: {url: 'https://github.com/sergeysova', text: 'GitHub'},
+  youtube: {url: 'https://youtube.com/@sova', text: 'YouTube'},
 } as const;
 
 export interface Props {
   name: keyof typeof Links;
   text?: string | {ru: string; en: string};
+  class?: string;
 }
 
 interface Link {
@@ -28,4 +30,4 @@ const text = Astro.props.text
   : Astro.props.name;
 ---
 
-<a href={link.url} rel="noopener" target="_blank">{text}</a>
+<a href={link.url} rel="noopener" target="_blank" class={Astro.props.class}>{text}</a>

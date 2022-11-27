@@ -1,0 +1,43 @@
+---
+import {switchLang} from '../lib/language';
+import LinkTo from '../components/LinkTo.astro';
+---
+
+<footer>
+  <div class="content">
+    <a href="/">
+      <h3>{switchLang({en: 'Sergey Sova', ru: 'Сергей Сова'})}</h3>
+    </a>
+    <div class="links">
+      <a href="/history">{switchLang({en: 'History', ru: 'История'})}</a>
+      <LinkTo name="telegram" />
+      <LinkTo name="youtube" />
+      <a href="mailto:contact@sergeysova.com">E-Mail</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  body footer {
+    @apply bg-zinc-800 text-gray-50 pb-10 pt-4 mt-10;
+  }
+
+  body footer .content {
+    margin: auto;
+    padding: 1em;
+    max-width: 70ch;
+    @apply flex flex-col gap-2 items-start space-y-4;
+  }
+
+  body footer h3 {
+    @apply text-xl;
+  }
+
+  footer .links {
+    @apply flex flex-col grow-0 items-start gap-1;
+  }
+
+  footer a {
+    @apply hover:underline;
+  }
+</style>

@@ -1,6 +1,8 @@
 ---
 import {switchLang} from '../lib/language';
 
+import Footer from '../components/Footer.astro';
+
 export interface Props {
   title?: string;
   description?: string;
@@ -55,6 +57,7 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
   </head>
   <body>
     <slot />
+    <Footer />
     <style>
       :root {
         --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);

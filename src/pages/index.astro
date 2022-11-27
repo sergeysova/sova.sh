@@ -16,6 +16,7 @@ import Section from '../components/Section.astro';
 import News from '../components/News.astro';
 import Podcasts from '../components/Podcasts.astro';
 import Videos from '../components/Videos.astro';
+import Footer from '../components/Footer.astro';
 
 import IfLang from '../components/IfLang.astro';
 import LinkTo from '../components/LinkTo.astro';
@@ -89,7 +90,6 @@ const articles = [...forem, ...pages]
     </div>
 
     <nav class="flex gap-2">
-      <span class="flex items-center">{switchLang({en: 'Go to', ru: 'Перейти'})}:</span>
       <div class="section-nav">
         <a href="#articles" class="section-link">
           <img src={IconNotes} />
