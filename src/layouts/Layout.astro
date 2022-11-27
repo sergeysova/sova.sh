@@ -23,6 +23,7 @@ const {
   locale = import.meta.env.PUBLIC_LANGUAGE,
 } = Astro.props;
 const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
+const fullTitle = title ? `${title} · ${siteName}` : siteName;
 
 const gtagSource = `window.dataLayer = window.dataLayer || [];
 function gtag() {
@@ -35,26 +36,45 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
 
 <!DOCTYPE html>
 <html lang={locale} prefix="og: https://ogp.me/ns#">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="/favicon.png" />
-    <title>{title ? `${title} · ${siteName}` : siteName}</title>
-    {type !== 'website' ? <meta property="og:site_name" content={siteName} /> : null}
-    <meta property="og:title" content={title} />
-    {description ? <meta property="og:description" content={description} /> : null}
-    {image ? <meta property="og:image" content={image} /> : null}
-    <meta content="og:locale" content={realLocale} />
-    <meta property="og:url" content={`${Astro.url.toString()}`} />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
-      async
-      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}
-    ></script>
-    <script type={import.meta.env.PROD ? 'application/javascript' : 'skip'} set:html={gtagSource}
-    ></script>
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <link rel="icon" href="/favicon.png" />
+
+  <title>{fullTitle}</title>
+  <meta property="og:title" content={fullTitle} />
+  <meta name="twitter:title" content={fullTitle} />
+
+  {type !== 'website' ? <meta property="og:site_name" content={siteName} /> : null}
+
+  {description ? <meta property="description" content={description} /> : null}
+  {description ? <meta property="og:description" content={description} /> : null}
+  {description ? <meta property="twitter:description" content={description} /> : null}
+  <meta
+    name="keywords"
+    content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting"
+  />
+
+  {image ? <meta property="image" content={image} /> : null}
+  {image ? <meta property="og:image" content={image} /> : null}
+  {image ? <meta property="twitter:image" content={image} /> : null}
+
+  <meta content="og:locale" content={realLocale} />
+  <meta property="og:url" content={`${Astro.url.toString()}`} />
+  <meta property="canonical" content={`${Astro.url.toString()}`} />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@_sergeysova" />
+  <meta name="twitter:site" content="@_sergeysova" />
+
+  <meta name="theme-color" content="#1F2028" />
+  <script
+    type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+    async
+    src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}
+  ></script>
+  <script type={import.meta.env.PROD ? 'application/javascript' : 'skip'} set:html={gtagSource}
+  ></script>
+
   <body>
     <slot />
     <Footer />
