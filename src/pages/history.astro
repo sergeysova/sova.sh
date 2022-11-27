@@ -108,6 +108,13 @@ const icon: {[key in HistoryRecord['type']]: string} = {
 dayjs.extend(LocaleData);
 dayjs.extend(LocalizedFormat);
 dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
+
+const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
+  article: switchLang({en: 'Article', ru: 'Статья'}),
+  news: switchLang({en: 'Newsletter issue', ru: 'Новостной выпуск'}),
+  podcast: switchLang({en: 'Podcast episode', ru: 'Выпуск подкаста'}),
+  video: switchLang({en: 'Video', ru: 'Видео'}),
+};
 ---
 
 <Layout
@@ -147,6 +154,7 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
               ) : null}
               <a
                 data-type={record.type}
+                data-invited={switchLang({en: 'invited', ru: 'приглашен'})}
                 class:list={[
                   'record z-50',
                   {
@@ -158,7 +166,11 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
                 target="_blank"
               >
                 <div class="text-xl px-4 flex space-x-2">
-                  <img src={icon[record.type]} class="w-5 inline-block" />
+                  <img
+                    src={icon[record.type]}
+                    class="w-5 inline-block"
+                    title={articleTypeTitle[record.type]}
+                  />
                   <span>{record.title}</span>
                 </div>
                 <span class="text-sm pr-4 pl-12">{dayjs(record.publishedAt).format('LL')}</span>
@@ -254,6 +266,19 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
     @apply w-1.5;
   }
 
+  .record.invited {
+    --shadow-color: var(--border-brand-color);
+    @apply -ml-3 pl-3;
+  }
+  .record.invited::after {
+    @apply w-5 text-sm text-white py-1;
+    content: attr(data-invited);
+    text-orientation: sideways;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    text-align: right;
+  }
+
   .record[data-type='video'] {
     --border-brand-color: 0deg 100% 50%;
   }
@@ -265,8 +290,6 @@ dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
   }
   .record[data-type='article'].invited {
     --shadow-color: 142deg 76% 36%;
-  }
-  .record.invited {
-    --shadow-color: var(--border-brand-color);
+    --border-brand-color: 142deg 76% 36%;
   }
 </style>
