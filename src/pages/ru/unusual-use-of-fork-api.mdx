@@ -204,7 +204,10 @@ test('player can lose level', async () => {
 
   await allSettled(munchkin.levelUp, {scope, params: John.id});
   await allSettled(munchkin.levelDown, {scope, params: John.id});
-  expect(scope.getState(munchkin.$players)).toStrictEqual([John, Alba]);
+  expect(scope.getState(munchkin.$players)).toStrictEqual([
+    John,
+    Alba,
+  ]);
 });
 ```
 
@@ -214,11 +217,19 @@ test('player can lose level', async () => {
 
 ```jsx
 // client
-const stepFinishedFx = createEffect(() => sendWSEvent({type: 'stepFinished'}));
-const gearIncreaseFx = createEffect(() => sendWSEvent({type: 'gearIncrease'}));
-const gearDecreaseFx = createEffect(() => sendWSEvent({type: 'gearDecrease'}));
+const stepFinishedFx = createEffect(() =>
+  sendWSEvent({type: 'stepFinished'}),
+);
+const gearIncreaseFx = createEffect(() =>
+  sendWSEvent({type: 'gearIncrease'}),
+);
+const gearDecreaseFx = createEffect(() =>
+  sendWSEvent({type: 'gearDecrease'}),
+);
 const deadFx = createEffect(() => sendWSEvent({type: 'dead'}));
-const levelUpFx = createEffect(() => sendWSEvent({type: 'levelUp'}));
+const levelUpFx = createEffect(() =>
+  sendWSEvent({type: 'levelUp'}),
+);
 
 // server
 const {type, value} = JSON.parse(message.toString());
@@ -289,7 +300,10 @@ switch (type) {
     if (room) {
       for (const unit of munchkin.common.history.events) {
         if (unit.sid === sid) {
-          await allSettled(unit, {scope: room.scope, params: payload});
+          await allSettled(unit, {
+            scope: room.scope,
+            params: payload,
+          });
         }
       }
     }
@@ -359,13 +373,21 @@ createWatch({
 // подписка на все сторы в объекте
 Object.values(munchkin).forEach((unit) => {
   if (is.store(unit)) {
-    createWatch({unit, scope: room.scope, fn: () => sendUpdates(room)});
+    createWatch({
+      unit,
+      scope: room.scope,
+      fn: () => sendUpdates(room),
+    });
   }
 });
 
 // подписка через домен
 munchkin.common.onCreateStore((unit) => {
-  createWatch({unit, scope: room.scope, fn: () => sendUpdates(room)});
+  createWatch({
+    unit,
+    scope: room.scope,
+    fn: () => sendUpdates(room),
+  });
 });
 ```
 
@@ -374,7 +396,9 @@ munchkin.common.onCreateStore((unit) => {
 ```tsx
 function sendUpdates(room) {
   const states = serialize(room.scope);
-  forEach(room.players, (player) => player.send('gameUpdate', states));
+  forEach(room.players, (player) =>
+    player.send('gameUpdate', states),
+  );
 }
 ```
 

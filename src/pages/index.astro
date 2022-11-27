@@ -4,6 +4,11 @@ import AssetNews from '../assets/news.svg';
 import AssetPodcast from '../assets/podcast.svg';
 import AssetYoutube from '../assets/youtube.svg';
 
+import IconMicrophone from '../assets/icons/microphone.svg';
+import IconNews from '../assets/icons/news.svg';
+import IconNotes from '../assets/icons/notes.svg';
+import IconYoutube from '../assets/icons/youtube.svg';
+
 import Layout from '../layouts/Layout.astro';
 
 import Articles from '../components/Articles.astro';
@@ -82,7 +87,31 @@ const articles = [...forem, ...pages]
         </IfLang>
       </p>
     </div>
+
+    <nav class="flex gap-2">
+      <span class="flex items-center">{switchLang({en: 'Go to', ru: 'Перейти'})}:</span>
+      <div class="section-nav">
+        <a href="#articles" class="section-link">
+          <img src={IconNotes} />
+          <span>{switchLang({en: 'Articles', ru: 'Статьи'})}</span>
+        </a>
+        <a href="#news" class="section-link">
+          <img src={IconNews} />
+          <span>{switchLang({en: 'News', ru: 'Рассылка'})}</span>
+        </a>
+        <a href="#podcast" class="section-link">
+          <img src={IconMicrophone} />
+          <span>{switchLang({en: 'Podcast', ru: 'Подкаст'})}</span>
+        </a>
+        <a href="#youtube" class="section-link">
+          <img src={IconYoutube} />
+          <span>Youtube</span>
+        </a>
+      </div>
+    </nav>
+
     <Section
+      id="articles"
       titleImage={AssetArticles}
       links={[
         {text: 'Dev.to', url: 'https://dev.to/sergeysova'},
@@ -101,6 +130,7 @@ const articles = [...forem, ...pages]
     </Section>
 
     <Section
+      id="news"
       titleImage={AssetNews}
       description={{
         ru: 'Подписчики получают подборку полезных статей об устройстве Web-платформы, движков JavaScript и необычных техник в программировании.',
@@ -112,6 +142,7 @@ const articles = [...forem, ...pages]
     </Section>
 
     <Section
+      id="podcast"
       titleImage={AssetPodcast}
       description={{
         ru: 'Нерегулярные выпуски подкаста «Под куполом» это записи моих размышлений об устройстве мира, личных переживаний и открытии нового в формате ночных посиделок.',
@@ -123,6 +154,7 @@ const articles = [...forem, ...pages]
     </Section>
 
     <Section
+      id="youtube"
       titleImage={AssetYoutube}
       links={[{text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/@sova'}]}
     >
@@ -156,6 +188,20 @@ const articles = [...forem, ...pages]
   }
   main .about p :global(a):hover {
     @apply text-sky-600 no-underline;
+  }
+
+  main .section-nav {
+    @apply flex flex-row items-center space-x-1;
+  }
+
+  main .section-nav .section-link {
+    @apply inline-flex justify-center items-center align-middle py-1 pl-1.5 pr-2 gap-1 transition-all rounded-md;
+    @apply hover:bg-slate-500/20;
+    @apply focus:outline-none;
+  }
+
+  main .section-nav .section-link img {
+    @apply w-4 h-4 fill-current opacity-80;
   }
 
   .text-gradient {

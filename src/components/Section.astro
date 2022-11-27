@@ -10,6 +10,7 @@ interface Link {
 export interface Props {
   title?: string;
   titleImage?: string;
+  id?: string;
   description?: {
     ru: string;
     en: string;
@@ -17,10 +18,11 @@ export interface Props {
   links?: Link[];
 }
 
-const {title, titleImage, description, links} = Astro.props;
+const {title, titleImage, description, links, id} = Astro.props;
 ---
 
 <section>
+  {id ? <a id={id} /> : null}
   {title ? <h1 class="text-3xl mb-2">{title}</h1> : null}
   {titleImage ? <img src={titleImage} class="title-image" /> : null}
   <slot />
