@@ -118,4 +118,12 @@ export const invitedContent = [
     url: 'https://podlodka.io/286',
     publishedAt: new Date('2022-09-18T16:00:00Z'),
   },
+  {
+    type: 'video',
+    title: 'HolyJS: Effector — business logic with ease',
+    description:
+      'Ян Лаврюшев рассказал, какая польза от effector в качестве инструмента описания бизнес-логики.',
+    url: 'https://holyjs.ru/en/persons/dab02262c688428ab27e131c779d5348',
+    publishedAt: new Date('2022-11-11T11:00:00Z'),
+  },
 ] as const;
