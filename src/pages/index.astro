@@ -136,15 +136,15 @@ const articles = [...forem, ...pages]
     --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
   }
 
-  h1 {
-    margin: 2rem 0;
-  }
-
   main {
     margin: auto;
     padding: 1em;
     max-width: 70ch;
     @apply flex flex-col gap-10;
+  }
+
+  main h1 {
+    margin: 2rem 0;
   }
 
   main .about p + p {
