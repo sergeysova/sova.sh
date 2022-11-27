@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" prefix="og: https://ogp.me/ns#" class="astro-FAS4RNGM">
+<html lang="ru" prefix="og: https://ogp.me/ns#" class="astro-ZQ2PT3JX">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
@@ -14,10 +14,10 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script type="application/javascript" async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
     <script type="application/javascript">window.dataLayer = window.dataLayer || [];function gtag() {  dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-67236238-5');</script>
-  <link rel="stylesheet" href="/assets/application-structure.95577e19.css" />
+  <link rel="stylesheet" href="/assets/application-structure.453c8af3.css" />
 <link rel="stylesheet" href="/assets/unusual-use-of-fork-api.9eb83e1c.css" />
-<link rel="stylesheet" href="/assets/application-structure.30d11a08.css" /><script type="module" src="/page.3aa82516.js"></script></head>
-  <body class="astro-FAS4RNGM">
+<link rel="stylesheet" href="/assets/application-structure.59bdbf65.css" /><script type="module" src="/page.3aa82516.js"></script></head>
+  <body class="astro-ZQ2PT3JX">
     <main class="markdown astro-LXWCGS7M">
     <div class="go-back astro-LXWCGS7M">
       <a href="/" class="astro-LXWCGS7M">
@@ -280,6 +280,21 @@ munchkin<span class="token punctuation">.</span>common<span class="token punctua
   <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>Но используя домен, можно обойтись и без <code>spread</code>. Еще один плюс хуков.</p><h2 id="вкратце"><a href="#вкратце" aria-hidden="true" tabIndex="-1"><span class="icon icon-link"></span></a>Вкратце</h2><ol><li>На сервере список комнат со скоупами и списком игроков на сервере.</li><li>В браузерах игроков канал websocket, публичное API ивентов и сторов с точно такими же SID, как на сервере.</li><li>Когда срабатывает событие в браузере, берем его <code>sid</code> и payload, отправляем через websocket на сервер.</li><li>Сервер знает в какой комнате сейчас игрок, ищет подходящий event по его <code>sid</code> и вызывает через <code>allSettled</code> на скоупе комнаты.</li><li>Логика крутится внутри скоупа, в следствии чего обновляются сторы, срабатывает коллбек <code>createWatch</code>.</li><li>Внутри комнаты есть ссылки на websocket-каналы каждого игрока, а значит мы можем отправить каждому игроку сериализованное состояние скоупа с помощью <code>serialize()</code>.</li><li>Браузеры игроков ловят событие по websocket-каналу, парсят содержимое, <code>split</code> вызывает нужный нам ивент.</li><li>Метод <code>spread</code> обновит стор по ключу в сообщении, ведь это <code>sid</code>.</li><li>Интерфейс перерисовывается из-за обновления сторов.</li></ol><h2 id="что-получил-в-итоге"><a href="#что-получил-в-итоге" aria-hidden="true" tabIndex="-1"><span class="icon icon-link"></span></a>Что получил в итоге</h2><p>В процессе разработки мне нужно было только создать шину общения сервера и браузеров. Любые новые события в домене <code>munchkin</code> будут пробрасываться из браузера на сервер автоматически, а сторы в обратном направлении.</p><p>Также typescript сможет проверить типы и мне не придется верить серверу на слово, ведь используется буквально тот же набор ивентов и сторов. Остается только деплоить это вместе, чтобы версия браузерного и серверного кода совпадала, но это уже вопрос другой статьи.</p><p><a href="https://t.me/sergeysova/675">Комментарии</a></p>
   </main>
+    <footer class="astro-WBJIUCQQ">
+  <div class="content astro-WBJIUCQQ">
+    <a href="/" class="astro-WBJIUCQQ">
+      <h3 class="astro-WBJIUCQQ">Сергей Сова</h3>
+    </a>
+    <div class="links astro-WBJIUCQQ">
+      <a href="/history" class="astro-WBJIUCQQ">История</a>
+      <a href="https://t.me/sergeysova" rel="noopener" target="_blank" class="astro-WBJIUCQQ">Telegram</a>
+      <a href="https://youtube.com/@sova" rel="noopener" target="_blank" class="astro-WBJIUCQQ">YouTube</a>
+      <a href="mailto:contact@sergeysova.com" class="astro-WBJIUCQQ">E-Mail</a>
+    </div>
+  </div>
+</footer>
+
+
     
 
     
