@@ -62,6 +62,8 @@ const articles = [...forem, ...pages]
           I had made a bunch of packages for the effector ecosystem:
           <LinkTo name="patronum" />, <LinkTo name="logger" />,
           <LinkTo name="inspector" />, etc. <br />
+          {
+            /*
           I have a podcast on Russian, made <LinkTo name="twitter" />, and <LinkTo
             name="telegram"
           /> with 3K subscribers in total.
@@ -77,9 +79,10 @@ const articles = [...forem, ...pages]
             name="github"
           />.
         </IfLang>
-      </p>
-
-      <p>
+        */
+          }
+        </IfLang>
+      </p><p>
         <IfLang equals="en">
           Этот сайт также доступен на <a href="https://sova.dev">русском языке</a>.
         </IfLang>
@@ -88,7 +91,8 @@ const articles = [...forem, ...pages]
         </IfLang>
       </p>
     </div>
-
+    {
+      /*
     <nav class="flex gap-2">
       <div class="section-nav">
         <a href="#articles" class="section-link">
@@ -160,6 +164,9 @@ const articles = [...forem, ...pages]
     >
       <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
     </Section>
+
+ */
+    }
   </main>
 </Layout>
 

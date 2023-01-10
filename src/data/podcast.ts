@@ -4,6 +4,23 @@ import {getPodcastFromFeed} from '@sergeysova/podcast-feed-parser';
 import {convertIntoText} from './lib/text';
 import {cachedFetch} from './server-request';
 
+const apiKey = import.meta.env.SIMPLECAST_API_KEY;
+const podcastId = '83c02746-44ff-4368-b201-619095d32750';
+// https://help.simplecast.com/en/articles/2724796-simplecast-2-0-api
+// curl https://api.simplecast.com/episodes/7a1e9192-2997-4f2a-a9b1-40687e8b2d4b/player
+
+async function request(path: string) {
+  const url = `https://api.simplecast.com${path}`;
+  const response = await cachedFetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+  if (response.ok) return await response.json();
+}
+
 export async function getEpisodes(): Promise<Episode[]> {
   console.log('fetching podcast');
   const rss = 'https://anchor.fm/s/4c5764fc/podcast/rss';
