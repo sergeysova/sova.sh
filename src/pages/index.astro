@@ -49,7 +49,7 @@ const articles = [...forem, ...pages]
   })}
   image="https://avatars.githubusercontent.com/u/5620073?v=4"
 >
-  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch] xl:max-w-[90ch]">
+  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch]">
     <div class="about">
       <h1 class="text-5xl">
         <IfLang equals="ru">Привет, я</IfLang>
@@ -77,15 +77,23 @@ const articles = [...forem, ...pages]
           />.
         </IfLang>
       </p>
-      <p>
-        <IfLang equals="en">
-          Этот сайт также доступен на <a href="https://sova.dev">русском языке</a>.
-        </IfLang>
-        <IfLang equals="ru">
-          This site is also available in <a href="https://sergeysova.com">English</a>.
-        </IfLang>
-      </p>
+      <IfLang equals="ru">
+        <p class="text-xl text-slate-900">
+          А также много говорю об effector, пишу на React всё самое сложное, руковожу фронтендом,
+          практикую ночной Rust.
+        </p>
+      </IfLang>
     </div>
+
+    <p class="about">
+      <IfLang equals="en">
+        Этот сайт также доступен на <a href="https://sova.dev">русском языке</a>.
+      </IfLang>
+      <IfLang equals="ru">
+        This site is also available in <a href="https://sergeysova.com">English</a>.
+      </IfLang>
+    </p>
+
     <nav class="flex gap-2">
       <div class="section-nav">
         <a href="#articles" class="section-link">
@@ -130,8 +138,8 @@ const articles = [...forem, ...pages]
       id="news"
       titleImage={AssetNews}
       description={{
-        ru: 'Подписчики получают подборку полезных статей об устройстве Web-платформы, движков JavaScript и необычных техник в программировании.',
-        en: 'Subscribers receive a selection of useful articles about the structure of the Web platform, JavaScript engines, and unusual techniques in programming.',
+        ru: 'Email-рассылка с подборками статей, новостей и инструментов для web-разработчиков.',
+        en: 'Email newsletter with a selection of articles, news and tools for web developers.',
       }}
       links={[{text: {ru: 'Прочесть все', en: 'Read all'}, url: 'https://news.sova.dev'}]}
     >
@@ -178,10 +186,10 @@ const articles = [...forem, ...pages]
     @apply pt-2;
   }
 
-  main .about p :global(a) {
+  main .about :global(a) {
     @apply text-sky-600 underline;
   }
-  main .about p :global(a):hover {
+  main .about :global(a):hover {
     @apply text-sky-600 no-underline;
   }
 

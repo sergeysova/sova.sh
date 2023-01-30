@@ -2,6 +2,7 @@
 import './prism-one-light.css';
 import Layout from './Layout.astro';
 import IfLang from '../components/IfLang.astro';
+import AssetArticles from '../assets/articles.svg';
 const {frontmatter} = Astro.props;
 ---
 
@@ -11,7 +12,8 @@ const {frontmatter} = Astro.props;
   type="article"
   locale={frontmatter.language}
 >
-  <main class="prose markdown max-w-[65ch] xl:max-w-[80ch]">
+  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] xl:max-w-[80ch]">
+    <img src={AssetArticles} class="pr-10 my-10" />
     <div class="go-back">
       <a href="/">
         ↵
@@ -19,8 +21,12 @@ const {frontmatter} = Astro.props;
         <IfLang equals="en">Go home</IfLang>
       </a>
     </div>
-    <h1>{frontmatter.title}</h1>
-    <slot />
+    <h1 class="text-2xl sm:text-3xl md:text-4xl xl:text-5xl mt-8 mb-6 font-medium">
+      {frontmatter.title}
+    </h1>
+    <div class="prose markdown max-w-[66ch] xl:max-w-[80ch]">
+      <slot />
+    </div>
     <div class="go-back mt-10">
       <a href="/">
         ↵
@@ -34,7 +40,6 @@ const {frontmatter} = Astro.props;
 <style>
   main {
     margin: 0 auto;
-    max-width: 820px;
     margin-top: 4ch;
     margin-bottom: 10ch;
   }
@@ -47,57 +52,57 @@ const {frontmatter} = Astro.props;
 </style>
 
 <style is:global>
-  main.markdown h1 {
-    @apply text-3xl mt-6 mb-6 font-medium;
+  main .markdown h1 {
+    @apply mt-6 mb-4 font-medium text-2xl sm:text-3xl md:text-4xl xl:text-5xl md:mb-5 xl:mb-6;
     line-height: 1;
   }
 
-  main.markdown h1:not(:first-child) {
+  main .markdown h1:not(:first-child) {
     @apply mt-8;
   }
 
-  main.markdown h2 {
-    @apply text-2xl mb-2 font-medium;
+  main .markdown h2 {
+    @apply mb-2 font-medium text-xl sm:text-2xl md:text-3xl xl:text-4xl md:mb-3 xl:mb-5;
     line-height: 1;
   }
 
-  main.markdown h2:not(:first-child) {
+  main .markdown h2:not(:first-child) {
     @apply mt-8;
   }
 
-  main.markdown h3 {
+  main .markdown h3 {
     @apply text-xl mb-2 font-medium;
     line-height: 1;
   }
 
-  main.markdown h3:not(:first-child) {
+  main .markdown h3:not(:first-child) {
     @apply mt-6;
   }
 
-  main.markdown h4 {
+  main .markdown h4 {
     @apply text-lg mb-2 font-medium;
     line-height: 1;
   }
 
-  main.markdown h4:not(:first-child) {
+  main .markdown h4:not(:first-child) {
     @apply mt-4;
   }
 
-  main.markdown h1,
-  main.markdown h2,
-  main.markdown h3,
-  main.markdown h4,
-  main.markdown h5,
-  main.markdown h6,
-  main.markdown h7 {
+  main .markdown h1,
+  main .markdown h2,
+  main .markdown h3,
+  main .markdown h4,
+  main .markdown h5,
+  main .markdown h6,
+  main .markdown h7 {
     @apply block relative;
   }
 
-  main.markdown :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
     opacity: 1;
   }
 
-  main.markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
     position: absolute;
     left: -1.5ch;
     display: inline-block;
@@ -105,17 +110,17 @@ const {frontmatter} = Astro.props;
     width: 2rem;
   }
 
-  main.markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
     text-align: left;
     display: inline-block;
   }
 
-  main.markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
     content: '#';
   }
 
   @media (max-width: 654px) {
-    main.markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+    main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
       position: relative;
       left: auto;
       opacity: 1;
@@ -123,61 +128,61 @@ const {frontmatter} = Astro.props;
     }
   }
 
-  main.markdown #table-of-contents {
+  main .markdown #table-of-contents {
     display: none;
   }
 
-  main.markdown :not(pre, .astro-debug) code {
+  main .markdown :not(pre, .astro-debug) code {
     @apply px-2 py-1 bg-red-50 text-red-800 rounded;
     font-size: 0.9em;
   }
 
-  main.markdown ul,
-  main.markdown ol,
-  main.markdown dl {
+  main .markdown ul,
+  main .markdown ol,
+  main .markdown dl {
     margin-top: 0;
     margin-bottom: 1rem;
     display: block;
   }
 
-  main.markdown ul,
-  main.markdown ol,
-  main.markdown dl {
+  main .markdown ul,
+  main .markdown ol,
+  main .markdown dl {
     margin-block: 0.5em;
     margin-inline: 0;
     padding-inline-start: 1.5em;
   }
 
-  main.markdown ul {
+  main .markdown ul {
     list-style-type: disc;
   }
 
-  main.markdown :where(ul, ol, dl) > li > p {
+  main .markdown :where(ul, ol, dl) > li > p {
     margin-block: 0;
   }
 
-  main.markdown :where(ul, ol, dl) li:not(:first-child) {
+  main .markdown :where(ul, ol, dl) li:not(:first-child) {
     margin-top: 0.3em;
   }
 
-  main.markdown ol {
+  main .markdown ol {
     list-style-type: decimal;
   }
 
-  main.markdown :where(ul, ol) ::marker {
+  main .markdown :where(ul, ol) ::marker {
     @apply text-sky-500;
   }
 
-  main.markdown p {
+  main .markdown p {
     margin-block: 1em;
   }
 
-  main.markdown strong,
-  main.markdown b {
+  main .markdown strong,
+  main .markdown b {
     @apply font-bold;
   }
 
-  main.markdown blockquote {
+  main .markdown blockquote {
     @apply text-gray-500 border-l-4 border-gray-300;
 
     padding-block: 0;
@@ -185,25 +190,25 @@ const {frontmatter} = Astro.props;
   }
 
   @media (min-width: 30em) {
-    main.markdown blockquote {
+    main .markdown blockquote {
       padding-right: 4em;
       padding-left: 1.25rem;
     }
   }
 
-  main.markdown pre > code {
+  main .markdown pre > code {
     padding: 0;
   }
 
-  main.markdown pre > code[class*='language-'] {
+  main .markdown pre > code[class*='language-'] {
     font-family: 'JetBrains Mono', Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
       'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
   }
 
-  main.markdown a {
+  main .markdown a {
     @apply text-sky-600 underline;
   }
-  main.markdown a:hover {
+  main .markdown a:hover {
     @apply no-underline;
   }
 </style>
