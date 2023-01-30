@@ -11,15 +11,23 @@ const {frontmatter} = Astro.props;
   type="article"
   locale={frontmatter.language}
 >
-  <main class="markdown">
+  <main class="prose markdown max-w-[65ch] xl:max-w-[80ch]">
     <div class="go-back">
       <a href="/">
-        <IfLang equals="ru">На главную</IfLang>
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
         <IfLang equals="en">Go home</IfLang>
       </a>
     </div>
     <h1>{frontmatter.title}</h1>
     <slot />
+    <div class="go-back mt-10">
+      <a href="/">
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
+    </div>
   </main>
 </Layout>
 
@@ -35,10 +43,6 @@ const {frontmatter} = Astro.props;
     main {
       @apply px-4;
     }
-  }
-
-  .go-back {
-    text-align: right;
   }
 </style>
 
@@ -188,7 +192,6 @@ const {frontmatter} = Astro.props;
   }
 
   main.markdown pre > code {
-    font-size: 0.8em;
     padding: 0;
   }
 

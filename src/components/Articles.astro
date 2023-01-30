@@ -24,8 +24,8 @@ const {articles} = Astro.props;
             class:list={['cover', {empty: !article.cover}]}
             style={article.cover ? `background-image: url(${article.cover})` : ''}
           />
-          <span>{article.title}</span>
-          <p>{article.description}</p>
+          <span class="title">{article.title}</span>
+          <p class="description">{article.description}</p>
         </a>
       </li>
     ))
@@ -41,7 +41,7 @@ const {articles} = Astro.props;
 
   @media (min-width: 560px) {
     .list {
-      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
     }
   }
 
@@ -75,11 +75,11 @@ const {articles} = Astro.props;
     background-position: 50%;
   }
 
-  .article span {
-    @apply block px-4 py-2 font-light text-xl;
+  .article .title {
+    @apply block px-4 py-2 font-light text-2xl;
   }
 
-  .article p {
-    @apply px-4 py-3;
+  .article .description {
+    @apply px-4 py-3 text-lg;
   }
 </style>

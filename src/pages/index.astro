@@ -49,14 +49,14 @@ const articles = [...forem, ...pages]
   })}
   image="https://avatars.githubusercontent.com/u/5620073?v=4"
 >
-  <main>
+  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch] xl:max-w-[90ch]">
     <div class="about">
       <h1 class="text-5xl">
         <IfLang equals="ru">Привет, я</IfLang>
         <IfLang equals="en">My name is</IfLang>
         <span class="text-gradient">{switchLang({ru: 'Сергей Сова', en: 'Sergey Sova'})}</span>
       </h1>
-      <p>
+      <p class="text-xl text-slate-900">
         <IfLang equals="en">
           I had made a bunch of packages for the effector ecosystem:
           <LinkTo name="patronum" />,
@@ -167,8 +167,6 @@ const articles = [...forem, ...pages]
 
   main {
     margin: auto;
-    padding: 1em;
-    max-width: 70ch;
     @apply flex flex-col gap-10;
   }
 

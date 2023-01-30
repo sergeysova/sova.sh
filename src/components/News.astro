@@ -13,8 +13,8 @@ const issues = Astro.props.news;
     issues.map((issue) => (
       <li class="issue" style={`background-image: url(${issue.image})`}>
         <a href={issue.url} rel="noopener">
-          <span>#{issue.id}</span>
-          <p>{issue.description}</p>
+          <span class="number">#{issue.id}</span>
+          <p class="description">{issue.description}</p>
         </a>
       </li>
     ))
@@ -30,7 +30,7 @@ const issues = Astro.props.news;
 
   @media (min-width: 560px) {
     .list {
-      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
     }
   }
 
@@ -42,7 +42,7 @@ const issues = Astro.props.news;
 
   @media (min-width: 400px) {
     .list .issue {
-      min-height: 10ch;
+      min-height: 20ch;
     }
   }
 
@@ -55,27 +55,19 @@ const issues = Astro.props.news;
 
   .issue a {
     @apply backdrop-blur-lg h-full text-white bg-black/50 overflow-hidden rounded-md;
-    transition-duration: 0.5s;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .issue:hover {
-    box-shadow: var(--shadow-elevation-hover);
-    transform: translateY(-3px);
   }
 
   .issue:hover a {
     color: transparent;
     background-color: transparent;
     backdrop-filter: none;
-    /* opacity: 0; */
   }
 
-  .issue span {
+  .issue .number {
     @apply px-4 py-2 font-light text-3xl float-right overflow-hidden;
   }
 
-  .issue p {
-    @apply px-4 py-3;
+  .issue .description {
+    @apply px-4 py-3 text-lg;
   }
 </style>

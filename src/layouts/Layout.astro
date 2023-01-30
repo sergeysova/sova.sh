@@ -63,8 +63,8 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
   <meta property="canonical" content={`${Astro.url.toString()}`} />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:creator" content="@_sergeysova" />
-  <meta name="twitter:site" content="@_sergeysova" />
+  <meta name="twitter:creator" content="@sova_original" />
+  <meta name="twitter:site" content="@sova_original" />
 
   <meta name="theme-color" content="#1F2028" />
   <script
@@ -79,21 +79,8 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
     <slot />
     <Footer />
     <style>
-      :root {
-        --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
-        --font-size-lg: clamp(1.2rem, 0.7vw + 1.2rem, 1.5rem);
-        --font-size-xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
-
-        --color-text: hsl(12, 5%, 4%);
-        --color-bg: hsl(10, 21%, 95%);
-        --color-border: hsl(17, 24%, 90%);
-      }
-
       html {
         @apply bg-slate-50;
-        font-family: system-ui, sans-serif;
-        font-size: var(--font-size-base);
-        color: var(--color-text);
       }
 
       body {

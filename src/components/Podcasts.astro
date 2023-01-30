@@ -32,9 +32,9 @@ const episodes = await Promise.all(
             <kbd>
               S{episode.season}:E{episode.episode}
             </kbd>
-            <h3>{episode.title}</h3>
+            <h3 class="title">{episode.title}</h3>
           </div>
-          <p>{episode.description}</p>
+          <p class="description">{episode.description}</p>
         </a>
       </li>
     ))
@@ -50,7 +50,7 @@ const episodes = await Promise.all(
 
   @media (min-width: 560px) {
     .list {
-      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
     }
   }
 
@@ -81,11 +81,11 @@ const episodes = await Promise.all(
     @apply float-right px-2 py-1 text-white bg-black/30 rounded-bl rounded-tr-md backdrop-blur;
   }
 
-  .episode h3 {
-    @apply absolute bottom-0 text-white block px-4 py-2 font-light backdrop-blur-xl bg-black/30 w-full;
+  .episode .title {
+    @apply absolute bottom-0 text-2xl text-white block px-4 py-2 font-light backdrop-blur-xl bg-black/30 w-full;
   }
 
-  .episode p {
-    @apply px-4 py-3;
+  .episode .description {
+    @apply px-4 py-3 text-lg;
   }
 </style>

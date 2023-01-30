@@ -22,8 +22,8 @@ export default defineConfig({
     syntaxHighlight: 'prism',
   },
   integrations: [
+    tailwind({config: {path: './tailwind.config.cjs'}}),
     react(),
-    tailwind(),
     sitemap(),
     prefetch(),
     mdx({

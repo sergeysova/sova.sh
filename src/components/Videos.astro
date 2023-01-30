@@ -15,7 +15,7 @@ const {videos} = Astro.props;
         <a href={video.url} target="_blank" rel="noopener">
           <div class="cover" style={`background-image: url(${video.thumbnails.standard.url})`}>
             <div class="blind">
-              <h3>{video.title}</h3>
+              <h3 class="title">{video.title}</h3>
             </div>
           </div>
         </a>
@@ -33,7 +33,7 @@ const {videos} = Astro.props;
 
   @media (min-width: 560px) {
     .list {
-      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
     }
   }
 
@@ -66,7 +66,7 @@ const {videos} = Astro.props;
     @apply font-light backdrop-blur-xl bg-black/30;
   }
 
-  .video .cover h3 {
-    @apply text-white block px-4 py-1 w-full;
+  .video .cover .title {
+    @apply text-white block px-4 py-2 text-lg w-full;
   }
 </style>
