@@ -29,7 +29,7 @@ const {title, titleImage, description, links, id} = Astro.props;
   {description ? <p class="pt-4">{switchLang(description)}</p> : null}
   {
     links ? (
-      <div>
+      <div class="pt-4 flex gap-2">
         {links.map((link) => (
           <ButtonLink text={optionalTranslate(link.text)} href={link.url} />
         ))}
