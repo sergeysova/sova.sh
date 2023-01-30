@@ -14,7 +14,6 @@
     "@11ty/eleventy-fetch": "^3.0.0",
     "@astrojs/image": "^0.5.1",
     "@podverse/podcast-feed-parser": "^1.1.0",
-    "@sergeysova/podcast-feed-parser": "^1.0.5",
     "astro": "^1.6.11",
     "dayjs": "^1.11.6",
     "react": "^18.0.0",

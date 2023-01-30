@@ -1,7 +1,4 @@
 import * as t from 'runtypes';
-// @ts-ignore
-import {getPodcastFromFeed} from '@sergeysova/podcast-feed-parser';
-import {convertIntoText} from './lib/text';
 import {cachedFetch} from './server-request';
 
 const apiKey = import.meta.env.SIMPLECAST_API_KEY;
@@ -19,70 +16,49 @@ async function request(path: string) {
     },
   });
   if (response.ok) return await response.json();
+  else {
+    throw new Error(await response.text());
+  }
 }
 
 export async function getEpisodes(): Promise<Episode[]> {
   console.log('fetching podcast');
-  const rss = 'https://anchor.fm/s/4c5764fc/podcast/rss';
-  const response = await cachedFetch(rss);
-  if (!response.ok) {
-    // || !response.headers.get('content-type')?.includes('xml')) {
-    throw new Error('Failed to get podcast');
-  }
-  const textXml = await response.text();
-  const answer = Podcast.check(getPodcastFromFeed(textXml));
-  return answer.episodes
-    .sort((a, b) => b.episode - a.episode)
-    .map((episode) => {
-      if (episode.description.includes('<p')) {
-        const parsed = convertIntoText(episode.description);
-        episode.description = parsed;
-      }
-      return episode;
-    });
+  const response = await request(`/podcasts/${podcastId}/episodes`);
+  const {collection} = SimplecastResponse.check(response);
+  return collection.map((episode) => ({
+    imageURL: episode.image_url,
+    link: `https://podcast.sova.dev/episodes/${episode.slug}`,
+    episode: episode.number,
+    season: episode.season.number,
+    title: episode.title,
+    description: episode.description,
+    pubDate: episode.published_at,
+  }));
 }
 
-const Episode = t.Record({
-  title: t.String,
+const SimplecastEpisode = t.Record({
   description: t.String,
   duration: t.Number,
-  enclosure: t.Record({
-    length: t.String,
-    type: t.String,
-    url: t.String,
-  }),
-  explicit: t.Boolean,
-  season: t.Number,
-  episode: t.Number,
-  guid: t.String,
-  imageURL: t.String,
-  link: t.String,
-  pubDate: t.String,
-  summary: t.String,
-});
-
-export type Episode = t.Static<typeof Episode>;
-
-const Meta = t.Record({
+  enclosure_url: t.String,
+  id: t.String,
+  image_url: t.String,
+  number: t.Number,
+  published_at: t.String,
+  season: t.Record({number: t.Number}),
+  slug: t.String,
   title: t.String,
-  author: t.Array(t.String),
-  categories: t.Array(t.String),
-  description: t.String,
-  explicit: t.Boolean,
-  imageURL: t.String,
-  language: t.String,
-  lastBuildDate: t.String,
-  link: t.String,
-  owner: t.Record({
-    name: t.String,
-    email: t.String,
-  }),
-  subtitle: t.String.optional(),
-  summary: t.String,
-  type: t.Union(t.Literal('episodic')),
 });
 
-const Podcast = t.Record({
-  meta: Meta,
-  episodes: t.Array(Episode),
+const SimplecastResponse = t.Record({
+  collection: t.Array(SimplecastEpisode),
 });
+
+export interface Episode {
+  imageURL: string;
+  link: string;
+  episode: number;
+  season: number;
+  title: string;
+  description: string;
+  pubDate: string;
+}
