@@ -16,7 +16,7 @@ import {getUniqueArticles} from '../data/forem';
 import {getPages} from '../data/markdown';
 import {getVideos} from '../data/youtube';
 import {getEpisodes} from '../data/podcast';
-import {getNews} from '../data/revue';
+import {getNews} from '../data/news';
 import {switchLang} from '../lib/language';
 import {invitedContent} from '../data/invited-content';
 
@@ -88,7 +88,7 @@ episodes.forEach((episode) =>
 news.forEach((issue) =>
   records.push({
     type: 'news',
-    title: issue.title,
+    title: `Сова рассылает выпуск #${issue.id}`,
     description: issue.description,
     publishedAt: new Date(issue.publishedAt),
     url: issue.url,
