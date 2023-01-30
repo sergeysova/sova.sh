@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" prefix="og: https://ogp.me/ns#" class="astro-DIDJRL5J">
+<html lang="ru" prefix="og: https://ogp.me/ns#" class="astro-3M44OFBH">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <link rel="icon" href="/favicon.png">
@@ -24,24 +24,37 @@
   <meta property="canonical" content="https://sova.dev/ru/why-utils-and-helpers-is-a-dump/">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:creator" content="@_sergeysova">
-  <meta name="twitter:site" content="@_sergeysova">
+  <meta name="twitter:creator" content="@sova_original">
+  <meta name="twitter:site" content="@sova_original">
 
   <meta name="theme-color" content="#1F2028">
   <script type="application/javascript" async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
   <script type="application/javascript">window.dataLayer = window.dataLayer || [];function gtag() {  dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-67236238-5');</script>
 
-  <body class="astro-DIDJRL5J">
-    <link rel="stylesheet" href="/assets/application-structure.e2f2031c.css" />
-<link rel="stylesheet" href="/assets/application-structure.b661c47c.css" /><script type="module" src="/page.3aa82516.js"></script><main class="markdown astro-LXWCGS7M">
-    <div class="go-back astro-LXWCGS7M">
-      <a href="/" class="astro-LXWCGS7M">
-        На главную
+  <body class="astro-3M44OFBH">
+    <link rel="stylesheet" href="/assets/application-structure.b41fc513.css" />
+<link rel="stylesheet" href="/assets/application-structure.1b7a28da.css" /><script type="module" src="/page.3aa82516.js"></script><main class="w-full mx-auto px-6 mb-10 max-w-[65ch] xl:max-w-[80ch] astro-EBPZHQML">
+    <img src="/assets/articles.9c822ad2.svg" class="pr-10 my-10 astro-EBPZHQML">
+    <div class="go-back astro-EBPZHQML">
+      <a href="/" class="astro-EBPZHQML">
+        ↵
+        Вернуться
         
       </a>
     </div>
-    <h1 class="astro-LXWCGS7M">Почему utils &amp; helpers это свалка</h1>
-    <p>Начнем с того, как они появляются. Во время разработки проекта, программист старается выносить повторяющиеся куски кода в функции и переиспользовать их. В какой-то момент, в двух разных модулях требуется одна и та же функция, неопытный разработчик решает вынести функцию в отдельный модуль. Но почему-то останавливается на этом решении, создавая директорию/модуль <code>utils</code> или <code>helpers</code>, не думая о будущем этой части программы.</p><p>С ростом проекта, количество функций в этой директории растет. Также растет и количество разработчиков в проекте. Функций появляется все больше и больше. Зачастую никто не следит за структурой этих модулей и вполне возможно появление дублирования кода.</p><h4 id="как-это-решить"><a aria-hidden="true" href="#как-это-решить" tabindex="-1"><span class="icon icon-link"></span></a>Как это решить?</h4><p>Забудьте о директориях <code>utils</code> и <code>helpers</code>. Эти названия никак не доносят суть содержимого. А из правил чистого кода мы помним, название должно быть однозначным и отражать назначение. Следует задуматься, почему вообще появилась необходимость в вынесении функции? Почему они используются в таких разных частях проекта?</p><p>Возможно, ответом будет плохая организация кода всего проекта. Если хорошо поисследовать проект можно найти много кода, который достоин вынесения в отдельную библиотеку. Если же этот код нельзя или не нужно выносить в полноценную библиотеку, его можно вынести в библиотеку внутри проекта. В случае JS, это можно сделать, создав полноценную библиотку внутри <code>lib/</code>.</p><p>Такой библиотеке нужно дать осмысленное однозначное название, написать документацию и тесты. Причем собрать в этой библиотеке весь связанный код. Например, вынести все функции работающие с датами во внутреннюю библиотеку <code>lib/datetime</code>. Префикс <code>lib/</code> позволит избежать конфликтов имен, а также можно будет использовать простые и понятные имена. Конечно же, можно сделать npm scope, чтобы упростить будущую публикацию в npm. Например, <code>@lib/datetime</code>.</p><h4 id="чем-это-отличается-от-utils-и-helpers"><a aria-hidden="true" href="#чем-это-отличается-от-utils-и-helpers" tabindex="-1"><span class="icon icon-link"></span></a>Чем это отличается от <code>utils</code> и <code>helpers</code>?</h4><ul><li>весь код, выносится в полноценную библиотку с осмысленным названием, документацией и тестами</li><li><code>lib</code> явно описывает содержимое: это библиотека</li><li>рефакторинг, публикация или удаление этой библиотеки становятся тривиальными задачами</li></ul>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl xl:text-5xl mt-8 mb-6 font-medium astro-EBPZHQML">
+      Почему utils &amp; helpers это свалка
+    </h1>
+    <div class="prose markdown max-w-[66ch] xl:max-w-[80ch] astro-EBPZHQML">
+      <p>Начнем с того, как они появляются. Во время разработки проекта, программист старается выносить повторяющиеся куски кода в функции и переиспользовать их. В какой-то момент, в двух разных модулях требуется одна и та же функция, неопытный разработчик решает вынести функцию в отдельный модуль. Но почему-то останавливается на этом решении, создавая директорию/модуль <code>utils</code> или <code>helpers</code>, не думая о будущем этой части программы.</p><p>С ростом проекта, количество функций в этой директории растет. Также растет и количество разработчиков в проекте. Функций появляется все больше и больше. Зачастую никто не следит за структурой этих модулей и вполне возможно появление дублирования кода.</p><h4 id="как-это-решить"><a aria-hidden="true" href="#как-это-решить" tabindex="-1"><span class="icon icon-link"></span></a>Как это решить?</h4><p>Забудьте о директориях <code>utils</code> и <code>helpers</code>. Эти названия никак не доносят суть содержимого. А из правил чистого кода мы помним, название должно быть однозначным и отражать назначение. Следует задуматься, почему вообще появилась необходимость в вынесении функции? Почему они используются в таких разных частях проекта?</p><p>Возможно, ответом будет плохая организация кода всего проекта. Если хорошо поисследовать проект можно найти много кода, который достоин вынесения в отдельную библиотеку. Если же этот код нельзя или не нужно выносить в полноценную библиотеку, его можно вынести в библиотеку внутри проекта. В случае JS, это можно сделать, создав полноценную библиотку внутри <code>lib/</code>.</p><p>Такой библиотеке нужно дать осмысленное однозначное название, написать документацию и тесты. Причем собрать в этой библиотеке весь связанный код. Например, вынести все функции работающие с датами во внутреннюю библиотеку <code>lib/datetime</code>. Префикс <code>lib/</code> позволит избежать конфликтов имен, а также можно будет использовать простые и понятные имена. Конечно же, можно сделать npm scope, чтобы упростить будущую публикацию в npm. Например, <code>@lib/datetime</code>.</p><h4 id="чем-это-отличается-от-utils-и-helpers"><a aria-hidden="true" href="#чем-это-отличается-от-utils-и-helpers" tabindex="-1"><span class="icon icon-link"></span></a>Чем это отличается от <code>utils</code> и <code>helpers</code>?</h4><ul><li>весь код, выносится в полноценную библиотку с осмысленным названием, документацией и тестами</li><li><code>lib</code> явно описывает содержимое: это библиотека</li><li>рефакторинг, публикация или удаление этой библиотеки становятся тривиальными задачами</li></ul>
+    </div>
+    <div class="go-back mt-10 astro-EBPZHQML">
+      <a href="/" class="astro-EBPZHQML">
+        ↵
+        Вернуться
+        
+      </a>
+    </div>
   </main>
     <footer class="astro-WBJIUCQQ">
   <div class="content astro-WBJIUCQQ">
