@@ -1,20 +1,11 @@
 ---
-import {fetchIssueImage, NewsIssue} from '../data/revue';
+import type {NewsIssue} from '../data/news';
 
 export interface Props {
   news: NewsIssue[];
 }
 
-const originalIssues = Astro.props.news;
-const issues = await Promise.all(
-  originalIssues.map(async (issue) => {
-    const image = await fetchIssueImage(issue);
-    return {
-      ...issue,
-      image,
-    };
-  }),
-);
+const issues = Astro.props.news;
 ---
 
 <ul class="list">
