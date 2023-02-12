@@ -126,4 +126,12 @@ export const invitedContent = [
     url: 'https://holyjs.ru/en/talks/d14acb98dc004003a561475608760d6d/',
     publishedAt: new Date('2022-11-11T11:00:00Z'),
   },
+  {
+    type: 'podcast',
+    title: 'Frontend Weekend #142',
+    description:
+      'Сергей Сова о вынужденном даунгрейде до разработчика, Effector`е и фронтенд-архитектуре.',
+    url: 'https://podcast.ru/e/.AbYIPoUcB5',
+    publishedAt: new Date('2023-02-06T11:00:00Z'),
+  },
 ] as const;
