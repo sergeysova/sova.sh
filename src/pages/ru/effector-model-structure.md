@@ -149,4 +149,4 @@ function trimEvent(event) {
 }
 ```
 
-[структура приложения]: ./application-structure
+[структура приложения]: /ru/application-structure
