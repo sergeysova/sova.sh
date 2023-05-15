@@ -134,4 +134,20 @@ export const invitedContent = [
     url: 'https://podcast.ru/e/.AbYIPoUcB5',
     publishedAt: new Date('2023-02-06T11:00:00Z'),
   },
+  {
+    type: 'video',
+    title: 'SIBERIA CAN CODE — Effector в действии',
+    description:
+      'На данном стриме мы в месте с core-разработчиком effector научимся мыслить и работать с данной библиотекой. Постараемся ответить на вопросы как и когда нужно использовать effector',
+    url: 'https://www.youtube.com/watch?v=a83r-YGWMBc',
+    publishedAt: new Date('2023-04-30T11:00:00Z'),
+  },
+  {
+    type: 'video',
+    title: 'SIBERIA CAN CODE — Роутинг и фабрики в effector',
+    description:
+      'На данном стриме мы изучим как писать фабрики, что это такое, в каких случаях стоит использовать. А также подключим роутинг с помощью atomic-router, научимся проверять аутентификацию и показывать загрузку данных.',
+    url: 'https://www.youtube.com/watch?v=a83r-YGWMBc',
+    publishedAt: new Date('2023-05-06T11:00:00Z'),
+  },
 ] as const;
