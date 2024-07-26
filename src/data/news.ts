@@ -3,7 +3,7 @@ import * as t from 'runtypes';
 
 export async function getNews(): Promise<NewsIssue[]> {
   console.log('fetching news');
-  const rss = 'https://news.sova.dev/issues.json';
+  const rss = 'https://news.sova.sh/issues.json';
   const response = await cachedFetch(rss);
   if (!response.ok) {
     throw new Error('Failed to get news');
