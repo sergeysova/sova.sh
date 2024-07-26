@@ -5,20 +5,15 @@ const foremServices = {
     url: 'https://dev.to',
     apiKey: import.meta.env.DEVTO_API_KEY,
   },
-  'community.effector': {
-    url: 'https://community.effector.dev',
-    apiKey: import.meta.env.EFFECTOR_COMMUNITY_API_KEY,
-  },
 };
 
 export function getUniqueArticles(): Promise<Article[]> {
   const uniqueNamesArticlesMap = new Map<string, Article>();
-  return Promise.all([getArticlesOf('dev.to'), getArticlesOf('community.effector')])
+  return Promise.all([getArticlesOf('dev.to')])
     .catch((error) => {
       console.error('failed to get articles', error);
       throw error;
     })
-    .then(([dev, effector]) => [...effector, ...dev])
     .then((articles) => articles.filter((article) => !article.tag_list.includes('video')))
     .then((articles) =>
       articles.filter((article) => {
