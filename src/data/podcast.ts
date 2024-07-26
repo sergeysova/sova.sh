@@ -27,7 +27,7 @@ export async function getEpisodes(): Promise<Episode[]> {
   const {collection} = SimplecastResponse.check(response);
   return collection.map((episode) => ({
     imageURL: episode.image_url,
-    link: `https://podcast.sova.dev/episodes/${episode.slug}`,
+    link: `https://podcast.sova.sh/episodes/${episode.slug}`,
     episode: episode.number,
     season: episode.season.number,
     title: episode.title,
