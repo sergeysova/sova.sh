@@ -1,4 +1,4 @@
-import * as t from 'runtypes';
+import * as z from 'zod';
 
 export interface Page {
   title: string;
@@ -13,18 +13,17 @@ interface MarkdownFile {
   file: string;
   url: string;
 }
-
-const FrontMatter = t.Record({
-  title: t.String,
-  description: t.String,
-  date: t.String,
-  language: t.Union(t.Literal('ru'), t.Literal('en')),
+const FrontMatter = z.object({
+  title: z.string(),
+  description: z.string(),
+  date: z.string(),
+  language: z.enum(['ru', 'en']),
 });
 
-const MarkdownFile = t.Record({
+const MarkdownFile = z.object({
   frontmatter: FrontMatter,
-  file: t.String,
-  url: t.String,
+  file: z.string(),
+  url: z.string(),
 });
 
 export async function getPages(): Promise<Page[]> {
@@ -37,7 +36,7 @@ export async function getPages(): Promise<Page[]> {
   return files
     .map((file) => {
       try {
-        return MarkdownFile.check(file);
+        return MarkdownFile.parse(file);
       } catch (error) {
         console.error('Failed to check markdown file', (file as any).file);
         throw error;

@@ -1,6 +1,6 @@
 ---
 import type {Episode} from '../data/podcast';
-import {getImage} from '@astrojs/image';
+import {getImage} from 'astro:assets';
 
 export interface Props {
   episodes: Episode[];
@@ -10,10 +10,11 @@ const originalEpisodes = Astro.props.episodes;
 const episodes = await Promise.all(
   originalEpisodes.map(async (episode) => {
     const image = await getImage({
-      src: episode.imageURL,
       width: 736,
-      aspectRatio: 1.48,
       quality: 90,
+      inferSize: true,
+      aspectRatio: 1.48,
+      src: episode.imageURL,
     });
     return {
       ...episode,
@@ -42,6 +43,8 @@ const episodes = await Promise.all(
 </ul>
 
 <style>
+  @import '../styles/global.css';
+
   .list {
     display: grid;
     gap: 1rem;
@@ -61,28 +64,32 @@ const episodes = await Promise.all(
   }
 
   .episode {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden;
-    box-shadow: var(--shadow-inset), rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
+    box-shadow:
+      var(--shadow-inset),
+      rgba(0, 0, 0, 0.4) 0px 2px 4px,
       rgba(0, 0, 0, 0.3) 0px 7px 13px -3px;
     transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .episode:hover {
-    box-shadow: var(--shadow-inset), rgba(91, 33, 182, 0.2) 0px 8px 8px,
+    box-shadow:
+      var(--shadow-inset),
+      rgba(91, 33, 182, 0.2) 0px 8px 8px,
       rgba(91, 33, 182, 0.2) 0px 13px 26px -3px;
   }
 
   .episode .cover {
-    @apply block bg-cover bg-center relative;
+    @apply relative block bg-cover bg-center;
     aspect-ratio: 1.9;
   }
 
   .episode .cover kbd {
-    @apply float-right px-2 py-1 text-white bg-black/30 rounded-bl rounded-tr-md backdrop-blur;
+    @apply float-right rounded-tr-md rounded-bl bg-black/30 px-2 py-1 text-white backdrop-blur;
   }
 
   .episode .title {
-    @apply absolute bottom-0 text-2xl text-white block px-4 py-2 font-light backdrop-blur-xl bg-black/30 w-full;
+    @apply absolute bottom-0 block w-full bg-black/30 px-4 py-2 text-2xl font-light text-white backdrop-blur-xl;
   }
 
   .episode .description {

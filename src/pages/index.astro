@@ -1,13 +1,13 @@
 ---
-import AssetArticles from '../assets/articles.svg';
-import AssetNews from '../assets/news.svg';
-import AssetPodcast from '../assets/podcast.svg';
-import AssetYoutube from '../assets/youtube.svg';
+import AssetArticles from '../assets/articles.svg?url';
+import AssetNews from '../assets/news.svg?url';
+import AssetPodcast from '../assets/podcast.svg?url';
+import AssetYoutube from '../assets/youtube.svg?url';
 
-import IconMicrophone from '../assets/icons/microphone.svg';
-import IconNews from '../assets/icons/news.svg';
-import IconNotes from '../assets/icons/notes.svg';
-import IconYoutube from '../assets/icons/youtube.svg';
+import IconMicrophone from '../assets/icons/microphone.svg?url';
+import IconNews from '../assets/icons/news.svg?url';
+import IconNotes from '../assets/icons/notes.svg?url';
+import IconYoutube from '../assets/icons/youtube.svg?url';
 
 import Layout from '../layouts/Layout.astro';
 
@@ -49,7 +49,7 @@ const articles = [...forem, ...pages]
   })}
   image="https://avatars.githubusercontent.com/u/5620073?v=4"
 >
-  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch]">
+  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 md:max-w-[80ch]">
     <div class="about">
       <h1 class="text-5xl">
         <IfLang equals="ru">Привет, я</IfLang>
@@ -63,7 +63,7 @@ const articles = [...forem, ...pages]
           <LinkTo name="inspector" />, etc. <br />
           I have a podcast on Russian, made <LinkTo name="twitter" />, and <LinkTo
             name="telegram"
-          /> with 3K subscribers in total.
+          /> with 3K+ subscribers in total.
           <br />My open-source contributions feed is available on <LinkTo name="github" />.
         </IfLang>
         <IfLang equals="ru">
@@ -72,7 +72,7 @@ const articles = [...forem, ...pages]
           <LinkTo name="inspector" /> и т.д.
           <br />У меня есть подкаст на русском, собрал в <LinkTo name="twitter" /> и <LinkTo
             name="telegram"
-          /> около 3 тыс. подписчиков. Мой вклад в open-source можно посмотреть на странице <LinkTo
+          /> больше 3 тыс. подписчиков. Мой вклад в open-source можно посмотреть на странице <LinkTo
             name="github"
           />.
         </IfLang>
@@ -169,6 +169,8 @@ const articles = [...forem, ...pages]
 </Layout>
 
 <style>
+  @import '../styles/global.css';
+
   :root {
     --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
   }
@@ -198,13 +200,13 @@ const articles = [...forem, ...pages]
   }
 
   main .section-nav .section-link {
-    @apply inline-flex justify-center items-center align-middle py-1 pl-1.5 pr-2 gap-1 transition-all rounded-md;
+    @apply inline-flex items-center justify-center gap-1 rounded-md py-1 pr-2 pl-1.5 align-middle transition-all;
     @apply hover:bg-slate-500/20;
     @apply focus:outline-none;
   }
 
   main .section-nav .section-link img {
-    @apply w-4 h-4 fill-current opacity-80;
+    @apply h-4 w-4 fill-current opacity-80;
   }
 
   .text-gradient {

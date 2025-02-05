@@ -18,15 +18,17 @@ import LinkTo from '../components/LinkTo.astro';
 </footer>
 
 <style>
+  @import '../styles/global.css';
+
   body footer {
-    @apply bg-zinc-800 text-gray-50 pb-10 pt-4 mt-10;
+    @apply mt-10 bg-zinc-800 pt-4 pb-10 text-gray-50;
   }
 
   body footer .content {
     margin: auto;
     padding: 1em;
     max-width: 70ch;
-    @apply flex flex-col gap-2 items-start space-y-4;
+    @apply flex flex-col items-start gap-2 space-y-4;
   }
 
   body footer h3 {
@@ -34,7 +36,7 @@ import LinkTo from '../components/LinkTo.astro';
   }
 
   footer .links {
-    @apply flex flex-col grow-0 items-start gap-1;
+    @apply flex grow-0 flex-col items-start gap-1;
   }
 
   footer a {

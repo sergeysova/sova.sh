@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   useTabs: false,
   tabWidth: 2,
   singleQuote: true,
@@ -8,7 +8,7 @@ module.exports = {
   bracketSpacing: false,
   printWidth: 100,
   endOfLine: 'lf',
-  plugins: [require.resolve('prettier-plugin-astro')],
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
     {
       files: '*.astro',
@@ -19,13 +19,13 @@ module.exports = {
     {
       files: '*.md',
       options: {
-        printWidth: 66,
+        printWidth: 80,
       },
     },
     {
       files: '*.mdx',
       options: {
-        printWidth: 66,
+        printWidth: 80,
       },
     },
   ],

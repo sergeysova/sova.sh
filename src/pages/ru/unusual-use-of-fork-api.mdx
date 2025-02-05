@@ -146,7 +146,7 @@ await allSettled(run, {
 
 # Как еще можно использовать
 
-import {Picture} from '@astrojs/image/components';
+import {Image} from 'astro:assets';
 
 Я решил сделать приложение для игры с друзьями в [настолку](https://munchkin.game/) — Munchkin level counter. Самостоятельно реализовать альтернативу [официальному веб-приложению](https://web.allmunchkins.com/) с эффектором и вебсокетами.
 
@@ -156,7 +156,7 @@ import {Picture} from '@astrojs/image/components';
 
 import munchkin1 from './munchkin/1.png';
 
-<Picture
+<Image
   src={munchkin1}
   widths={[420, 680, 820, 1600]}
   formats={['avif', 'jpeg', 'png', 'webp']}
@@ -167,7 +167,7 @@ import munchkin1 from './munchkin/1.png';
 
 import munchkin2 from './munchkin/2.png';
 
-<Picture
+<Image
   src={munchkin2}
   widths={[420, 680, 820, 1600]}
   formats={['avif', 'jpeg', 'png', 'webp']}
@@ -204,10 +204,7 @@ test('player can lose level', async () => {
 
   await allSettled(munchkin.levelUp, {scope, params: John.id});
   await allSettled(munchkin.levelDown, {scope, params: John.id});
-  expect(scope.getState(munchkin.$players)).toStrictEqual([
-    John,
-    Alba,
-  ]);
+  expect(scope.getState(munchkin.$players)).toStrictEqual([John, Alba]);
 });
 ```
 
@@ -217,19 +214,11 @@ test('player can lose level', async () => {
 
 ```jsx
 // client
-const stepFinishedFx = createEffect(() =>
-  sendWSEvent({type: 'stepFinished'}),
-);
-const gearIncreaseFx = createEffect(() =>
-  sendWSEvent({type: 'gearIncrease'}),
-);
-const gearDecreaseFx = createEffect(() =>
-  sendWSEvent({type: 'gearDecrease'}),
-);
+const stepFinishedFx = createEffect(() => sendWSEvent({type: 'stepFinished'}));
+const gearIncreaseFx = createEffect(() => sendWSEvent({type: 'gearIncrease'}));
+const gearDecreaseFx = createEffect(() => sendWSEvent({type: 'gearDecrease'}));
 const deadFx = createEffect(() => sendWSEvent({type: 'dead'}));
-const levelUpFx = createEffect(() =>
-  sendWSEvent({type: 'levelUp'}),
-);
+const levelUpFx = createEffect(() => sendWSEvent({type: 'levelUp'}));
 
 // server
 const {type, value} = JSON.parse(message.toString());
@@ -396,9 +385,7 @@ munchkin.common.onCreateStore((unit) => {
 ```tsx
 function sendUpdates(room) {
   const states = serialize(room.scope);
-  forEach(room.players, (player) =>
-    player.send('gameUpdate', states),
-  );
+  forEach(room.players, (player) => player.send('gameUpdate', states));
 }
 ```
 

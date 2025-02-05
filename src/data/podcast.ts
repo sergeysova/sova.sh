@@ -1,4 +1,4 @@
-import * as t from 'runtypes';
+import * as z from 'zod';
 import {cachedFetch} from './server-request';
 
 const apiKey = import.meta.env.SIMPLECAST_API_KEY;
@@ -24,7 +24,7 @@ async function request(path: string) {
 export async function getEpisodes(): Promise<Episode[]> {
   console.log('fetching podcast');
   const response = await request(`/podcasts/${podcastId}/episodes`);
-  const {collection} = SimplecastResponse.check(response);
+  const {collection} = SimplecastResponse.parse(response);
   return collection.map((episode) => ({
     imageURL: episode.image_url,
     link: `https://podcast.sova.sh/episodes/${episode.slug}`,
@@ -36,21 +36,21 @@ export async function getEpisodes(): Promise<Episode[]> {
   }));
 }
 
-const SimplecastEpisode = t.Record({
-  description: t.String,
-  duration: t.Number,
-  enclosure_url: t.String,
-  id: t.String,
-  image_url: t.String,
-  number: t.Number,
-  published_at: t.String,
-  season: t.Record({number: t.Number}),
-  slug: t.String,
-  title: t.String,
+const SimplecastEpisode = z.object({
+  description: z.string(),
+  duration: z.number(),
+  enclosure_url: z.string(),
+  id: z.string(),
+  image_url: z.string(),
+  number: z.number(),
+  published_at: z.string(),
+  season: z.object({number: z.number()}),
+  slug: z.string(),
+  title: z.string(),
 });
 
-const SimplecastResponse = t.Record({
-  collection: t.Array(SimplecastEpisode),
+const SimplecastResponse = z.object({
+  collection: z.array(SimplecastEpisode),
 });
 
 export interface Episode {

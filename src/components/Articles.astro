@@ -33,6 +33,8 @@ const {articles} = Astro.props;
 </ul>
 
 <style>
+  @import '../styles/global.css';
+
   .list {
     display: grid;
     gap: 1rem;
@@ -52,10 +54,11 @@ const {articles} = Astro.props;
   }
 
   .article {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden;
+    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
 
     box-shadow: var(--shadow-inset), var(--shadow-elevation);
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transition:
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -76,7 +79,7 @@ const {articles} = Astro.props;
   }
 
   .article .title {
-    @apply block px-4 py-2 font-light text-2xl;
+    @apply block px-4 py-2 text-2xl font-light;
   }
 
   .article .description {

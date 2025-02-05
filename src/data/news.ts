@@ -1,5 +1,5 @@
 import {cachedFetch} from './server-request';
-import * as t from 'runtypes';
+import * as z from 'zod';
 
 export async function getNews(): Promise<NewsIssue[]> {
   console.log('fetching news');
@@ -8,7 +8,7 @@ export async function getNews(): Promise<NewsIssue[]> {
   if (!response.ok) {
     throw new Error('Failed to get news');
   }
-  const {issues} = Response.check(await response.json());
+  const {issues} = Response.parse(await response.json());
 
   return issues.map((issue) => ({
     id: issue.number,
@@ -18,18 +18,17 @@ export async function getNews(): Promise<NewsIssue[]> {
     publishedAt: new Date(issue.date),
   }));
 }
-
-const Issue = t.Record({
-  number: t.Number,
-  slug: t.String,
-  url: t.String,
-  image: t.String,
-  date: t.String,
-  description: t.String,
+const Issue = z.object({
+  number: z.number(),
+  slug: z.string(),
+  url: z.string(),
+  image: z.string(),
+  date: z.string(),
+  description: z.string(),
 });
 
-const Response = t.Record({
-  issues: t.Array(Issue),
+const Response = z.object({
+  issues: z.array(Issue),
 });
 
 export interface NewsIssue {

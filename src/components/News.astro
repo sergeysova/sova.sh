@@ -22,6 +22,8 @@ const issues = Astro.props.news;
 </ul>
 
 <style>
+  @import '../styles/global.css';
+
   .list {
     display: grid;
     gap: 1rem;
@@ -47,14 +49,15 @@ const issues = Astro.props.news;
   }
 
   .issue {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden bg-cover bg-center;
+    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white bg-cover bg-center;
     box-shadow: var(--shadow-elevation);
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transition:
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .issue a {
-    @apply backdrop-blur-lg h-full text-white bg-black/50 overflow-hidden rounded-md;
+    @apply h-full overflow-hidden rounded-md bg-black/50 text-white backdrop-blur-lg;
   }
 
   .issue:hover a {
@@ -64,7 +67,7 @@ const issues = Astro.props.news;
   }
 
   .issue .number {
-    @apply px-4 py-2 font-light text-3xl float-right overflow-hidden;
+    @apply float-right overflow-hidden px-4 py-2 text-3xl font-light;
   }
 
   .issue .description {

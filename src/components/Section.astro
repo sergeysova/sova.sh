@@ -23,13 +23,13 @@ const {title, titleImage, description, links, id} = Astro.props;
 
 <section>
   {id ? <a id={id} /> : null}
-  {title ? <h1 class="text-3xl mb-2">{title}</h1> : null}
+  {title ? <h1 class="mb-2 text-3xl">{title}</h1> : null}
   {titleImage ? <img src={titleImage} class="title-image" /> : null}
   <slot />
   {description ? <p class="pt-4">{switchLang(description)}</p> : null}
   {
     links ? (
-      <div class="pt-4 flex gap-2">
+      <div class="flex gap-2 pt-4">
         {links.map((link) => (
           <ButtonLink text={optionalTranslate(link.text)} href={link.url} />
         ))}
@@ -39,19 +39,21 @@ const {title, titleImage, description, links, id} = Astro.props;
 </section>
 
 <style>
+  @import '../styles/global.css';
+
   .title-image {
-    @apply max-h-14 -mb-2;
+    @apply -mb-2 max-h-14;
   }
 
   @media (min-width: 560px) {
     .title-image {
-      @apply max-h-20 -mb-3 mr-6;
+      @apply mr-6 -mb-3 max-h-20;
     }
   }
 
   @media (min-width: 960px) {
     .title-image {
-      @apply max-h-24 -mb-4 -ml-20;
+      @apply -mb-4 -ml-20 max-h-24;
     }
   }
 </style>

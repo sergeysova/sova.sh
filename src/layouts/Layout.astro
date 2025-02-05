@@ -15,6 +15,7 @@ const siteName = switchLang({
   ru: 'Сергей Сова',
   en: 'Sergey Sova',
 });
+
 const {
   title,
   description,
@@ -34,7 +35,7 @@ gtag('js', new Date());
 gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang={locale} prefix="og: https://ogp.me/ns#">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -66,21 +67,21 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
   <meta name="twitter:creator" content="@sova_original" />
   <meta name="twitter:site" content="@sova_original" />
 
-  <link rel="me" href="https://techhub.social/@sergeysova"/>
+  <link rel="me" href="https://techhub.social/@sergeysova" />
 
   <meta name="theme-color" content="#1F2028" />
   <script
     type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
     async
-    src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}
-  ></script>
-  <script type={import.meta.env.PROD ? 'application/javascript' : 'skip'} set:html={gtagSource}
-  ></script>
+    src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}></script>
+  <script type={import.meta.env.PROD ? 'application/javascript' : 'skip'} set:html={gtagSource} />
 
   <body>
     <slot />
     <Footer />
     <style>
+      @import '../styles/global.css';
+
       html {
         @apply bg-slate-50;
       }
@@ -91,9 +92,18 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
     </style>
 
     <style is:global>
+      @import '../styles/global.css';
+
       code {
-        font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-          Bitstream Vera Sans Mono, Courier New, monospace;
+        font-family:
+          Menlo,
+          Monaco,
+          Lucida Console,
+          Liberation Mono,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Courier New,
+          monospace;
       }
 
       :root {

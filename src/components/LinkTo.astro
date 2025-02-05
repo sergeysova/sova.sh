@@ -5,7 +5,7 @@ const Links = {
   patronum: {url: 'https://github.com/effector/patronum'},
   logger: {url: 'https://github.com/effector/logger'},
   inspector: {url: 'https://github.com/effector/inspector'},
-  twitter: {url: 'https://twitter.com/sova_original', text: 'Twitter'},
+  twitter: {url: 'https://x.com/sergeysova', text: 'X.com'},
   telegram: {url: 'https://t.me/sergeysova', text: 'Telegram'},
   github: {url: 'https://github.com/sergeysova', text: 'GitHub'},
   youtube: {url: 'https://youtube.com/@sova', text: 'YouTube'},
@@ -26,8 +26,8 @@ const link = Links[Astro.props.name] as Link;
 const text = Astro.props.text
   ? optionalTranslate(Astro.props.text)
   : link.text
-  ? optionalTranslate(link.text)
-  : Astro.props.name;
+    ? optionalTranslate(link.text)
+    : Astro.props.name;
 ---
 
 <a href={link.url} rel="noopener" target="_blank" class={Astro.props.class}>{text}</a>

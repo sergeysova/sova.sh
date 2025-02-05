@@ -6,11 +6,11 @@ import LocaleData from 'dayjs/plugin/localeData';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 import Layout from '../layouts/Layout.astro';
-import AssetHistory from '../assets/history.svg';
-import IconMicrophone from '../assets/icons/microphone.svg';
-import IconNews from '../assets/icons/news.svg';
-import IconNotes from '../assets/icons/notes.svg';
-import IconYoutube from '../assets/icons/youtube.svg';
+import AssetHistory from '../assets/history.svg?url';
+import IconMicrophone from '../assets/icons/microphone.svg?url';
+import IconNews from '../assets/icons/news.svg?url';
+import IconNotes from '../assets/icons/notes.svg?url';
+import IconYoutube from '../assets/icons/youtube.svg?url';
 
 import {getUniqueArticles} from '../data/forem';
 import {getPages} from '../data/markdown';
@@ -129,7 +129,7 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
 >
   <main class="relative">
     <img src={AssetHistory} class="title-image z-10" />
-    <div class="space-y-5 relative">
+    <div class="relative space-y-5">
       {
         records.map((record, index) => {
           const recordYear = record.publishedAt.getUTCFullYear();
@@ -165,15 +165,15 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
                 rel="noopener"
                 target="_blank"
               >
-                <div class="text-xl px-4 flex space-x-2">
+                <div class="flex space-x-2 px-4 text-xl">
                   <img
                     src={icon[record.type]}
-                    class="w-5 inline-block"
+                    class="inline-block w-5"
                     title={articleTypeTitle[record.type]}
                   />
                   <span>{record.title}</span>
                 </div>
-                <span class="text-sm pr-4 pl-12">{dayjs(record.publishedAt).format('LL')}</span>
+                <span class="pr-4 pl-12 text-sm">{dayjs(record.publishedAt).format('LL')}</span>
                 <p class="pr-4 pl-12">{record.description}</p>
               </a>
             </Fragment>
@@ -185,6 +185,8 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
   </main>
 </Layout>
 <style>
+  @import '../styles/global.css';
+
   main {
     margin: auto;
     padding: 1em;
@@ -193,28 +195,28 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
   }
 
   .title-image {
-    @apply max-h-14 my-2;
+    @apply my-2 max-h-14;
   }
 
   @media (min-width: 560px) {
     .title-image {
-      @apply max-h-20 my-3 mr-6;
+      @apply my-3 mr-6 max-h-20;
     }
   }
 
   @media (min-width: 960px) {
     .title-image {
-      @apply max-h-24 my-4 -ml-24;
+      @apply my-4 -ml-24 max-h-24;
     }
   }
 
   .line {
-    @apply absolute w-1 bg-slate-400 top-0 bottom-0 left-6 rounded;
+    @apply absolute top-0 bottom-0 left-6 w-1 rounded bg-slate-400;
     z-index: -1;
   }
 
   .year {
-    @apply block top-1 sticky px-5 py-2 -mx-3 bg-black text-white;
+    @apply sticky top-1 -mx-3 block bg-black px-5 py-2 text-white;
     border-radius: 50px;
     z-index: 90;
     transition: scale 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
@@ -231,25 +233,29 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
   }
 
   .month {
-    @apply inline-block ml-10 text-slate-600 font-medium py-0.5 px-2 rounded hover:bg-slate-500 hover:text-white;
-    transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    @apply ml-10 inline-block rounded px-2 py-0.5 font-medium text-slate-600 hover:bg-slate-500 hover:text-white;
+    transition:
+      background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
       color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .record {
     --border-brand-color: transparent;
-    @apply relative bg-white rounded-md flex flex-col gap-1 overflow-hidden py-3;
+    @apply relative flex flex-col gap-1 overflow-hidden rounded-md bg-white py-3;
     --shadow-color: 0deg 0% 0%;
 
-    box-shadow: hsla(var(--shadow-color) / 0.4) 0px 2px 4px,
+    box-shadow:
+      hsla(var(--shadow-color) / 0.4) 0px 2px 4px,
       hsla(var(--shadow-color) / 0.3) 0px 7px 13px -3px,
       hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transition:
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .record:hover {
-    box-shadow: hsla(var(--shadow-color) / 0.2) 0px 8px 8px,
+    box-shadow:
+      hsla(var(--shadow-color) / 0.2) 0px 8px 8px,
       hsla(var(--shadow-color) / 0.2) 0px 13px 26px -3px,
       hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
     transform: translateY(-3px);
@@ -257,7 +263,7 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
 
   .record::after {
     content: '';
-    @apply top-0 left-0 bottom-0 w-1 absolute;
+    @apply absolute top-0 bottom-0 left-0 w-1;
     background-color: hsl(var(--border-brand-color));
     transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -271,7 +277,7 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
     @apply -ml-3 pl-3;
   }
   .record.invited::after {
-    @apply w-5 text-sm text-white py-1;
+    @apply w-5 py-1 text-sm text-white;
     content: attr(data-invited);
     text-orientation: sideways;
     writing-mode: vertical-lr;

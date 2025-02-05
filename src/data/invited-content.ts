@@ -153,7 +153,8 @@ export const invitedContent = [
   {
     type: 'video',
     title: 'SIBERIA CAN CODE — Код ревью, запросы',
-    description: 'На данном стриме мы поревьювим код, разберем как выполнять запросы со страницы поиска рецептов, добавим infinity scroll, поотвечаем на вопросы зрителей',
+    description:
+      'На данном стриме мы поревьювим код, разберем как выполнять запросы со страницы поиска рецептов, добавим infinity scroll, поотвечаем на вопросы зрителей',
     url: 'https://www.youtube.com/watch?v=DChSroCxOJE',
     publishedAt: new Date('2023-05-20T11:00:00Z'),
   },

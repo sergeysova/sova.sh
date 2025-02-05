@@ -2,7 +2,7 @@
 import './prism-one-light.css';
 import Layout from './Layout.astro';
 import IfLang from '../components/IfLang.astro';
-import AssetArticles from '../assets/articles.svg';
+import AssetArticles from '../assets/articles.svg?url';
 const {frontmatter} = Astro.props;
 ---
 
@@ -12,8 +12,8 @@ const {frontmatter} = Astro.props;
   type="article"
   locale={frontmatter.language}
 >
-  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] xl:max-w-[80ch]">
-    <img src={AssetArticles} class="pr-10 my-10" />
+  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 xl:max-w-[80ch]">
+    <img src={AssetArticles} class="my-10 pr-10" />
     <div class="go-back">
       <a href="/">
         ↵
@@ -21,7 +21,7 @@ const {frontmatter} = Astro.props;
         <IfLang equals="en">Go home</IfLang>
       </a>
     </div>
-    <h1 class="text-2xl sm:text-3xl md:text-4xl xl:text-5xl mt-8 mb-6 font-medium">
+    <h1 class="mt-8 mb-6 text-2xl font-medium sm:text-3xl md:text-4xl xl:text-5xl">
       {frontmatter.title}
     </h1>
     <div class="prose markdown max-w-[66ch] xl:max-w-[80ch]">
@@ -38,6 +38,8 @@ const {frontmatter} = Astro.props;
 </Layout>
 
 <style>
+  @import '../styles/global.css';
+
   main {
     margin: 0 auto;
     margin-top: 4ch;
@@ -52,8 +54,10 @@ const {frontmatter} = Astro.props;
 </style>
 
 <style is:global>
+  @import '../styles/global.css';
+
   main .markdown h1 {
-    @apply mt-6 mb-4 font-medium text-2xl sm:text-3xl md:text-4xl xl:text-5xl md:mb-5 xl:mb-6;
+    @apply mt-6 mb-4 text-2xl font-medium sm:text-3xl md:mb-5 md:text-4xl xl:mb-6 xl:text-5xl;
     line-height: 1;
   }
 
@@ -62,7 +66,7 @@ const {frontmatter} = Astro.props;
   }
 
   main .markdown h2 {
-    @apply mb-2 font-medium text-xl sm:text-2xl md:text-3xl xl:text-4xl md:mb-3 xl:mb-5;
+    @apply mb-2 text-xl font-medium sm:text-2xl md:mb-3 md:text-3xl xl:mb-5 xl:text-4xl;
     line-height: 1;
   }
 
@@ -71,7 +75,7 @@ const {frontmatter} = Astro.props;
   }
 
   main .markdown h3 {
-    @apply text-xl mb-2 font-medium;
+    @apply mb-2 text-xl font-medium;
     line-height: 1;
   }
 
@@ -80,7 +84,7 @@ const {frontmatter} = Astro.props;
   }
 
   main .markdown h4 {
-    @apply text-lg mb-2 font-medium;
+    @apply mb-2 text-lg font-medium;
     line-height: 1;
   }
 
@@ -95,7 +99,7 @@ const {frontmatter} = Astro.props;
   main .markdown h5,
   main .markdown h6,
   main .markdown h7 {
-    @apply block relative;
+    @apply relative block;
   }
 
   main .markdown :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
@@ -133,7 +137,7 @@ const {frontmatter} = Astro.props;
   }
 
   main .markdown :not(pre, .astro-debug) code {
-    @apply px-2 py-1 bg-red-50 text-red-800 rounded;
+    @apply rounded bg-red-50 px-2 py-1 text-red-800;
     font-size: 0.9em;
   }
 
@@ -183,7 +187,7 @@ const {frontmatter} = Astro.props;
   }
 
   main .markdown blockquote {
-    @apply text-gray-500 border-l-4 border-gray-300;
+    @apply border-l-4 border-gray-300 text-gray-500;
 
     padding-block: 0;
     margin: 0.8em 0;

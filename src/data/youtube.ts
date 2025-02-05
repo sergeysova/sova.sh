@@ -1,4 +1,4 @@
-import * as t from 'runtypes';
+import * as z from 'zod';
 
 import {firstThreeLines, firstWords, removeCredits, removeExtraFromSeparator} from './lib/text';
 import {cachedFetch} from './server-request';
@@ -45,25 +45,24 @@ function linkToVideo(id: string) {
   url.searchParams.set('v', id);
   return url.toString();
 }
-
-const Thumbnail = t.Record({
-  url: t.String,
-  width: t.Number,
-  height: t.Number,
+const Thumbnail = z.object({
+  url: z.string(),
+  width: z.number(),
+  height: z.number(),
 });
 
-const PlaylistItem = t.Record({
-  publishedAt: t.String,
-  channelId: t.String,
-  title: t.String,
-  description: t.String,
-  channelTitle: t.String,
-  playlistId: t.String,
-  position: t.Number,
-  resourceId: t.Record({
-    videoId: t.String,
+const PlaylistItem = z.object({
+  publishedAt: z.string(),
+  channelId: z.string(),
+  title: z.string(),
+  description: z.string(),
+  channelTitle: z.string(),
+  playlistId: z.string(),
+  position: z.number(),
+  resourceId: z.object({
+    videoId: z.string(),
   }),
-  thumbnails: t.Record({
+  thumbnails: z.object({
     default: Thumbnail,
     medium: Thumbnail,
     high: Thumbnail,
@@ -72,16 +71,16 @@ const PlaylistItem = t.Record({
   }),
 });
 
-const ResponseItem = t.Record({
-  etag: t.String,
-  id: t.String,
+const ResponseItem = z.object({
+  etag: z.string(),
+  id: z.string(),
   snippet: PlaylistItem,
 });
 
-const Response = t.Record({
-  etag: t.String,
-  nextPageToken: t.String.optional(),
-  items: t.Array(ResponseItem),
+const Response = z.object({
+  etag: z.string(),
+  nextPageToken: z.string().optional(),
+  items: z.array(ResponseItem),
 });
 
 export function getVideos(): Promise<YoutubeVideo[]> {
@@ -98,9 +97,9 @@ export function getVideos(): Promise<YoutubeVideo[]> {
     .then((response) => response.json())
     .then((answer) => {
       try {
-        return Response.check(answer);
+        return Response.parse(answer);
       } catch (error) {
-        console.error('Failed to check youtube response', answer);
+        console.error('Failed to check youtube response', answer, JSON.stringify(error, null, 2));
         throw error;
       }
     })

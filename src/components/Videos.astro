@@ -25,6 +25,8 @@ const {videos} = Astro.props;
 </ul>
 
 <style>
+  @import '../styles/global.css';
+
   .list {
     display: grid;
     gap: 1rem;
@@ -44,29 +46,33 @@ const {videos} = Astro.props;
   }
 
   .video {
-    @apply bg-white rounded-md flex flex-col gap-1 overflow-hidden;
+    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
 
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    box-shadow:
+      rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
       rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .video:hover {
-    box-shadow: rgba(91, 33, 182, 0.2) 0px 8px 8px, rgba(91, 33, 182, 0.2) 0px 13px 26px -3px,
+    box-shadow:
+      rgba(91, 33, 182, 0.2) 0px 8px 8px,
+      rgba(91, 33, 182, 0.2) 0px 13px 26px -3px,
       rgba(91, 33, 182, 0.2) 0px -3px 5px inset;
   }
 
   .video .cover {
-    @apply bg-cover bg-center relative flex flex-col justify-end;
+    @apply relative flex flex-col justify-end bg-cover bg-center;
     aspect-ratio: 1.7;
     background-size: 115%;
   }
 
   .video .cover .blind {
-    @apply font-light backdrop-blur-xl bg-black/30;
+    @apply bg-black/30 font-light backdrop-blur-xl;
   }
 
   .video .cover .title {
-    @apply text-white block px-4 py-2 text-lg w-full;
+    @apply block w-full px-4 py-2 text-lg text-white;
   }
 </style>
