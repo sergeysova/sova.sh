@@ -4,7 +4,7 @@ https://keybase.io/sergeysova
 
 I hereby claim:
 
-  * I am an admin of https://sova.dev
+  * I am an admin of https://sova.sh
   * I am sergeysova (https://keybase.io/sergeysova) on keybase.
   * I have a public key with fingerprint 85E4 8503 A975 DC9E 0103  794A 7234 B5F9 938F CAC0
 
@@ -32,7 +32,7 @@ To do so, I am signing this object:
       ]
     },
     "service": {
-      "hostname": "sova.dev",
+      "hostname": "sova.sh",
       "protocol": "https:"
     },
     "type": "web_service_binding",

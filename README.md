@@ -1,4 +1,4 @@
-# Sova.dev
+# Sova.sh
 
 ## 🚀 Project Structure
 

@@ -24,7 +24,7 @@ jobs:
       - name: 🔍 Installation
         run: pnpm install
 
-      - name: 🔧 Build RU — sova.dev
+      - name: 🔧 Build RU — sova.sh
         run: pnpm build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
