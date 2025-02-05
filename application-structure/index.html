@@ -1,57 +1,35 @@
-<!DOCTYPE html>
-<html lang="en" prefix="og: https://ogp.me/ns#" class="astro-3M44OFBH">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <link rel="icon" href="/favicon.png">
-
-  <title>Application structure · Сергей Сова</title>
-  <meta property="og:title" content="Application structure · Сергей Сова">
-  <meta name="twitter:title" content="Application structure · Сергей Сова">
-
-  <meta property="og:site_name" content="Сергей Сова">
-
-  <meta property="description" content="Where to look for files and where to put new">
-  <meta property="og:description" content="Where to look for files and where to put new">
-  <meta property="twitter:description" content="Where to look for files and where to put new">
-  <meta name="keywords" content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting">
-
-  
-  
-  
-
-  <meta content="og:locale" content="en_US">
-  <meta property="og:url" content="https://sova.dev/application-structure/">
-  <meta property="canonical" content="https://sova.dev/application-structure/">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:creator" content="@sova_original">
-  <meta name="twitter:site" content="@sova_original">
-
-  <meta name="theme-color" content="#1F2028">
-  <script type="application/javascript" async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script>
-  <script type="application/javascript">window.dataLayer = window.dataLayer || [];function gtag() {  dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-67236238-5');</script>
-
-  <body class="astro-3M44OFBH">
-    <link rel="stylesheet" href="/assets/application-structure.b41fc513.css" />
-<link rel="stylesheet" href="/assets/application-structure.1b7a28da.css" /><script type="module" src="/page.3aa82516.js"></script><main class="w-full mx-auto px-6 mb-10 max-w-[65ch] xl:max-w-[80ch] astro-EBPZHQML">
-    <img src="/assets/articles.9c822ad2.svg" class="pr-10 my-10 astro-EBPZHQML">
-    <div class="go-back astro-EBPZHQML">
-      <a href="/" class="astro-EBPZHQML">
-        ↵
-        Вернуться
-        
-      </a>
-    </div>
-    <h1 class="text-2xl sm:text-3xl md:text-4xl xl:text-5xl mt-8 mb-6 font-medium astro-EBPZHQML">
-      Application structure
-    </h1>
-    <div class="prose markdown max-w-[66ch] xl:max-w-[80ch] astro-EBPZHQML">
-      <h1 id="table-of-contents"><a href="#table-of-contents" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>Table of contents</h1><ul><li><p><a href="#introduction">Introduction</a></p><ul><li><p><a href="#1-feature-structure">1. Feature structure:</a></p><ul><li><a href="#11-atomic-in-feature">1.1 Atomic in Feature</a></li></ul></li><li><p><a href="#2-pages-structure">2. Page's structure:</a></p></li><li><p><a href="#3-ui-structure">3. UI structure:</a></p></li></ul></li></ul><h1 id="introduction"><a href="#introduction" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>Introduction</h1><p>I split my source code on <code>features/</code>, <code>ui/</code> and <code>pages/</code>.<br> <strong>Logic</strong> can be only in the <code>pages/</code> and <code>features/</code>.</p><p>Example:</p><blockquote><p>▸ — the icon of collapse directory tree</p></blockquote><pre class="language-plaintext"><code is:raw="" class="language-plaintext">src/
+<!DOCTYPE html><html lang="en" prefix="og: https://ogp.me/ns#" data-astro-cid-sckkx6r4> <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="/favicon.png"><title>Application structure · Сергей Сова</title><meta property="og:title" content="Application structure · Сергей Сова"><meta name="twitter:title" content="Application structure · Сергей Сова"><meta property="og:site_name" content="Сергей Сова"><meta property="description" content="Where to look for files and where to put new"><meta property="og:description" content="Where to look for files and where to put new"><meta property="twitter:description" content="Where to look for files and where to put new"><meta name="keywords" content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting"><meta content="og:locale" content="en_US"><meta property="og:url" content="https://sova.sh/application-structure/"><meta property="canonical" content="https://sova.sh/application-structure/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@sova_original"><meta name="twitter:site" content="@sova_original"><link rel="me" href="https://techhub.social/@sergeysova"><meta name="theme-color" content="#1F2028"><script type="application/javascript" async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script><script type="application/javascript">window.dataLayer = window.dataLayer || [];function gtag() {  dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-67236238-5');</script><link rel="stylesheet" href="/_astro/application-structure.BQPXAHZp.css"><body data-astro-cid-sckkx6r4>  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 xl:max-w-[80ch]" data-astro-cid-xsct23v3> <img src="/_astro/articles.B8WlmEuG.svg" class="my-10 pr-10" data-astro-cid-xsct23v3> <div class="go-back" data-astro-cid-xsct23v3> <a href="/" data-astro-cid-xsct23v3>
+↵
+Вернуться  </a> </div> <h1 class="mt-8 mb-6 text-2xl font-medium sm:text-3xl md:text-4xl xl:text-5xl" data-astro-cid-xsct23v3> Application structure </h1> <div class="prose markdown max-w-[66ch] xl:max-w-[80ch]" data-astro-cid-xsct23v3> <h1 id="table-of-contents"><a aria-hidden="true" tabindex="-1" href="#table-of-contents"><span class="icon icon-link"></span></a>Table of contents</h1>
+<ul>
+<li><a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#1-feature-structure">1. Feature structure:</a>
+<ul>
+<li><a href="#11-atomic-in-feature">1.1 Atomic in Feature</a></li>
+</ul>
+</li>
+<li><a href="#2-pages-structure">2. Page’s structure:</a></li>
+<li><a href="#3-ui-structure">3. UI structure:</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="introduction"><a aria-hidden="true" tabindex="-1" href="#introduction"><span class="icon icon-link"></span></a>Introduction</h1>
+<p>I split my source code on <code>features/</code>, <code>ui/</code> and <code>pages/</code>.<br>
+<strong>Logic</strong> can be only in the <code>pages/</code> and <code>features/</code>.</p>
+<p>Example:</p>
+<blockquote>
+<p>▸ — the icon of collapse directory tree</p>
+</blockquote>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">src/
   api/▸
   features/▸
   lib/▸
   pages/▸
-  ui/▸</code></pre><h2 id="1-feature-structure"><a href="#1-feature-structure" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>1. <a href="https://t.me/feature_slices">Feature</a> structure:</h2><pre class="language-plaintext"><code is:raw="" class="language-plaintext">src/
+  ui/▸
+</code></pre>
+<h2 id="1-feature-structure"><a aria-hidden="true" tabindex="-1" href="#1-feature-structure"><span class="icon icon-link"></span></a>1. <a href="https://t.me/feature_slices">Feature</a> structure:</h2>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">src/
   features/
     account/▸
     editor/▸
@@ -69,7 +47,25 @@
       molecules/▸
       organisms/▸
       templates/▸
-      index.js</code></pre><p><a href="https://t.me/feature_slices">Feature</a> — it is useful functionality for users or it is a suite of entities that are united by one idea. For example users, text-editor, accounts, and articles.</p><p><a href="https://t.me/feature_slices">Feature</a> cannot be grouped by type, it should not be too abstract. Examples <strong>how not to do</strong>: roles, forms, validate.</p><ol><li>Every feature must have the same structure.</li><li><code>users</code>, <code>account</code>, ... — the arbitrary name of the feature in kebab-case.</li><li>The feature's content may be received only from <code>index.js</code>.</li><li>Every section can only be created if it has content inside.</li></ol><ul><li><code>lib/</code> it is <a href="https://dev.to/sergeysova/why-utils-helpers-is-a-dump-45fo">inner library</a> of feature. It must have tests and documentation.</li><li><code>index.js</code> for re-export necessary elements outside.</li><li><code>models/</code> — <a href="/ru/effector-model-structure">effector models</a> (ru).</li></ul><h3 id="11-atomic-in-feature"><a href="#11-atomic-in-feature" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>1.1 <a href="http://atomicdesign.bradfrost.com">Atomic</a> in <a href="https://t.me/feature_slices">Feature</a></h3><p><code>atoms</code>, <code>molecules</code>, <code>organisms</code>, <code>templates</code> — <a href="http://atomicdesign.bradfrost.com">atomic design</a>, <a href="https://t.me/feature_slices">feature</a>'s components.</p><p>If every component assumes many files in such case you should create (<code>.test</code>, <code>.story</code>, <code>.md</code>, ...):</p><pre class="language-plaintext"><code is:raw="" class="language-plaintext">feature/
+      index.js
+</code></pre>
+<p><a href="https://t.me/feature_slices">Feature</a> — it is useful functionality for users or it is a suite of entities that are united by one idea. For example users, text-editor, accounts, and articles.</p>
+<p><a href="https://t.me/feature_slices">Feature</a> cannot be grouped by type, it should not be too abstract. Examples <strong>how not to do</strong>: roles, forms, validate.</p>
+<ol>
+<li>Every feature must have the same structure.</li>
+<li><code>users</code>, <code>account</code>, … — the arbitrary name of the feature in kebab-case.</li>
+<li>The feature’s content may be received only from <code>index.js</code>.</li>
+<li>Every section can only be created if it has content inside.</li>
+</ol>
+<ul>
+<li><code>lib/</code> it is <a href="https://dev.to/sergeysova/why-utils-helpers-is-a-dump-45fo">inner library</a> of feature. It must have tests and documentation.</li>
+<li><code>index.js</code> for re-export necessary elements outside.</li>
+<li><code>models/</code> — <a href="/ru/effector-model-structure">effector models</a> (ru).</li>
+</ul>
+<h3 id="11-atomic-in-feature"><a aria-hidden="true" tabindex="-1" href="#11-atomic-in-feature"><span class="icon icon-link"></span></a>1.1 <a href="http://atomicdesign.bradfrost.com">Atomic</a> in <a href="https://t.me/feature_slices">Feature</a></h3>
+<p><code>atoms</code>, <code>molecules</code>, <code>organisms</code>, <code>templates</code> — <a href="http://atomicdesign.bradfrost.com">atomic design</a>, <a href="https://t.me/feature_slices">feature</a>’s components.</p>
+<p>If every component assumes many files in such case you should create (<code>.test</code>, <code>.story</code>, <code>.md</code>, …):</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">feature/
   users/
     atoms/▸
     molecules/
@@ -80,7 +76,10 @@
         test.js
         readme.md
     organisms/▸
-    templates/▸</code></pre><p>No need of directories if you don't have many files. Important, that in range of feature all look the same.</p><pre class="language-plaintext"><code is:raw="" class="language-plaintext">feature/
+    templates/▸
+</code></pre>
+<p>No need of directories if you don’t have many files. Important, that in range of feature all look the same.</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">feature/
   settings/
     atoms/▸
     molecules/▸
@@ -88,7 +87,10 @@
       monitoring-editor.js
       monitoring-editor.test.js
       marketplace.js
-      marketplace.test.js</code></pre><h2 id="2-pages-structure"><a href="#2-pages-structure" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>2. Page's structure:</h2><pre class="language-plaintext"><code is:raw="" class="language-plaintext">src/
+      marketplace.test.js
+</code></pre>
+<h2 id="2-pages-structure"><a aria-hidden="true" tabindex="-1" href="#2-pages-structure"><span class="icon icon-link"></span></a>2. Page’s structure:</h2>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">src/
   pages/
     post/
       model.js
@@ -100,7 +102,16 @@
       login/▸
       register/
         model.js
-        page.js</code></pre><ol><li>Page's nesting must map routing of true url.</li><li>There is source code of component in <code>page.js</code></li><li>There is uniq logic of the page in <code>model.js</code></li><li>There is any common logic in <a href="https://dev.to/sergeysova/why-utils-helpers-is-a-dump-45fo">library code</a> <code>src/lib/lib-name/</code></li></ol><p>Examples:</p><pre class="language-plaintext"><code is:raw="" class="language-plaintext">src/
+        page.js
+</code></pre>
+<ol>
+<li>Page’s nesting must map routing of true url.</li>
+<li>There is source code of component in <code>page.js</code></li>
+<li>There is uniq logic of the page in <code>model.js</code></li>
+<li>There is any common logic in <a href="https://dev.to/sergeysova/why-utils-helpers-is-a-dump-45fo">library code</a> <code>src/lib/lib-name/</code></li>
+</ol>
+<p>Examples:</p>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">src/
   pages/
     post/
       page.js
@@ -114,7 +125,26 @@
             model.js
         page.js
         model.js
-    index.js</code></pre><ul><li>Page of blog post<ul><li>file: <code>src/pages/post/page.js</code></li><li>route: <code>/post/:postSlug</code> (or <code>/:postSlug</code>)</li><li>example: <code>/post/effector-model</code></li></ul></li><li>Viewer of repository issue<ul><li>file: <code>src/pages/repo/view/issues/view/page.js</code></li><li>route: <code>/repo/:repoSlug/issues/:issueId</code></li><li>example: <code>/repo/effector/issues/5</code></li></ul></li></ul><h2 id="3-ui-structure"><a href="#3-ui-structure" aria-hidden="true" tabindex="-1"><span class="icon icon-link"></span></a>3. UI structure:</h2><pre class="language-plaintext"><code is:raw="" class="language-plaintext">src/
+    index.js
+</code></pre>
+<ul>
+<li>Page of blog post
+<ul>
+<li>file: <code>src/pages/post/page.js</code></li>
+<li>route: <code>/post/:postSlug</code> (or <code>/:postSlug</code>)</li>
+<li>example: <code>/post/effector-model</code></li>
+</ul>
+</li>
+<li>Viewer of repository issue
+<ul>
+<li>file: <code>src/pages/repo/view/issues/view/page.js</code></li>
+<li>route: <code>/repo/:repoSlug/issues/:issueId</code></li>
+<li>example: <code>/repo/effector/issues/5</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-ui-structure"><a aria-hidden="true" tabindex="-1" href="#3-ui-structure"><span class="icon icon-link"></span></a>3. UI structure:</h2>
+<pre class="language-plaintext" data-language="plaintext"><code is:raw="" class="language-plaintext">src/
   ui/
     atoms/
       index.js
@@ -126,36 +156,16 @@
     molecules/▸
     organisms/▸
     templates/▸
-    index.js</code></pre><ol><li><a href="http://atomicdesign.bradfrost.com">Atomic Design</a></li><li>All UI are building blocks that allow to the creation of any feature.</li><li>UI must be disconnected from any global stores.</li><li>Components must be maximally reusable and independent of context <em>(not React Context API)</em>.</li></ol><blockquote><p>Translated by <a href="https://t.me/murgut">Murgut</a></p></blockquote>
-    </div>
-    <div class="go-back mt-10 astro-EBPZHQML">
-      <a href="/" class="astro-EBPZHQML">
-        ↵
-        Вернуться
-        
-      </a>
-    </div>
-  </main>
-    <footer class="astro-WBJIUCQQ">
-  <div class="content astro-WBJIUCQQ">
-    <a href="/" class="astro-WBJIUCQQ">
-      <h3 class="astro-WBJIUCQQ">Сергей Сова</h3>
-    </a>
-    <div class="links astro-WBJIUCQQ">
-      <a href="/history" class="astro-WBJIUCQQ">История</a>
-      <a href="https://t.me/sergeysova" rel="noopener" target="_blank" class="astro-WBJIUCQQ">Telegram</a>
-      <a href="https://youtube.com/@sova" rel="noopener" target="_blank" class="astro-WBJIUCQQ">YouTube</a>
-      <a href="mailto:contact@sergeysova.com" class="astro-WBJIUCQQ">E-Mail</a>
-    </div>
-  </div>
-</footer>
-
-
-    
-
-    
-  </body>
-</html>
-
-
-
+    index.js
+</code></pre>
+<ol>
+<li><a href="http://atomicdesign.bradfrost.com">Atomic Design</a></li>
+<li>All UI are building blocks that allow to the creation of any feature.</li>
+<li>UI must be disconnected from any global stores.</li>
+<li>Components must be maximally reusable and independent of context <em>(not React Context API)</em>.</li>
+</ol>
+<blockquote>
+<p>Translated by <a href="https://t.me/murgut">Murgut</a></p>
+</blockquote> </div> <div class="go-back mt-10" data-astro-cid-xsct23v3> <a href="/" data-astro-cid-xsct23v3>
+↵
+Вернуться  </a> </div> </main>  <footer data-astro-cid-sz7xmlte> <div class="content" data-astro-cid-sz7xmlte> <a href="/" data-astro-cid-sz7xmlte> <h3 data-astro-cid-sz7xmlte>Сергей Сова</h3> </a> <div class="links" data-astro-cid-sz7xmlte> <a href="/history" data-astro-cid-sz7xmlte>История</a> <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> <a href="https://youtube.com/@sova" rel="noopener" target="_blank">YouTube</a> <a href="mailto:contact@sergeysova.com" data-astro-cid-sz7xmlte>E-Mail</a> </div> </div> </footer>    </body> </html>  

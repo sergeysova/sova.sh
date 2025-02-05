@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="ru" prefix="og: https://ogp.me/ns#" data-astro-cid-sckkx6r4> <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="/favicon.png"><title>Atomic-Router Chains · Сергей Сова</title><meta property="og:title" content="Atomic-Router Chains · Сергей Сова"><meta name="twitter:title" content="Atomic-Router Chains · Сергей Сова"><meta property="og:site_name" content="Сергей Сова"><meta property="description" content="Есть много роутеров для frontend-проектов, но все они опираются на рендеры. Давайте это исправим"><meta property="og:description" content="Есть много роутеров для frontend-проектов, но все они опираются на рендеры. Давайте это исправим"><meta property="twitter:description" content="Есть много роутеров для frontend-проектов, но все они опираются на рендеры. Давайте это исправим"><meta name="keywords" content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting"><meta content="og:locale" content="ru_RU"><meta property="og:url" content="https://sova.sh/ru/why-atomic-router/"><meta property="canonical" content="https://sova.sh/ru/why-atomic-router/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@sova_original"><meta name="twitter:site" content="@sova_original"><link rel="me" href="https://techhub.social/@sergeysova"><meta name="theme-color" content="#1F2028"><script type="application/javascript" async src="https://www.googletagmanager.com/gtag/js?id=UA-67236238-5"></script><script type="application/javascript">window.dataLayer = window.dataLayer || [];function gtag() {  dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-67236238-5');</script><link rel="stylesheet" href="/_astro/application-structure.BQPXAHZp.css"><body data-astro-cid-sckkx6r4>  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 xl:max-w-[80ch]" data-astro-cid-xsct23v3> <img src="/_astro/articles.B8WlmEuG.svg" class="my-10 pr-10" data-astro-cid-xsct23v3> <div class="go-back" data-astro-cid-xsct23v3> <a href="/" data-astro-cid-xsct23v3>
+↵
+Вернуться  </a> </div> <h1 class="mt-8 mb-6 text-2xl font-medium sm:text-3xl md:text-4xl xl:text-5xl" data-astro-cid-xsct23v3> Atomic-Router Chains </h1> <div class="prose markdown max-w-[66ch] xl:max-w-[80ch]" data-astro-cid-xsct23v3> <h1 id="table-of-contents"><a aria-hidden="true" tabindex="-1" href="#table-of-contents"><span class="icon icon-link"></span></a>Table of contents</h1>
+<h2 id="отделение-роутов-от-url"><a aria-hidden="true" tabindex="-1" href="#отделение-роутов-от-url"><span class="icon icon-link"></span></a>Отделение роутов от URL</h2>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/shared/routing/routes.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> routes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  home<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  users<span class="token operator">:</span> <span class="token punctuation">{</span>
+    list<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    view<span class="token operator">:</span> <span class="token generic-function"><span class="token function">createRoute</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token punctuation">{</span>userId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">}</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    tickets<span class="token operator">:</span> <span class="token generic-function"><span class="token function">createRoute</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token punctuation">{</span>userId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">}</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  posts<span class="token operator">:</span> <span class="token punctuation">{</span>
+    list<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    view<span class="token operator">:</span> <span class="token generic-function"><span class="token function">createRoute</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token punctuation">{</span>postId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">}</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> routesMap <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>home<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users/:userId'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>view<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users/:userId/tickets'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>tickets<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/explore'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/posts/:postId'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>view<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="это-позволяет-прицепить-к-одному-пути-несколько-роутов"><a aria-hidden="true" tabindex="-1" href="#это-позволяет-прицепить-к-одному-пути-несколько-роутов"><span class="icon icon-link"></span></a>Это позволяет прицепить к одному пути несколько роутов</h3>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/shared/routing/routes.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> sections <span class="token operator">=</span> <span class="token punctuation">{</span>
+  users<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  posts<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> routesMap <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>home<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> <span class="token punctuation">[</span>routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>list<span class="token punctuation">,</span> sections<span class="token punctuation">.</span>users<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users/:userId'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> <span class="token punctuation">[</span>routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>view<span class="token punctuation">,</span> sections<span class="token punctuation">.</span>users<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/users/:userId/tickets'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> <span class="token punctuation">[</span>routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>tickets<span class="token punctuation">,</span> sections<span class="token punctuation">.</span>users<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/explore'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> <span class="token punctuation">[</span>routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span> sections<span class="token punctuation">.</span>posts<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/posts/:postId'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> <span class="token punctuation">[</span>routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>view<span class="token punctuation">,</span> sections<span class="token punctuation">.</span>posts<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Так мы можем не завязывать на конкретные урлы</p>
+<pre class="language-tsx" data-language="tsx"><code is:raw="" class="language-tsx"><span class="token comment">// src/layouts/navigation/index.tsx</span>
+<span class="token keyword">const</span> $links <span class="token operator">=</span> <span class="token generic-function"><span class="token function">createStore</span><span class="token generic class-name"><span class="token operator">&#x3C;</span>Link<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    label<span class="token operator">:</span> <span class="token string">"Users"</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>users<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+    active<span class="token operator">:</span> sections<span class="token punctuation">.</span>users<span class="token punctuation">,</span>
+    icon<span class="token operator">:</span> IconUsers<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    label<span class="token operator">:</span> <span class="token string">"Posts"</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+    active<span class="token operator">:</span> sections<span class="token punctuation">.</span>participants<span class="token punctuation">,</span>
+    icon<span class="token operator">:</span> IconUserCheck<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">LayoutNavigate</span><span class="token punctuation">(</span><span class="token punctuation">{</span> children <span class="token punctuation">}</span><span class="token operator">:</span> <span class="token punctuation">{</span> children<span class="token operator">:</span> ReactNode <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> links <span class="token operator">=</span> <span class="token function">useList</span><span class="token punctuation">(</span>$links<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token function-variable function">getKey</span><span class="token operator">:</span> <span class="token punctuation">(</span>link<span class="token punctuation">)</span> <span class="token operator">=></span> link<span class="token punctuation">.</span>label<span class="token punctuation">,</span>
+    <span class="token function">fn</span><span class="token punctuation">(</span>link<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> isActive <span class="token operator">=</span> <span class="token function">useUnit</span><span class="token punctuation">(</span>link<span class="token punctuation">.</span>active<span class="token operator">?.</span>$isOpened <span class="token operator">??</span> link<span class="token punctuation">.</span>route<span class="token punctuation">.</span>$isOpened<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> classNames <span class="token operator">=</span> isActive <span class="token operator">?</span> classes<span class="token punctuation">.</span>linkActive <span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">return</span> <span class="token punctuation">(</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Link</span></span>
+          <span class="token attr-name">key</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>link<span class="token punctuation">.</span>label<span class="token punctuation">}</span></span>
+          <span class="token attr-name">to</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>link<span class="token punctuation">.</span>route<span class="token punctuation">}</span></span>
+          <span class="token attr-name">className</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token function">clsx</span><span class="token punctuation">(</span>classes<span class="token punctuation">.</span>link<span class="token punctuation">,</span> classNames<span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+          <span class="token attr-name">activeClassName</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>classes<span class="token punctuation">.</span>linkActive<span class="token punctuation">}</span></span>
+        <span class="token punctuation">></span></span><span class="token plain-text">
+          </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>link.icon</span> <span class="token attr-name">className</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>classes<span class="token punctuation">.</span>linkIcon<span class="token punctuation">}</span></span> <span class="token attr-name">stroke</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token number">1.5</span><span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+          </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>span</span><span class="token punctuation">></span></span><span class="token punctuation">{</span>link<span class="token punctuation">.</span>label<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>span</span><span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span><span class="token class-name">Link</span></span><span class="token punctuation">></span></span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token comment">/* ... */</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="теперь-можно-реагировать-на-изменение-роутов-а-не-рендер-компонентов"><a aria-hidden="true" tabindex="-1" href="#теперь-можно-реагировать-на-изменение-роутов-а-не-рендер-компонентов"><span class="icon icon-link"></span></a>теперь можно реагировать на изменение роутов, а не рендер компонентов</h2>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/pages/posts-list/model.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> currentRoute <span class="token operator">=</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">;</span>
+
+<span class="token function">sample</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// Когда текущий роут откроется</span>
+  clock<span class="token operator">:</span> currentRoute<span class="token punctuation">.</span>opened<span class="token punctuation">,</span>
+  <span class="token comment">// Начать загружать список постов</span>
+  target<span class="token operator">:</span> postsLoadFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Также можно реагировать на изменение параметров роута. То есть можем отличить первый заход на страницу от обновления только параметра.</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/pages/posts-view/model.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> currentRoute <span class="token operator">=</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>view<span class="token punctuation">;</span>
+<span class="token comment">//</span>
+
+<span class="token function">sample</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// Когда текущий роут обновился</span>
+  clock<span class="token operator">:</span> currentRoute<span class="token punctuation">.</span>updated<span class="token punctuation">,</span>
+  <span class="token comment">// Взять параметры из урла</span>
+  source<span class="token operator">:</span> currentRoute<span class="token punctuation">.</span>$params<span class="token punctuation">,</span>
+  <span class="token comment">// Извлекаем только параметры. В наличии еще query</span>
+  <span class="token function-variable function">fn</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>params<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>postId<span class="token operator">:</span> params<span class="token punctuation">.</span>postId<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token comment">// Начать загружать пост с новым postId</span>
+  target<span class="token operator">:</span> postGetFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>На самом деле, можно добавить в выражение выше и <code>.opened</code>, чтобы загружать пост и при первом открытии страницы тоже:</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// Когда текущий роут открылся или обновился</span>
+<span class="token function">sample</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  clock<span class="token operator">:</span> <span class="token punctuation">[</span>currentRoute<span class="token punctuation">.</span>opened<span class="token punctuation">,</span> currentRoute<span class="token punctuation">.</span>updated<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  source<span class="token operator">:</span> currentRoute<span class="token punctuation">.</span>$params<span class="token punctuation">,</span>
+  <span class="token function-variable function">fn</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>params<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> params<span class="token punctuation">,</span>
+  target<span class="token operator">:</span> postGetFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="chainroute-создает-последовательные-цепочки-для-получения-данных"><a aria-hidden="true" tabindex="-1" href="#chainroute-создает-последовательные-цепочки-для-получения-данных"><span class="icon icon-link"></span></a>chainRoute создает последовательные цепочки для получения данных</h2>
+<p>далеко не всегда можно начать загружать инфу для отображения страницы параллельно.
+ну а если можно, то цепочки будут короче.</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/pages/posts-view/model.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> currentRoute <span class="token operator">=</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>view<span class="token punctuation">;</span>
+
+<span class="token comment">// Эффект postGetFx будет выполняться когда currentRoute откроется</span>
+<span class="token comment">// или обновится с новым postId</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> postRoute <span class="token operator">=</span> <span class="token function">chainRoute</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  route<span class="token operator">:</span> currentRoute<span class="token punctuation">,</span>
+  beforeOpen<span class="token operator">:</span> postGetFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Когда postGetFx завершится с любым результатом, postRoute будет открыт</span>
+
+<span class="token comment">// postCommentsGetFx будет вызван ПОСЛЕ загрузки postGetFx</span>
+<span class="token comment">// то есть, когда откроется postRoute</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> commentsRoute <span class="token operator">=</span> <span class="token function">chainRoute</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  route<span class="token operator">:</span> postRoute<span class="token punctuation">,</span>
+  beforeOpen<span class="token operator">:</span> postCommentsGetFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>можно реагировать на события каждого роута по отдельности, у каждого из них есть свои <code>.opened</code> и <code>.$isOpened</code>:</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token function">sample</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  clock<span class="token operator">:</span> postRoute<span class="token punctuation">.</span>opened<span class="token punctuation">,</span>
+  <span class="token function-variable function">fn</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>params<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>postId<span class="token operator">:</span> params<span class="token punctuation">.</span>postId<span class="token punctuation">,</span> active<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  target<span class="token operator">:</span> analytics<span class="token punctuation">.</span>reportFx<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="все-чейнеры-выполняют-последовательные-задачи-к-ним-можно-привязывать-свой-view"><a aria-hidden="true" tabindex="-1" href="#все-чейнеры-выполняют-последовательные-задачи-к-ним-можно-привязывать-свой-view"><span class="icon icon-link"></span></a>все чейнеры выполняют последовательные задачи, к ним можно привязывать свой view</h2>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/pages/posts-view/index.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>LayoutNavigation<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'~/layouts/navigation'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>currentRoute<span class="token punctuation">,</span> postRoute<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./model'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>LoaderFullPage<span class="token punctuation">,</span> PostViewPage<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./view'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> PostView <span class="token operator">=</span> <span class="token function">createRouteView</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  route<span class="token operator">:</span> postRoute<span class="token punctuation">,</span>
+  view<span class="token operator">:</span> PostViewPage<span class="token punctuation">,</span>
+  otherwise<span class="token operator">:</span> LoaderFullPage<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  route<span class="token operator">:</span> currentRoute<span class="token punctuation">,</span>
+  view<span class="token operator">:</span> PostView<span class="token punctuation">,</span>
+  layout<span class="token operator">:</span> LayoutNavigation<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Для каждого роута будет отрендерен свой компонент.
+Компоненты можно вкладывать друг в друга: например, после загрузки поста отображать комменты в виде skeleton-загрузки.
+При этом в компонентах не будет кучи условий и опциональных рендеров.</p>
+<h2 id="добавление-редиректов-но-с-сохранением-ссылок"><a aria-hidden="true" tabindex="-1" href="#добавление-редиректов-но-с-сохранением-ссылок"><span class="icon icon-link"></span></a>добавление редиректов, но с сохранением ссылок</h2>
+<p>Есть случаи, когда пользователи могут добавить ссылки на страницы в нашем приложении в закладки. Это значит, что если мы поменяем урлы, то такие закладки сломаются.
+Поэтому хорошо было бы или не ломать урлы, или выполнять плавную миграцию.</p>
+<p>Есть два пути:</p>
+<ol>
+<li>открывать страницу по двум урлам сразу, но в интерфейсе ссылки давать только на новый урл</li>
+</ol>
+<p>для этого можно назначить одному роуту несколько урлов</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/shared/routing/routes.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> routesMap <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token comment">// ...</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/explore'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/posts'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Путь с роутом расположенный выше будет использоваться для ссылок.</p>
+<ol start="2">
+<li>добавить редирект, чтобы старые ссылки всегда редиректили на новые урлы</li>
+</ol>
+<p>заводим список легаси роутов, назначаем им свои урлы и добавляем редиректы прям тут</p>
+<pre class="language-ts" data-language="ts"><code is:raw="" class="language-ts"><span class="token comment">// src/shared/routing/routes.ts</span>
+<span class="token keyword">const</span> legacyRoutes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  posts<span class="token operator">:</span> <span class="token punctuation">{</span>list<span class="token operator">:</span> <span class="token function">createRoute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> routesMap <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token comment">// ...</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/explore'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/posts'</span><span class="token punctuation">,</span>
+    route<span class="token operator">:</span> legacyRoutes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">redirect</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  clock<span class="token operator">:</span> legacyRoutes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">.</span>opened<span class="token punctuation">,</span>
+  route<span class="token operator">:</span> routes<span class="token punctuation">.</span>posts<span class="token punctuation">.</span>list<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Таким образом роуты не будут смешиваться, <code>legacyRoutes</code> всегда видны, если их кто-то будет использовать.</p>
+<ol start="3">
+<li>всегда можно смешивать два подхода, чтобы дать пользователям лучший ux</li>
+</ol> </div> <div class="go-back mt-10" data-astro-cid-xsct23v3> <a href="/" data-astro-cid-xsct23v3>
+↵
+Вернуться  </a> </div> </main>  <footer data-astro-cid-sz7xmlte> <div class="content" data-astro-cid-sz7xmlte> <a href="/" data-astro-cid-sz7xmlte> <h3 data-astro-cid-sz7xmlte>Сергей Сова</h3> </a> <div class="links" data-astro-cid-sz7xmlte> <a href="/history" data-astro-cid-sz7xmlte>История</a> <a href="https://t.me/sergeysova" rel="noopener" target="_blank">Telegram</a> <a href="https://youtube.com/@sova" rel="noopener" target="_blank">YouTube</a> <a href="mailto:contact@sergeysova.com" data-astro-cid-sz7xmlte>E-Mail</a> </div> </div> </footer>    </body> </html>  
