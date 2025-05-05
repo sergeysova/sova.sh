@@ -158,4 +158,12 @@ export const invitedContent = [
     url: 'https://www.youtube.com/watch?v=DChSroCxOJE',
     publishedAt: new Date('2023-05-20T11:00:00Z'),
   },
+  {
+    type: 'video',
+    title: 'Podlodka React Crew #2',
+    description:
+      'Сергей Сова участвует в программном комитете онлайн конференции Podlodka React Crew. Это недельная конференция с экспертами из топовых компаний.',
+    url: 'https://podlodka.io/reactcrew_2',
+    publishedAt: new Date('2025-02-10T10:00:00Z'),
+  },
 ] as const;
