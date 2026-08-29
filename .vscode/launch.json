@@ -3,7 +3,8 @@
   "configurations": [
     {
       "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "cwd": "${workspaceFolder}/apps/sova-sh",
+      "name": "sova-sh: Development server",
       "request": "launch",
       "type": "node-terminal"
     }

@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {getAllEpisodes} from '../../data/episodes';
+
+export async function getStaticPaths() {
+  const episodes = await getAllEpisodes();
+  return episodes.map((episode) => ({
+    params: {slug: episode.slug},
+    props: {episode},
+  }));
+}
+
+const {episode} = Astro.props;
+---
+
+<Layout title={`${episode.title} — Под куполом`} description={episode.description}>
+  <main class="mx-auto flex max-w-[65ch] flex-col gap-6 px-6 pb-16">
+    <a href="/" class="text-sm text-sky-600 hover:underline">&larr; Все выпуски</a>
+    <h1 class="text-3xl font-bold">{episode.title}</h1>
+    <p class="text-sm text-slate-500">
+      Сезон {episode.season}, выпуск {episode.number}
+    </p>
+
+    <!-- TODO: заменить на собственный плеер, пока — встроенный плеер Simplecast -->
+    <iframe
+      title={episode.title}
+      src={`https://player.simplecast.com/${episode.id}?dark=false`}
+      height="200px"
+      width="100%"
+      allow="autoplay"
+    />
+
+    <div class="prose" set:html={episode.description} />
+  </main>
+</Layout>

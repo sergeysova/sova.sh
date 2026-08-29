@@ -1,0 +1,26 @@
+{
+  "name": "@sova-web/podcast-sova-sh",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@sova-web/content": "workspace:*",
+    "astro": "^7.2.9"
+  },
+  "devDependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "dotenv": "^17.4.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

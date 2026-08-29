@@ -1,0 +1,16 @@
+{
+  "name": "@sova-web/content",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@11ty/eleventy-fetch": "^5.1.3",
+    "zod": "^4.5.2"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

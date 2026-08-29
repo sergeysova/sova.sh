@@ -1,7 +1,7 @@
 import * as z from 'zod';
 
 import {firstThreeLines, firstWords, removeCredits, removeExtraFromSeparator} from './lib/text';
-import {cachedFetch} from './server-request';
+import {cachedFetch} from '@sova-web/content';
 
 // https://console.cloud.google.com/apis/api/youtube.googleapis.com/credentials?authuser=3&project=lateral-apex-361806&supportedpurview=project
 const secrets = {

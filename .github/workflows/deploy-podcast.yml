@@ -1,0 +1,42 @@
+name: Deploy podcast.sova.sh (scaffold)
+
+# Заготовка ещё не заменяет боевой сайт, поэтому push пока закомментирован.
+on:
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'apps/podcast-sova-sh/**'
+  #     - 'packages/**'
+  workflow_dispatch:
+
+jobs:
+  podcast-sova-sh:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐧 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: 🔍 Installation
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔧 Build — podcast.sova.sh
+        run: pnpm --filter @sova-web/podcast-sova-sh build
+        env:
+          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
+          PUBLIC_SITE: https://podcast.sova.sh
+
+      - name: 🚀 Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          command: pages deploy apps/podcast-sova-sh/dist --project-name=podcast-sova-sh --branch=main

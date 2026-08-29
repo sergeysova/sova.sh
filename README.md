@@ -1,40 +1,33 @@
-# Sova.sh
+# sova-web
 
-## 🚀 Project Structure
+Монорепо сайтов Сергея Совы. Архитектура и статус — в
+[`docs/sova-web-monorepo-plan.md`](./docs/sova-web-monorepo-plan.md).
 
-Inside of your Astro project, you'll see the following folders and files:
+## Структура
 
-```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── data/
-│   │   └── fetcher.ts
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```text
+apps/
+├── sova-sh/              # sova.sh (сегодня же собирает и sergeysova.com, см. план)
+└── podcast-sova-sh/      # заготовка нового Astro-приложения для podcast.sova.sh
+packages/
+└── content/              # общие серверные загрузчики (cachedFetch, Simplecast API)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Команды
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```bash
+pnpm install
 
-Any static assets, like images, can be placed in the `public/` directory.
+pnpm --filter @sova-web/sova-sh dev
+pnpm --filter @sova-web/podcast-sova-sh dev
 
-## 🧞 Commands
+pnpm build   # turbo run build — собирает все apps
+```
 
-All commands are run from the root of the project, from a terminal:
+Переменные окружения — в `.env.example` каждого приложения
+(`apps/*/.env.example`).
 
-| Command             | Action                                             |
-| :------------------ | :------------------------------------------------- |
-| `pnpm install`      | Installs dependencies                              |
-| `pnpm dev`          | Starts local dev server at `localhost:3000`        |
-| `pnpm build`        | Build your production site to `./dist/`            |
-| `pnpm preview`      | Preview your build locally, before deploying       |
-| `pnpm astro ...`    | Run CLI commands like `astro add`, `astro preview` |
-| `pnpm astro --help` | Get help using the Astro CLI                       |
+## Деплой
+
+Cloudflare Pages, отдельный проект на каждый домен. Детали и то, что
+пока не переехало (sergeysova.com, news.sova.sh) — см. план.

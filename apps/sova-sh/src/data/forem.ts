@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import {cachedFetch} from './server-request';
+import {cachedFetch} from '@sova-web/content';
 const foremServices = {
   'dev.to': {
     url: 'https://dev.to',
