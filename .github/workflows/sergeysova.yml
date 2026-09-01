@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/sergeysova-brand/**'
+      - 'apps/sergeysova-com/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🔧 Build — sergeysova.com (EN)
-        run: pnpm --filter @sova-web/sergeysova-brand build
+        run: pnpm --filter @sova-web/sergeysova-com build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
@@ -46,7 +46,7 @@ jobs:
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          workingDirectory: apps/sergeysova-brand
+          workingDirectory: apps/sergeysova-com
           command: deploy --name=sergeysova-com
 
   ru:
@@ -68,7 +68,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🔧 Build — ru.sergeysova.com (RU)
-        run: pnpm --filter @sova-web/sergeysova-brand build
+        run: pnpm --filter @sova-web/sergeysova-com build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
@@ -83,5 +83,5 @@ jobs:
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          workingDirectory: apps/sergeysova-brand
+          workingDirectory: apps/sergeysova-com
           command: deploy --name=ru-sergeysova-com

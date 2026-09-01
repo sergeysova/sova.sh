@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/sova-sh/**'
+      - 'apps/sova.sh/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🔧 Build — sova.sh
-        run: pnpm --filter @sova-web/sova-sh build
+        run: pnpm --filter @sova-web/sova.sh build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
@@ -46,5 +46,5 @@ jobs:
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          workingDirectory: apps/sova-sh
+          workingDirectory: apps/sova.sh
           command: deploy
