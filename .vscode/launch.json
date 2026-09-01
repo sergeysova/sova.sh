@@ -3,7 +3,22 @@
   "configurations": [
     {
       "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "cwd": "${workspaceFolder}/apps/sova.sh",
+      "name": "sova.sh: Development server",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "./node_modules/.bin/astro dev",
+      "cwd": "${workspaceFolder}/apps/sergeysova-com",
+      "name": "sergeysova-com: Development server",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "./node_modules/.bin/astro dev",
+      "cwd": "${workspaceFolder}/apps/podcast-sova-sh",
+      "name": "podcast-sova-sh: Development server",
       "request": "launch",
       "type": "node-terminal"
     }

@@ -1,0 +1,50 @@
+name: Deploy sova.sh
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/sova.sh/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/sova.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐧 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: 🔍 Installation
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔧 Build — sova.sh
+        run: pnpm --filter @sova-web/sova.sh build
+        env:
+          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
+          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
+          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
+          PUBLIC_SITE: https://sova.sh
+          PUBLIC_LANGUAGE: ru
+          PUBLIC_GTAG: UA-67236238-5
+
+      - name: 🚀 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: apps/sova.sh
+          command: deploy

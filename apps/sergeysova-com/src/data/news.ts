@@ -1,4 +1,4 @@
-import {cachedFetch} from './server-request';
+import {cachedFetch} from '@sova-web/content';
 import * as z from 'zod';
 
 export async function getNews(): Promise<NewsIssue[]> {

@@ -1,0 +1,9 @@
+---
+export interface Props {
+  equals: 'ru' | 'en';
+}
+
+const {equals} = Astro.props;
+---
+
+{equals === import.meta.env.PUBLIC_LANGUAGE ? <slot /> : null}

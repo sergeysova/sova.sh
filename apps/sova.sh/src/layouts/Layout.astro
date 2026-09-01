@@ -1,0 +1,131 @@
+---
+import {switchLang} from '../lib/language';
+
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article' | 'profile';
+  image?: string;
+  locale?: 'ru' | 'en';
+}
+
+const siteName = switchLang({
+  ru: 'Сергей Сова',
+  en: 'Sergey Sova',
+});
+
+const {
+  title,
+  description,
+  type = 'website',
+  image,
+  locale = import.meta.env.PUBLIC_LANGUAGE,
+} = Astro.props;
+const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
+const fullTitle = title ? `${title} · ${siteName}` : siteName;
+
+const gtagSource = `window.dataLayer = window.dataLayer || [];
+function gtag() {
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
+---
+
+<!doctype html>
+<html lang={locale} prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <link rel="icon" href="/favicon.png" />
+
+    <title>{fullTitle}</title>
+    <meta property="og:title" content={fullTitle} />
+    <meta name="twitter:title" content={fullTitle} />
+
+    {type !== 'website' ? <meta property="og:site_name" content={siteName} /> : null}
+
+    {description ? <meta property="description" content={description} /> : null}
+    {description ? <meta property="og:description" content={description} /> : null}
+    {description ? <meta property="twitter:description" content={description} /> : null}
+    <meta
+      name="keywords"
+      content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting"
+    />
+
+    {image ? <meta property="image" content={image} /> : null}
+    {image ? <meta property="og:image" content={image} /> : null}
+    {image ? <meta property="twitter:image" content={image} /> : null}
+
+    <meta content="og:locale" content={realLocale} />
+    <meta property="og:url" content={`${Astro.url.toString()}`} />
+    <meta property="canonical" content={`${Astro.url.toString()}`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@sova_original" />
+    <meta name="twitter:site" content="@sova_original" />
+
+    <link rel="me" href="https://techhub.social/@sergeysova" />
+
+    <meta name="theme-color" content="#1F2028" />
+    <script
+      is:inline
+      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}></script>
+    <script
+      is:inline
+      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+      set:html={gtagSource}
+    />
+  </head>
+
+  <body>
+    <slot />
+    <Footer />
+    <style>
+      @import '../styles/global.css';
+
+      html {
+        @apply bg-slate-50;
+      }
+
+      body {
+        margin: 0;
+      }
+    </style>
+
+    <style is:global>
+      @import '../styles/global.css';
+
+      code {
+        font-family:
+          Menlo,
+          Monaco,
+          Lucida Console,
+          Liberation Mono,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Courier New,
+          monospace;
+      }
+
+      :root {
+        /* --shadow-color: 122deg 22% 5%; */
+        --shadow-color: 0, 0, 0;
+        --shadow-elevation:
+          rgba(var(--shadow-color), 0.1) 0px 1px 2px, rgba(var(--shadow-color), 0.1) 0px 2px 6px,
+          rgba(var(--shadow-color), 0.3) 0px 8px 10px -3px;
+
+        --shadow-elevation-hover:
+          rgba(var(--shadow-color), 0.1) 0px 4px 6px, rgba(var(--shadow-color), 0.1) 0px 8px 8px,
+          rgba(var(--shadow-color), 0.2) 0px 13px 26px -3px;
+
+        --shadow-inset: rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      }
+    </style>
+  </body>
+</html>

@@ -1,46 +1,17 @@
-name: Github Pages Astro CI
+name: Deploy sergeysova.com
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'apps/sergeysova-com/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/sergeysova.yml'
   workflow_dispatch:
 
 jobs:
-  ru:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: 🛎️ Checkout
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: 🐧 Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: 🔍 Installation
-        run: pnpm install
-
-      - name: 🔧 Build RU — sova.sh
-        run: pnpm build
-        env:
-          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
-          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
-          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
-          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
-          PUBLIC_SITE: https://sova.sh
-          PUBLIC_LANGUAGE: ru
-          PUBLIC_GTAG: UA-67236238-5
-
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
-        with:
-          branch: gh-pages
-          folder: ./dist
-
   en:
     runs-on: ubuntu-22.04
     steps:
@@ -57,10 +28,10 @@ jobs:
           cache: 'pnpm'
 
       - name: 🔍 Installation
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: 🔧 Build EN — sergeysova.com
-        run: pnpm build
+      - name: 🔧 Build — sergeysova.com (EN)
+        run: pnpm --filter @sova-web/sergeysova-com build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
@@ -70,10 +41,47 @@ jobs:
           PUBLIC_LANGUAGE: en
           PUBLIC_GTAG: G-PHKCHPT847
 
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: 🚀 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
-          branch: gh-pages
-          folder: ./dist
-          repository-name: sergeysova/sergeysova.com
-          token: '${{ secrets.ACCESS_TOKEN }}'
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: apps/sergeysova-com
+          command: deploy --name=sergeysova-com
+
+  ru:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐧 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: 🔍 Installation
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔧 Build — ru.sergeysova.com (RU)
+        run: pnpm --filter @sova-web/sergeysova-com build
+        env:
+          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
+          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
+          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
+          PUBLIC_SITE: https://ru.sergeysova.com
+          PUBLIC_LANGUAGE: ru
+          PUBLIC_GTAG: G-PHKCHPT847
+
+      - name: 🚀 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: apps/sergeysova-com
+          command: deploy --name=ru-sergeysova-com

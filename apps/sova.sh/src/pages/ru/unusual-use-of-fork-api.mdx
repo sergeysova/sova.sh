@@ -1,0 +1,466 @@
+---
+title: Необычное применение Fork API
+description: Как еще можно использовать Fork API если не SSR или тесты?
+date: 2022-09-18
+language: ru
+layout: ../../layouts/MarkdownLayout.astro
+---
+
+# Table of Contents
+
+# Введение
+
+Когда заходит разговор о применении fork API, обычно вспоминают серверный рендеринг и тестирование логики. В этой
+статье спешу рассказать и показать более широкий спектр возможных применений этого API.
+
+# Да кто такой этот ваш Fork API
+
+<p class="p-0 text-[3em]">🔨</p>
+
+## Проблема
+
+[effector]: https://effector.dev
+
+Обычно [effector][effector] хранит значения сторов непосредственно внутри объектов созданных через `createStore`. Хуки
+React или SolidJS вытаскивают
+значение [напрямую из этого объекта](https://github.com/effector/effector/blob/88d721a0a0279109e4a45ba79568b5197152b080/src/react/apiBase.ts#L10)
+по ссылке.
+
+```tsx
+const $name = createStore('Sergey Sova');
+
+function Component() {
+  const name = useStore($name);
+  return <div>Name: {name}</div>;
+}
+```
+
+В случае с SSR, на стороне сервера одновременно могут обрабатываться множество клиентских запросов и серверу нужно одновременно отдавать разным клиентам изолированное состояние. Как мы помним Node.JS/Deno/Bun — однопоточная среда, но за счет асинхронности удается добиться так называемой одновремености исполнения. Пока обработчик клиента А ждет ответа от базы данных или HTTP-запроса, сервер будет обрабатывать запрос клиентов Б или В.
+
+Мы не можем полагаться на синхронную обработку логики, ведь [эффекты](https://effector.dev/ru/docs/api/effector/effect) буквально являются контейнерами для асинхронной логики. Довольно легко представить себе ситуацию, когда _одновременный_ доступ разных клиентов к значениям общего стора может все сломать.
+
+Пока у нас один клиент работает с этими сторами, все окей.
+
+```ts
+const reset = createEvent();
+const run = createEvent();
+
+const waitFx = createEffect(() => {
+  return new Promise((resolve) => setTimeout(resolve, 100));
+});
+
+const $counter = createStore([]);
+
+$counter.reset(reset);
+
+$counter.on(run, (list, name) => [...list, `manual ${name}`]);
+
+sample({
+  clock: run,
+  target: waitFx,
+});
+
+$counter.on(waitFx.done, (list, {params: name}) => [
+  ...list,
+  `fx done ${name}`,
+]);
+
+$counter.watch((i) => console.log('counter', i));
+// counter []
+
+run('A');
+// counter ["manual A"]
+
+run('B');
+// counter ["manual A", "manual B"]
+
+// counter ["manual A", "manual B", "fx done A"]
+// counter ["manual A", "manual B", "fx done A", "fx done B"]
+```
+
+[Playground](https://share.effector.dev/5oBljPUk)
+
+Допустим `run('A')` и `run('B')` это вызовы разных клиентов. Здесь наглядно видно, что модифицируется общий массив, и в итоге по окончанию вычислений клиенты получат смешанное состояние. Если бы это был стор с обычными значениями, то клиенты получали бы чужое состояние. Вызов ивента `reset` между запусками никак не спасет ситуацию:
+
+```ts
+run('A');
+// counter ["manual A"]
+
+reset();
+// counter []
+
+run('B');
+// counter ["manual B"]
+
+// counter ["manual B", "fx done A"]
+// counter ["manual B", "fx done A", "fx done B"]
+```
+
+[Playground](https://share.effector.dev/6bzTKXwA)
+
+Теперь просто потеряно одно из значений массива, тогда как `"fx done A"` все еще будет добавлен.
+
+## Решение
+
+А что если хранить значения сторов для каждого клиента в отдельном месте?
+
+```ts
+// Псевдокод
+const clientA = {stores: new Map()};
+const clientB = {stores: new Map()};
+
+// Когда клиент A запускает свои вычисления,
+// читать и записывать значения сторов в объект clientA
+
+run('A');
+clientA.stores.set($counter, ['manual A']);
+```
+
+Примерно так и работает fork API. С помощью вызова `fork()` мы создаем специальный объект — scope, в котором будут храниться все значения сторов. Именно для этого, в SSR необходимо заворачивать компоненты React или SolidJS в `Provider`.
+
+```tsx
+const scope = fork();
+
+export function Init() {
+  return (
+    <Provider value={scope}>
+      <App />
+    </Provider>
+  );
+}
+```
+
+Чтобы запустить вычисления в скоупе необходимо использовать `allSettled` или [`useEvent`](https://effector.dev/ru/docs/api/effector-react/useEvent):
+
+```ts
+await allSettled(run, {
+  scope,
+  params: 'A',
+});
+```
+
+[Playground](https://share.effector.dev/h9rENxUp)
+
+Работает это относительно просто:
+юнит переданный в `allSettled` первым аргументом будет хранить в себе ссылку на `scope`, сторы прочитают значение из этого объекта, если значения еще не было, используют `.defaultState`, и запишут изменения обратно в scope. Эффекты работают чуть сложнее, ведь в них необходимо корректно сохранять значение scope между асинхронными вызовами, но идея думаю понятна.
+
+# Как еще можно использовать
+
+import {Image} from 'astro:assets';
+
+Я решил сделать приложение для игры с друзьями в [настолку](https://munchkin.game/) — Munchkin level counter. Самостоятельно реализовать альтернативу [официальному веб-приложению](https://web.allmunchkins.com/) с эффектором и вебсокетами.
+
+Суть приложения можно описать в нескольких параграфах:
+
+Игра — вспомогательное веб приложения. Игроки открывают веб-страницу, заходят в общую комнату, видят счет всех игроков, могут менять свои характеристики, отслеживают чей сейчас ход и получают обновления в реальном времени.
+
+import munchkin1 from './munchkin/_1.png';
+
+<Image
+  src={munchkin1}
+  widths={[420, 680, 820, 1600]}
+  formats={['avif', 'jpeg', 'png', 'webp']}
+  alt="Список комнат"
+/>
+
+В веб-приложении есть своя логика, не очень сложная, но имеется: я отслеживаю направление хода, подсчет очков, автоматический сброс очков при смерти персонажа, не позволяю опустить характеристики ниже доступных и так далее. Можно было бы считать все это у каждого игрока отдельно, но я очень не хотел заморачиваться с синхронизацией или реализовывать [CRDT](https://crdt.tech/). Плюс, игроки не всегда хотят держать вкладку открытой на телефоне, а актуальное состояние нужно отображать в любой момент игры.
+
+import munchkin2 from './munchkin/_2.png';
+
+<Image
+  src={munchkin2}
+  widths={[420, 680, 820, 1600]}
+  formats={['avif', 'jpeg', 'png', 'webp']}
+  alt="Главное окно"
+/>
+
+Сразу оговорюсь, что я не борюсь за безопасность, потому что приложение разработано для друзей. Точно так же я не переживаю о высоких нагрузках, ведь больше 6 игроков в комнате обычно не бывает. Возможно, в будущем я добавлю новые возможности, но сейчас в приложении даже нет регистрации — зашел и играешь.
+
+Как именно реализовывать я сначала не знал, но мне пришла в голову такая схема: игроки отправляют вебсокет-события в комнату — я нажал то-то, а сервер присылает им по вебсокетам полное актуальное состояние, каждый раз как оно изменяется.
+
+И если посмотреть на эту схему в терминах эффектора, то видно очень понятный механизм — представление отправляет события и рендерит состояние, сервер выполняет роль модели — реагирует на события и обновляет состояние.
+
+## Как устроено
+
+Я выделил всю логику игры в отдельный файл и написал на неё тесты, как для обычной модели фронтенд приложения:
+
+```ts
+test('player can grow level', async () => {
+  const scope = fork();
+  await allSettled(munchkin.playerJoined, {scope, params: John});
+  await allSettled(munchkin.playerJoined, {scope, params: Alba});
+
+  await allSettled(munchkin.levelUp, {scope, params: John.id});
+  expect(scope.getState(munchkin.$players)).toStrictEqual([
+    {...John, level: 2},
+    Alba,
+  ]);
+});
+
+test('player can lose level', async () => {
+  const scope = fork();
+  await allSettled(munchkin.playerJoined, {scope, params: John});
+  await allSettled(munchkin.playerJoined, {scope, params: Alba});
+
+  await allSettled(munchkin.levelUp, {scope, params: John.id});
+  await allSettled(munchkin.levelDown, {scope, params: John.id});
+  expect(scope.getState(munchkin.$players)).toStrictEqual([John, Alba]);
+});
+```
+
+[Исходный код `munchkin.ts`](https://gist.github.com/sergeysova/14318b49f81c692234f05dd6f786c33c)
+
+Как отправлять эти события из браузера на сервер? Можно было бы сделать эффект, отправляющий type и payload на сервер, где мы через switch/case будем находить соответствующий ивент модели и вызывать с payload.
+
+```jsx
+// client
+const stepFinishedFx = createEffect(() => sendWSEvent({type: 'stepFinished'}));
+const gearIncreaseFx = createEffect(() => sendWSEvent({type: 'gearIncrease'}));
+const gearDecreaseFx = createEffect(() => sendWSEvent({type: 'gearDecrease'}));
+const deadFx = createEffect(() => sendWSEvent({type: 'dead'}));
+const levelUpFx = createEffect(() => sendWSEvent({type: 'levelUp'}));
+
+// server
+const {type, value} = JSON.parse(message.toString());
+switch (type) {
+  case 'gameEvent': {
+    const {type: gameType, payload} = value;
+    switch (gameType) {
+      case 'stepFinished': {
+        const player = getCurrentPlayer();
+        const room = player.getRoom();
+        gameFinished(); // Bang!
+        sendUpdates();
+        break;
+      }
+    }
+  }
+}
+```
+
+Но выглядит слишком муторно, при добавлении новых юнитов придется исправлять код сервера и клиента.
+
+А что, если я буду вызывать напрямую те же события из модели игры в браузере и заставлю эффектор автоматически отправлять их на сервер, где буду пробрасывать их в нужную комнату без дополнительных действий для каждого действия?
+
+Для этого я выделил набор публичных ивентов из этой модели в отдельный файл, импортировал его в клиентский код.
+
+```tsx
+// common
+export const common = createDomain();
+
+export const levelUp = common.createEvent<Uuid>();
+export const levelDown = common.createEvent<Uuid>();
+export const playerKill = common.createEvent<Uuid>();
+
+export const gearIncrease = common.createEvent<Uuid>();
+export const gearDecrease = common.createEvent<Uuid>();
+export const gearReset = common.createEvent<Uuid>();
+
+export const $gameMode = common.createStore<GameMode>('common');
+export const $players = common.createStore<Player[]>([]);
+```
+
+Для серверного и клиентского бандла будут проставлены идентичные sid'ы каждому стору. Ведь исходный код файла не отличается для сервера и клиента. SID — уникальный идентификатор юнита, зависящий исключительно от положения юнита в исходном коде проекта.
+
+> Совет: чтобы было проще отлаживать имена ивентов и сторов передаваемых по websocket, можно установить опцию `debugSids: true` в `effector/babel-plugin`.
+
+Затем, с помощью домена прошелся по каждому событию и отправил вызов события в эффект отправки на сервер.
+
+```tsx
+// client
+munchkin.common.onCreateEvent((event) => {
+  sample({
+    clock: event,
+    fn: (payload) => ({sid: event.sid, payload}),
+    target: sendGameEventFx,
+  });
+});
+```
+
+На сервере все гораздо проще, когда прилетает событие, я нахожу в объекте событие с нужным `.sid` и вызываю его на скоупе комнаты через `allSettled`.
+
+```tsx
+import * as munchkin from '../common/munchkin';
+
+switch (type) {
+  case 'gameEvent': {
+    const {sid, payload} = value;
+    const room = getRoomOfPlayer(me);
+    if (room) {
+      for (const unit of munchkin.common.history.events) {
+        if (unit.sid === sid) {
+          await allSettled(unit, {
+            scope: room.scope,
+            params: payload,
+          });
+        }
+      }
+    }
+    break;
+  }
+  // ...
+}
+```
+
+## Скоупы комнат
+
+Когда игрок создает новую комнату, я сразу же выполняю `fork()` и сохраняю ссылку в объекте комнаты.
+
+```tsx
+function roomCreate(id: string): Room {
+  const room = {
+    id,
+    name: sentenceCase(createRoomName()),
+    teammates: [],
+    scope: fork(),
+  };
+}
+```
+
+Конечно же, при рестарте сервера мне не хотелось бы терять все данные о процессе игры, особенно если мы с друзями договорились продолжить игру позже.
+
+Поэтому при сохранении игры на диск, я выполняю сериализацию каждого скоупа. Затем, при старте сервера и восстановлении из диска, я загружаю в скоуп данные через передачу в values.
+
+```tsx
+// backup
+const gameState = serialize(room.scope);
+
+// restore
+room.scope = fork({values: backup.gameState});
+```
+
+> **Примечание**: этот трюк не сработает, если пытаться загружать с диска состояние после изменения исходного кода игры. Тогда поменяются sid'ы сторов. По хорошему сохранение и загрузку состояния нужно реализовывать другим способом.
+
+После того как сообщение прилетело, я отправляю его в скоуп комнаты, там запускается логика на эффекторе и обновляет сторы:
+
+```tsx
+// ...
+await allSettled(unit, {scope: room.scope, params: payload});
+// ...
+```
+
+Теперь мне надо отправить измененные сторы обратно в браузер, каждому игроку.
+
+Для этого я добавил несколько строк в инициализацию объекта комнаты. Так как там уже есть объект скоупа, я могу подписаться на обновление каждого стора в нём.
+
+Для этого есть новейшее апи `createWatch` добавленное в 22.3.0.
+
+> **Примечание**: `createWatch` следует использовать только для реализации крайне нетривиальной логики при реализации библиотечного кода, например `effector-react`. Здесь `createWatch` используется только для примера. По хорошему, следует реализовать эту логику на эффектах.
+
+В данном случае, при обновлении стора в скоупе, будет вызван коллбек. В этом коллбеке я буду отправлять сериализованное состояние скоупа каждому активному игроку.
+
+```tsx
+import * as munchkin from '../common/munchkin';
+
+// подписка на один стор
+createWatch({
+  unit: munchkin.$players,
+  scope: room.scope,
+  fn: () => sendUpdates(room),
+});
+
+// подписка на все сторы в объекте
+Object.values(munchkin).forEach((unit) => {
+  if (is.store(unit)) {
+    createWatch({
+      unit,
+      scope: room.scope,
+      fn: () => sendUpdates(room),
+    });
+  }
+});
+
+// подписка через домен
+munchkin.common.onCreateStore((unit) => {
+  createWatch({
+    unit,
+    scope: room.scope,
+    fn: () => sendUpdates(room),
+  });
+});
+```
+
+Так как нам нужно отправлять много сторов, то проще поместить их в единый домен и обработать все разом, используя хук `onCreateStore`. А если будут сторы, которые должны быть приватными для сервера, то они будут созданы не в домене.
+
+```tsx
+function sendUpdates(room) {
+  const states = serialize(room.scope);
+  forEach(room.players, (player) => player.send('gameUpdate', states));
+}
+```
+
+В браузерном коде, все довольно примитивно.
+
+Когда с сервера прилетают события, я их разбираю на составные события по полю `type`. Для этого крайне полезен метод `split`
+
+```tsx
+const messageReceived = createEvent<Message>();
+
+split({
+  source: messageReceived,
+  match: (message: Message) => message.type,
+  cases: {
+    gameUpdated,
+    roomsUpdated,
+    roomLeft,
+    __: messageUnknown,
+  },
+});
+```
+
+Сервер отправит каждому клиенту `gameUpdated`, но только с теми сторами, которые действительно были обновлены.
+Метод `spread` из патронум перенаправит соответствующие значения из объекта в сторы по их `.sid`
+
+```tsx
+import * as munchkin from '../common/munchkin';
+
+// ручная обработка по .sid
+spread({
+  source: gameUpdated,
+  targets: {
+    [munchkin.$players.sid]: munchkin.$players,
+    [munchkin.$gameMode.sid]: munchkin.$gameMode,
+  },
+});
+
+// создание всех веток через цикл
+spread({
+  source: gameUpdated,
+  targets: Object.fromEntries(
+    Object.values(munchkin)
+      .filter((unit) => is.store(unit))
+      .map((unit) => [unit.sid, unit]),
+  ),
+});
+
+// на каждый стор создается один sample
+munchkin.common.onCreateStore((store) => {
+  sample({
+    clock: gameUpdated,
+    filter: (states) => typeof states[store.sid] !== 'undefined',
+    target: store,
+  });
+});
+```
+
+Но используя домен, можно обойтись и без `spread`. Еще один плюс хуков.
+
+## Вкратце
+
+1. На сервере список комнат со скоупами и списком игроков на сервере.
+2. В браузерах игроков канал websocket, публичное API ивентов и сторов с точно такими же SID, как на сервере.
+3. Когда срабатывает событие в браузере, берем его `sid` и payload, отправляем через websocket на сервер.
+4. Сервер знает в какой комнате сейчас игрок, ищет подходящий event по его `sid` и вызывает через `allSettled` на скоупе комнаты.
+5. Логика крутится внутри скоупа, в следствии чего обновляются сторы, срабатывает коллбек `createWatch`.
+6. Внутри комнаты есть ссылки на websocket-каналы каждого игрока, а значит мы можем отправить каждому игроку сериализованное состояние скоупа с помощью `serialize()`.
+7. Браузеры игроков ловят событие по websocket-каналу, парсят содержимое, `split` вызывает нужный нам ивент.
+8. Метод `spread` обновит стор по ключу в сообщении, ведь это `sid`.
+9. Интерфейс перерисовывается из-за обновления сторов.
+
+## Что получил в итоге
+
+В процессе разработки мне нужно было только создать шину общения сервера и браузеров. Любые новые события в домене `munchkin` будут пробрасываться из браузера на сервер автоматически, а сторы в обратном направлении.
+
+Также typescript сможет проверить типы и мне не придется верить серверу на слово, ведь используется буквально тот же набор ивентов и сторов. Остается только деплоить это вместе, чтобы версия браузерного и серверного кода совпадала, но это уже вопрос другой статьи.
+
+[Комментарии](https://t.me/sergeysova/675)
