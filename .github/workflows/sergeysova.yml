@@ -1,17 +1,10 @@
 name: Deploy sergeysova.com
 
-# ru.sergeysova.com пока не существует (нет apps/sergeysova-brand и самого
-# домена) — job появится здесь же, когда дойдём до Phase 2 из
-# docs/sova-web-monorepo-plan.md. До тех пор EN-версия собирается из
-# apps/sova-sh с PUBLIC_LANGUAGE=en и деплоится как отдельный Worker
-# (sergeysova-com), тем же apps/sova-sh/wrangler.jsonc с --name override,
-# чтобы не столкнуться с деплоем sova.sh из sova.yml.
-
 on:
   push:
     branches: [main]
     paths:
-      - 'apps/sova-sh/**'
+      - 'apps/sergeysova-brand/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -37,8 +30,8 @@ jobs:
       - name: 🔍 Installation
         run: pnpm install --frozen-lockfile
 
-      - name: 🔧 Build — sergeysova.com (EN, временно из apps/sova-sh)
-        run: pnpm --filter @sova-web/sova-sh build
+      - name: 🔧 Build — sergeysova.com (EN)
+        run: pnpm --filter @sova-web/sergeysova-brand build
         env:
           DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
           YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
@@ -53,5 +46,42 @@ jobs:
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          workingDirectory: apps/sova-sh
+          workingDirectory: apps/sergeysova-brand
           command: deploy --name=sergeysova-com
+
+  ru:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐧 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: 🔍 Installation
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔧 Build — ru.sergeysova.com (RU)
+        run: pnpm --filter @sova-web/sergeysova-brand build
+        env:
+          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
+          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
+          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
+          PUBLIC_SITE: https://ru.sergeysova.com
+          PUBLIC_LANGUAGE: ru
+          PUBLIC_GTAG: G-PHKCHPT847
+
+      - name: 🚀 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: apps/sergeysova-brand
+          command: deploy --name=ru-sergeysova-com

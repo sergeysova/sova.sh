@@ -47,7 +47,8 @@
 ```text
 sova-web/ (= этот репозиторий)
 ├── apps/
-│   ├── sova-sh/              # sova.sh — перенесено из корня как есть
+│   ├── sova-sh/              # sova.sh — самостоятельное приложение
+│   ├── sergeysova-brand/     # sergeysova.com + ru.sergeysova.com
 │   └── podcast-sova-sh/      # заготовка (scaffold), новый Astro-проект
 ├── packages/
 │   └── content/              # общий cachedFetch + Simplecast-загрузчик
@@ -59,18 +60,25 @@ sova-web/ (= этот репозиторий)
 ```
 
 Ещё не созданы (осознанно, чтобы не плодить пустые заглушки без
-потребителей): `apps/sergeysova-brand`, `apps/news-sova-sh`,
-`packages/ui`, `packages/seo`, `packages/site-config`, `content/`
-(content collections). Появятся по мере продвижения фаз ниже.
+потребителей): `apps/news-sova-sh`, `packages/ui`, `packages/seo`,
+`packages/site-config`, `content/` (content collections). Появятся по
+мере продвижения фаз ниже.
 
-## 1. sova.sh как индекс
+## 1. sova.sh как отдельное приложение
 
-Подтверждено. `apps/sova-sh` — будущий индекс. Пока код не менялся
-по смыслу (та же лендинг-страница), только перенесён в `apps/sova-sh/`
-с сохранением истории (`git mv`, не copy). Разделение на index/brand —
-Phase 2, требует реального контента для About/Work/Talks/Consulting,
-которого пока не существует нигде в коде — это авторская работа, не
-техническая.
+Сделано: `apps/sergeysova-brand` — новое приложение, механический клон
+`apps/sova-sh` на момент разделения (тот же код, тот же контент). Цель
+этого шага — перестать собирать sergeysova.com из `apps/sova-sh`, чтобы
+`sova.sh` перестал быть общим источником для двух разных доменов.
+
+Важная оговорка: **контент двух приложений сейчас идентичен**. Оба всё
+ещё рендерят одну и ту же лендинг-страницу с `IfLang`/`switchLang`.
+Настоящее разделение — sova.sh как индекс проектов/интересов
+(`content/projects`, `content/interests`, см. пункт 4) и
+sergeysova-brand как About/Work/Talks/Consulting — не сделано, потому
+что требует реального контента, которого пока не существует нигде в
+коде. Это авторская работа, не техническая, и она не блокирует
+инфраструктурное разделение приложений, сделанное здесь.
 
 ## 2. Заготовка podcast.sova.sh
 
@@ -109,35 +117,37 @@ Pages ничего ещё не было задеплоено (ни одного 
 каждому привязывается свой custom domain — просто `wrangler deploy` +
 `wrangler.jsonc` с `assets.directory` вместо `wrangler pages deploy`.
 
-sergeysova.com (EN) тоже переведён на Cloudflare, хотя источник для него
-всё ещё `apps/sova-sh` (не отдельное `apps/sergeysova-brand`, это
-Phase 2) — кросс-репо пуш с PAT в `sergeysova/sergeysova.com` больше не
-нужен вообще, никакого GitHub Pages не осталось. Технический момент: оба
-таргета (`sova.sh` и `sergeysova.com`) собираются из одного и того же
-`apps/sova-sh/wrangler.jsonc` (`name: sova-sh`), поэтому EN-деплой
-переопределяет имя воркера флагом `wrangler deploy --name=sergeysova-com`
-— иначе оба деплоя писали бы в один и тот же Worker и затирали друг
-друга.
+sergeysova.com (EN) и ru.sergeysova.com (RU) тоже на Cloudflare —
+кросс-репо пуш с PAT в `sergeysova/sergeysova.com` больше не нужен
+вообще, никакого GitHub Pages не осталось. `apps/sergeysova-brand`
+собирается дважды (два job'а в одном workflow, как в исходном плане) и
+деплоится в два разных Worker'а: EN — `wrangler deploy
+--name=sergeysova-com`, RU — `wrangler deploy --name=ru-sergeysova-com`.
+`--name` переопределяет `name` в `wrangler.jsonc` (там по умолчанию
+`sergeysova-com`) — без этого оба job'а писали бы в один Worker и
+затирали друг друга через раз.
 
 Реализовано в этом PR:
 
-- `apps/sova-sh/wrangler.jsonc` и `apps/podcast-sova-sh/wrangler.jsonc` —
-  `assets.directory: "./dist"`, без биндингов. Конфиг проверен через
-  `wrangler deploy --dry-run` (валиден; сама сборка в песочнице CI-агента
-  не имеет реальных API-ключей/сети, так что содержимое `dist` при этой
-  проверке — не полноценный прод-билд, только подтверждение синтаксиса).
+- `apps/sova-sh/wrangler.jsonc`, `apps/sergeysova-brand/wrangler.jsonc` и
+  `apps/podcast-sova-sh/wrangler.jsonc` — `assets.directory: "./dist"`,
+  без биндингов. Конфиг проверен через `wrangler deploy --dry-run`
+  (валиден для всех трёх и для обоих `--name` overrides; сама сборка в
+  песочнице CI-агента не имеет реальных API-ключей/сети, так что
+  содержимое `dist` при этой проверке — не полноценный прод-билд, только
+  подтверждение синтаксиса).
+
 Один workflow-файл на домен/группу доменов, а не общий `deploy.yml` на всё:
 
 - `.github/workflows/sova.yml` — деплой `apps/sova-sh` на Cloudflare
   Workers (`cloudflare/wrangler-action`, `command: deploy`,
   `workingDirectory: apps/sova-sh`). Триггерится по `paths` только на
   изменения `apps/sova-sh/**` и `packages/**`.
-- `.github/workflows/sergeysova.yml` — job `en` тоже на Cloudflare Workers
-  (`apps/sova-sh/wrangler.jsonc`, `--name=sergeysova-com` override), хотя
-  источник для него всё ещё `apps/sova-sh` с `PUBLIC_LANGUAGE=en`, а не
-  отдельное `apps/sergeysova-brand`. Job `ru` для `ru.sergeysova.com`
-  появится в этом же файле в Phase 2, когда будут и brand-app, и сам
-  домен.
+- `.github/workflows/sergeysova.yml` — деплой `apps/sergeysova-brand` на
+  Cloudflare Workers, два job'а: `en` (`PUBLIC_LANGUAGE=en`,
+  `--name=sergeysova-com`) и `ru` (`PUBLIC_LANGUAGE=ru`,
+  `--name=ru-sergeysova-com`). Триггерится по `paths` на
+  `apps/sergeysova-brand/**`.
 - `.github/workflows/podcast.yml` — деплой `podcast-sova-sh` на
   Cloudflare Workers тем же способом. **Автозапуск по push выключен**
   (закомментирован), запускается вручную (`workflow_dispatch`) — не
@@ -153,13 +163,13 @@ Phase 2) — кросс-репо пуш с PAT в `sergeysova/sergeysova.com` б
 2. Создать API-токен с правами на Workers (Edit).
 3. Добавить `CLOUDFLARE_API_TOKEN` и `CLOUDFLARE_ACCOUNT_ID` в GitHub
    Actions secrets репозитория.
-4. Worker'ы `sova-sh`, `sergeysova-com` и `podcast-sova-sh` создаются
-   автоматически первым же `wrangler deploy` — отдельно ничего заводить
-   не нужно.
+4. Worker'ы `sova-sh`, `sergeysova-com`, `ru-sergeysova-com` и
+   `podcast-sova-sh` создаются автоматически первым же `wrangler deploy`
+   — отдельно ничего заводить не нужно.
 5. В Cloudflare Dashboard → Workers & Pages → выбрать Worker → Custom
-   domains добавить `sova.sh` и `sergeysova.com` (и позже
-   `podcast.sova.sh`), обновить DNS записи на Cloudflare (если домены
-   ещё не там).
+   domains добавить `sova.sh`, `sergeysova.com`, `ru.sergeysova.com` (и
+   позже `podcast.sova.sh`), обновить DNS записи на Cloudflare (если
+   домены ещё не там — `ru.sergeysova.com` наверняка новая запись).
 6. Секрет `ACCESS_TOKEN` (PAT для `sergeysova/sergeysova.com`) и сам
    этот репозиторий больше не используются деплоем — можно оставить как
    архив или удалить, когда будет удобно.
@@ -254,15 +264,20 @@ Phase 2):
 - [x] `apps/podcast-sova-sh` — заготовка нового Astro-приложения.
 - [x] Деплой `apps/sova-sh` переведён на Cloudflare Workers (`wrangler deploy`).
 - [x] Деплой-заготовка для `apps/podcast-sova-sh` (ручной запуск).
-- [x] `sergeysova.com` (EN) деплой тоже переведён на Cloudflare Workers
-      (`--name=sergeysova-com` override того же `apps/sova-sh`), GitHub
-      Pages/PAT для него больше не используется.
+- [x] `apps/sergeysova-brand` — отдельное приложение (клон `apps/sova-sh`
+      на момент разделения), `sova-sh` больше не источник для
+      sergeysova.com. Контент пока идентичен — см. пункт 1.
+- [x] `sergeysova.com` (EN) и `ru.sergeysova.com` (RU) деплоятся на
+      Cloudflare Workers из `apps/sergeysova-brand` (job'ы `en`/`ru` в
+      `sergeysova.yml`), GitHub Pages/PAT больше не используется.
 
 ## Дальше (Phase 2, отдельная работа)
 
 1. Контентный редизайн sova.sh (index) vs. sergeysova-brand
-   (About/Work/Talks/Consulting), включая появление домена
-   `ru.sergeysova.com` (DNS).
+   (About/Work/Talks/Consulting) — сейчас оба приложения рендерят
+   идентичный контент, реальное разделение смысла ещё предстоит.
+   `ru.sergeysova.com` как домен (DNS) тоже ещё нужно завести у
+   регистратора/в Cloudflare.
 2. `content/` + Astro Content Collections для projects/interests/articles/brand.
 3. Перенос `news.sova.sh` в монорепо (`git subtree`, сохранение истории),
    замена HTTP-фетча на build-time импорт + Turborepo affected-based CI

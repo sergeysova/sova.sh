@@ -1,0 +1,301 @@
+---
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/en';
+import LocaleData from 'dayjs/plugin/localeData';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+
+import Layout from '../layouts/Layout.astro';
+import AssetHistory from '../assets/history.svg?url';
+import IconMicrophone from '../assets/icons/microphone.svg?url';
+import IconNews from '../assets/icons/news.svg?url';
+import IconNotes from '../assets/icons/notes.svg?url';
+import IconYoutube from '../assets/icons/youtube.svg?url';
+
+import {getUniqueArticles} from '../data/forem';
+import {getPages} from '../data/markdown';
+import {getVideos} from '../data/youtube';
+import {getEpisodes} from '../data/podcast';
+import {getNews} from '../data/news';
+import {switchLang} from '../lib/language';
+import {invitedContent} from '../data/invited-content';
+
+interface HistoryRecord {
+  type: 'article' | 'video' | 'podcast' | 'news';
+  title: string;
+  description: string;
+  url: string;
+  publishedAt: Date;
+  invited: boolean;
+}
+
+const [articles, pages, videos, episodes, news] = await Promise.all([
+  getUniqueArticles(),
+  getPages(),
+  getVideos(),
+  getEpisodes(),
+  getNews(),
+]);
+
+const records: HistoryRecord[] = [];
+
+invitedContent.forEach((record) => records.push({...record, invited: true}));
+
+articles.forEach((article) =>
+  records.push({
+    type: 'article',
+    title: article.title,
+    description: article.description,
+    url: article.url,
+    publishedAt: new Date(article.published_at),
+    invited: false,
+  }),
+);
+
+pages.forEach((page) =>
+  records.push({
+    type: 'article',
+    title: page.title,
+    description: page.description,
+    url: page.url,
+    publishedAt: new Date(page.published_at),
+    invited: false,
+  }),
+);
+
+videos.forEach((video) =>
+  records.push({
+    type: 'video',
+    title: video.title,
+    description: video.description,
+    publishedAt: new Date(video.publishedAt),
+    url: video.url,
+    invited: false,
+  }),
+);
+
+episodes.forEach((episode) =>
+  records.push({
+    type: 'podcast',
+    title: episode.title,
+    description: episode.description,
+    publishedAt: new Date(episode.pubDate),
+    url: episode.link,
+    invited: false,
+  }),
+);
+
+news.forEach((issue) =>
+  records.push({
+    type: 'news',
+    title: `Сова рассылает выпуск #${issue.id}`,
+    description: issue.description,
+    publishedAt: new Date(issue.publishedAt),
+    url: issue.url,
+    invited: false,
+  }),
+);
+
+records.sort((a, b) => b.publishedAt.valueOf() - a.publishedAt.valueOf());
+
+const icon: {[key in HistoryRecord['type']]: string} = {
+  article: IconNotes,
+  video: IconYoutube,
+  podcast: IconMicrophone,
+  news: IconNews,
+};
+
+dayjs.extend(LocaleData);
+dayjs.extend(LocalizedFormat);
+dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
+
+const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
+  article: switchLang({en: 'Article', ru: 'Статья'}),
+  news: switchLang({en: 'Newsletter issue', ru: 'Новостной выпуск'}),
+  podcast: switchLang({en: 'Podcast episode', ru: 'Выпуск подкаста'}),
+  video: switchLang({en: 'Video', ru: 'Видео'}),
+};
+---
+
+<Layout
+  title={switchLang({
+    en: 'Publish history',
+    ru: 'История публикаций',
+  })}
+  description={switchLang({
+    en: 'All my published content in chronological order',
+    ru: 'Весь мой контент в хронологическом порядке',
+  })}
+>
+  <main class="relative">
+    <img src={AssetHistory} class="title-image z-10" />
+    <div class="relative space-y-5">
+      {
+        records.map((record, index) => {
+          const recordYear = record.publishedAt.getUTCFullYear();
+          const recordMonth = record.publishedAt.getUTCMonth();
+          const previousYear = records[index - 1]?.publishedAt.getUTCFullYear() ?? recordYear + 1;
+          const previousMonth = records[index - 1]?.publishedAt.getUTCMonth() ?? recordMonth + 1;
+          return (
+            <Fragment>
+              {recordYear !== previousYear ? (
+                <a href={`#r-${recordYear}`} id={`r-${recordYear}`} class="year">
+                  {record.publishedAt.getUTCFullYear()}
+                </a>
+              ) : null}
+              {recordMonth !== previousMonth || recordYear !== previousYear ? (
+                <a
+                  href={`#r-${recordYear}-${recordMonth}`}
+                  id={`r-${recordYear}-${recordMonth}`}
+                  class="month capitalize"
+                >
+                  {dayjs(record.publishedAt).format('MMMM')}
+                </a>
+              ) : null}
+              <a
+                data-type={record.type}
+                data-invited={switchLang({en: 'invited', ru: 'приглашен'})}
+                class:list={[
+                  'record z-50',
+                  {
+                    invited: record.invited,
+                  },
+                ]}
+                href={record.url}
+                rel="noopener"
+                target="_blank"
+              >
+                <div class="flex space-x-2 px-4 text-xl">
+                  <img
+                    src={icon[record.type]}
+                    class="inline-block w-5"
+                    title={articleTypeTitle[record.type]}
+                  />
+                  <span>{record.title}</span>
+                </div>
+                <span class="pr-4 pl-12 text-sm">{dayjs(record.publishedAt).format('LL')}</span>
+                <p class="pr-4 pl-12">{record.description}</p>
+              </a>
+            </Fragment>
+          );
+        })
+      }
+      <div class="line"></div>
+    </div>
+  </main>
+</Layout>
+<style>
+  @import '../styles/global.css';
+
+  main {
+    margin: auto;
+    padding: 1em;
+    max-width: 70ch;
+    @apply flex flex-col gap-10;
+  }
+
+  .title-image {
+    @apply my-2 max-h-14;
+  }
+
+  @media (min-width: 560px) {
+    .title-image {
+      @apply my-3 mr-6 max-h-20;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .title-image {
+      @apply my-4 -ml-24 max-h-24;
+    }
+  }
+
+  .line {
+    @apply absolute top-0 bottom-0 left-6 w-1 rounded bg-slate-400;
+    z-index: -1;
+  }
+
+  .year {
+    @apply sticky top-1 -mx-3 block bg-black px-5 py-2 text-white;
+    border-radius: 50px;
+    z-index: 90;
+    transition: scale 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+  }
+
+  @media (min-width: 560px) {
+    .year:hover {
+      scale: 1.03;
+    }
+  }
+
+  .year:not(:first-child) {
+    margin-top: 4rem !important;
+  }
+
+  .month {
+    @apply ml-10 inline-block rounded px-2 py-0.5 font-medium text-slate-600 hover:bg-slate-500 hover:text-white;
+    transition:
+      background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .record {
+    --border-brand-color: transparent;
+    @apply relative flex flex-col gap-1 overflow-hidden rounded-md bg-white py-3;
+    --shadow-color: 0deg 0% 0%;
+
+    box-shadow:
+      hsla(var(--shadow-color) / 0.4) 0px 2px 4px,
+      hsla(var(--shadow-color) / 0.3) 0px 7px 13px -3px,
+      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
+    transition:
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .record:hover {
+    box-shadow:
+      hsla(var(--shadow-color) / 0.2) 0px 8px 8px,
+      hsla(var(--shadow-color) / 0.2) 0px 13px 26px -3px,
+      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
+    transform: translateY(-3px);
+  }
+
+  .record::after {
+    content: '';
+    @apply absolute top-0 bottom-0 left-0 w-1;
+    background-color: hsl(var(--border-brand-color));
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .record:hover::after {
+    @apply w-1.5;
+  }
+
+  .record.invited {
+    --shadow-color: var(--border-brand-color);
+    @apply -ml-3 pl-3;
+  }
+  .record.invited::after {
+    @apply w-5 py-1 text-sm text-white;
+    content: attr(data-invited);
+    text-orientation: sideways;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    text-align: right;
+  }
+
+  .record[data-type='video'] {
+    --border-brand-color: 0deg 100% 50%;
+  }
+  .record[data-type='podcast'] {
+    --border-brand-color: 222deg 79% 55%;
+  }
+  .record[data-type='news'] {
+    --border-brand-color: 0deg 0% 16%;
+  }
+  .record[data-type='article'].invited {
+    --shadow-color: 142deg 76% 36%;
+    --border-brand-color: 142deg 76% 36%;
+  }
+</style>

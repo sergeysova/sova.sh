@@ -1,0 +1,54 @@
+---
+import Download from '../components/Download.astro';
+import './cv-layout.css';
+
+type Props = {
+  frontmatter: {
+    title: string;
+    description?: string;
+  };
+};
+
+const {PDF_VIEW, FORCE_THEME = ''} = import.meta.env;
+
+const {title, description} = Astro.props.frontmatter as Props['frontmatter'];
+
+// Firstname Lastname -> ['F', 'L']
+const initials = title
+  .split(' ')
+  .map(([initial]) => initial!.toUpperCase())
+  .slice(0, 2);
+---
+
+<!doctype html>
+<html lang="en" class={FORCE_THEME}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description || title} />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+  </head>
+  <body class={!PDF_VIEW ? 'bg-indigo-50 dark:bg-slate-900 sm:my-14' : ''}>
+    <div class="container mx-auto flex justify-center">
+      <article class="minimalist relative">
+        <div class="absolute top-4 rounded-sm bg-indigo-400 px-4 py-1 sm:top-12 sm:left-8">
+          <div class="flex h-fit flex-col items-center text-sm font-bold select-none">
+            {initials.map((initial) => <span>{initial}</span>)}
+          </div>
+        </div>
+        {
+          !PDF_VIEW && (
+            <div class="not-prose absolute top-4 right-4">
+              <Download href={Astro.url.toString()} />
+            </div>
+          )
+        }
+        <slot />
+      </article>
+    </div>
+    <style></style>
+  </body>
+</html>

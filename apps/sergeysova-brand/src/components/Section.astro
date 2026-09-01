@@ -1,0 +1,59 @@
+---
+import {optionalTranslate, switchLang} from '../lib/language';
+import ButtonLink from './ButtonLink.astro';
+
+interface Link {
+  text: {ru: string; en: string} | string;
+  url: string;
+}
+
+export interface Props {
+  title?: string;
+  titleImage?: string;
+  id?: string;
+  description?: {
+    ru: string;
+    en: string;
+  };
+  links?: Link[];
+}
+
+const {title, titleImage, description, links, id} = Astro.props;
+---
+
+<section>
+  {id ? <a id={id} /> : null}
+  {title ? <h1 class="mb-2 text-3xl">{title}</h1> : null}
+  {titleImage ? <img src={titleImage} class="title-image" /> : null}
+  <slot />
+  {description ? <p class="pt-4">{switchLang(description)}</p> : null}
+  {
+    links ? (
+      <div class="flex gap-2 pt-4">
+        {links.map((link) => (
+          <ButtonLink text={optionalTranslate(link.text)} href={link.url} />
+        ))}
+      </div>
+    ) : null
+  }
+</section>
+
+<style>
+  @import '../styles/global.css';
+
+  .title-image {
+    @apply -mb-2 max-h-14;
+  }
+
+  @media (min-width: 560px) {
+    .title-image {
+      @apply mr-6 -mb-3 max-h-20;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .title-image {
+      @apply -mb-4 -ml-20 max-h-24;
+    }
+  }
+</style>
