@@ -2,7 +2,10 @@ name: Deploy sergeysova.com
 
 # ru.sergeysova.com пока не существует (нет apps/sergeysova-brand и самого
 # домена) — job появится здесь же, когда дойдём до Phase 2 из
-# docs/sova-web-monorepo-plan.md.
+# docs/sova-web-monorepo-plan.md. До тех пор EN-версия собирается из
+# apps/sova-sh с PUBLIC_LANGUAGE=en и деплоится как отдельный Worker
+# (sergeysova-com), тем же apps/sova-sh/wrangler.jsonc с --name override,
+# чтобы не столкнуться с деплоем sova.sh из sova.yml.
 
 on:
   push:
@@ -45,10 +48,10 @@ jobs:
           PUBLIC_LANGUAGE: en
           PUBLIC_GTAG: G-PHKCHPT847
 
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: 🚀 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
-          branch: gh-pages
-          folder: apps/sova-sh/dist
-          repository-name: sergeysova/sergeysova.com
-          token: '${{ secrets.ACCESS_TOKEN }}'
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: apps/sova-sh
+          command: deploy --name=sergeysova-com

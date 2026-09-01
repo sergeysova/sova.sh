@@ -108,9 +108,16 @@ Pages ничего ещё не было задеплоено (ни одного 
 той же: любое число независимых Workers создаётся из одного монорепо,
 каждому привязывается свой custom domain — просто `wrangler deploy` +
 `wrangler.jsonc` с `assets.directory` вместо `wrangler pages deploy`.
-Кросс-репо пуш с PAT для sergeysova.com (EN) всё ещё не нужен для
-Cloudflare-части — он остаётся только там, где деплой ещё не переехал
-с GitHub Pages (см. ниже).
+
+sergeysova.com (EN) тоже переведён на Cloudflare, хотя источник для него
+всё ещё `apps/sova-sh` (не отдельное `apps/sergeysova-brand`, это
+Phase 2) — кросс-репо пуш с PAT в `sergeysova/sergeysova.com` больше не
+нужен вообще, никакого GitHub Pages не осталось. Технический момент: оба
+таргета (`sova.sh` и `sergeysova.com`) собираются из одного и того же
+`apps/sova-sh/wrangler.jsonc` (`name: sova-sh`), поэтому EN-деплой
+переопределяет имя воркера флагом `wrangler deploy --name=sergeysova-com`
+— иначе оба деплоя писали бы в один и тот же Worker и затирали друг
+друга.
 
 Реализовано в этом PR:
 
@@ -125,13 +132,12 @@ Cloudflare-части — он остаётся только там, где де
   Workers (`cloudflare/wrangler-action`, `command: deploy`,
   `workingDirectory: apps/sova-sh`). Триггерится по `paths` только на
   изменения `apps/sova-sh/**` и `packages/**`.
-- `.github/workflows/sergeysova.yml` — job `en` **намеренно оставлен на
-  GitHub Pages** (+ PAT в чужой репозиторий `sergeysova/sergeysova.com`)
-  — потому что источник для него всё ещё `apps/sova-sh` с
-  `PUBLIC_LANGUAGE=en`, а не отдельное `apps/sergeysova-brand`. Job `ru`
-  для `ru.sergeysova.com` появится в этом же файле в Phase 2, когда будут
-  и brand-app, и сам домен. Переводить EN-таргет на Cloudflare раньше,
-  чем появится реальный brand-app, не имеет смысла.
+- `.github/workflows/sergeysova.yml` — job `en` тоже на Cloudflare Workers
+  (`apps/sova-sh/wrangler.jsonc`, `--name=sergeysova-com` override), хотя
+  источник для него всё ещё `apps/sova-sh` с `PUBLIC_LANGUAGE=en`, а не
+  отдельное `apps/sergeysova-brand`. Job `ru` для `ru.sergeysova.com`
+  появится в этом же файле в Phase 2, когда будут и brand-app, и сам
+  домен.
 - `.github/workflows/podcast.yml` — деплой `podcast-sova-sh` на
   Cloudflare Workers тем же способом. **Автозапуск по push выключен**
   (закомментирован), запускается вручную (`workflow_dispatch`) — не
@@ -147,11 +153,16 @@ Cloudflare-части — он остаётся только там, где де
 2. Создать API-токен с правами на Workers (Edit).
 3. Добавить `CLOUDFLARE_API_TOKEN` и `CLOUDFLARE_ACCOUNT_ID` в GitHub
    Actions secrets репозитория.
-4. Worker'ы `sova-sh` и `podcast-sova-sh` создаются автоматически первым
-   же `wrangler deploy` — отдельно ничего заводить не нужно.
+4. Worker'ы `sova-sh`, `sergeysova-com` и `podcast-sova-sh` создаются
+   автоматически первым же `wrangler deploy` — отдельно ничего заводить
+   не нужно.
 5. В Cloudflare Dashboard → Workers & Pages → выбрать Worker → Custom
-   domains добавить `sova.sh` (и позже `podcast.sova.sh`), обновить DNS
-   записи на Cloudflare (если домены ещё не там).
+   domains добавить `sova.sh` и `sergeysova.com` (и позже
+   `podcast.sova.sh`), обновить DNS записи на Cloudflare (если домены
+   ещё не там).
+6. Секрет `ACCESS_TOKEN` (PAT для `sergeysova/sergeysova.com`) и сам
+   этот репозиторий больше не используются деплоем — можно оставить как
+   архив или удалить, когда будет удобно.
 
 Бесплатный тариф Workers: запросы к статическим ассетам бесплатны и не
 лимитированы; лимит 100 000 запросов/день действует только на вызовы
@@ -243,7 +254,9 @@ Phase 2):
 - [x] `apps/podcast-sova-sh` — заготовка нового Astro-приложения.
 - [x] Деплой `apps/sova-sh` переведён на Cloudflare Workers (`wrangler deploy`).
 - [x] Деплой-заготовка для `apps/podcast-sova-sh` (ручной запуск).
-- [x] `sergeysova.com` (EN) деплой оставлен нетронутым осознанно.
+- [x] `sergeysova.com` (EN) деплой тоже переведён на Cloudflare Workers
+      (`--name=sergeysova-com` override того же `apps/sova-sh`), GitHub
+      Pages/PAT для него больше не используется.
 
 ## Дальше (Phase 2, отдельная работа)
 
