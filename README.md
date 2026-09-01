@@ -29,5 +29,5 @@ pnpm build   # turbo run build — собирает все apps
 
 ## Деплой
 
-Cloudflare Pages, отдельный проект на каждый домен. Детали и то, что
-пока не переехало (sergeysova.com, news.sova.sh) — см. план.
+Cloudflare Workers (Static Assets), отдельный Worker на каждый домен.
+Детали и то, что пока не переехало (sergeysova.com, news.sova.sh) — см. план.

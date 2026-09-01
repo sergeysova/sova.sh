@@ -29,4 +29,4 @@ pnpm --filter @sova-web/podcast-sova-sh build
 - [ ] RSS-фид эпизодов (`/rss.xml`)
 - [ ] Список по сезонам
 - [ ] Перенос актуального контента/метаданных, если они отличаются от Simplecast API
-- [ ] Деплой на Cloudflare Pages + переключение DNS `podcast.sova.sh`
+- [ ] Деплой на Cloudflare Workers + переключение DNS `podcast.sova.sh`

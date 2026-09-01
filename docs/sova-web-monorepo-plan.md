@@ -17,7 +17,7 @@
   `git filter-repo`) и архивируются.
 - `sergeysova/sergeysova.com` — не исходный код, а чистый deploy-target
   (артефакты `gh-pages`, автокоммиты). Остаётся как есть до перехода на
-  Cloudflare Pages, затем не нужен.
+  Cloudflare Workers, затем не нужен.
 - `sergeysova/go.sova.dev` — вне скоупа, не трогаем (см. «Что сознательно
   не делаем» ниже).
 
@@ -91,55 +91,67 @@ Astro»). Заготовка:
 `cachedFetch` вместо двух копий одного и того же кода
 (`src/data/server-request.ts` было дублировано, теперь один источник).
 
-## 3. Деплой на Cloudflare Pages
+## 3. Деплой на Cloudflare Workers (Static Assets)
 
-Решено: Cloudflare Pages, бесплатно, статика, несколько независимых
-таргетов. Это несколько упрощает то, что есть сейчас: сегодня и `sova.sh`
-(свой gh-pages), и `sergeysova.com` (чужой репозиторий + PAT-токен для
-кросс-репо пуша) — обходной манёвр вокруг ограничения GitHub Pages «один
-gh-pages на репозиторий». Cloudflare Pages таких ограничений не имеет:
-любое число Pages-проектов создаётся независимо от структуры git-репозитория,
-публикуется командой `wrangler pages deploy <dist> --project-name=<name>`,
-и каждому проекту привязывается свой custom domain в дашборде — кросс-репо
-пуш с PAT становится не нужен вообще.
+Решено: Cloudflare, бесплатно, статика, несколько независимых таргетов.
+Изначально это было сделано на Cloudflare Pages (`wrangler pages deploy`),
+но актуальная документация Cloudflare прямо говорит, что для новых
+проектов Pages больше не рекомендуется:
+
+> Use Workers Static Assets for new projects. If you are starting a new
+> project, use Workers instead of Pages. Pages continues to work, but new
+> features and optimizations are focused on Workers.
+
+Pages ничего ещё не было задеплоено (ни одного прогона нового workflow не
+было на момент проверки), поэтому переключились на Workers Static Assets
+сразу, не разворачивая и не мигрируя потом Pages-проекты. Модель осталась
+той же: любое число независимых Workers создаётся из одного монорепо,
+каждому привязывается свой custom domain — просто `wrangler deploy` +
+`wrangler.jsonc` с `assets.directory` вместо `wrangler pages deploy`.
+Кросс-репо пуш с PAT для sergeysova.com (EN) всё ещё не нужен для
+Cloudflare-части — он остаётся только там, где деплой ещё не переехал
+с GitHub Pages (см. ниже).
 
 Реализовано в этом PR:
 
+- `apps/sova-sh/wrangler.jsonc` и `apps/podcast-sova-sh/wrangler.jsonc` —
+  `assets.directory: "./dist"`, без биндингов. Конфиг проверен через
+  `wrangler deploy --dry-run` (валиден; сама сборка в песочнице CI-агента
+  не имеет реальных API-ключей/сети, так что содержимое `dist` при этой
+  проверке — не полноценный прод-билд, только подтверждение синтаксиса).
 - `.github/workflows/deploy.yml` — job `sova-sh` переведён на
-  `cloudflare/wrangler-action`, деплоит `apps/sova-sh/dist` в Cloudflare
-  Pages проект `sova-sh` (домен `sova.sh`). Триггерится по `paths` только
-  на изменения `apps/sova-sh/**` и `packages/**`.
+  `cloudflare/wrangler-action` (`command: deploy`, `workingDirectory:
+  apps/sova-sh`). Триггерится по `paths` только на изменения
+  `apps/sova-sh/**` и `packages/**`.
 - job `sergeysova-com` (EN) **намеренно оставлен как есть** (GitHub Pages
   + PAT в чужой репозиторий) — потому что источник для него всё ещё
   `apps/sova-sh` с `PUBLIC_LANGUAGE=en`, а не отдельное
-  `apps/sergeysova-brand`. Переводить деплой этого таргета на Cloudflare
-  раньше, чем появится реальный brand-app, не имеет смысла — это Phase 2.
-- `.github/workflows/deploy-podcast.yml` — деплой `podcast-sova-sh` в
-  Cloudflare Pages проект `podcast-sova-sh`. **Автозапуск по push
-  выключен** (закомментирован) до тех пор, пока в репозитории не появятся
-  секреты `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` и сам
-  Cloudflare Pages проект — иначе CI будет постоянно падать на
-  заготовке, которую ещё рано показывать пользователям. Запускается
-  вручную (`workflow_dispatch`) для проверки сборки/деплоя.
+  `apps/sergeysova-brand`. Переводить деплой этого таргета раньше, чем
+  появится реальный brand-app, не имеет смысла — это Phase 2.
+- `.github/workflows/deploy-podcast.yml` — деплой `podcast-sova-sh` тем же
+  способом. **Автозапуск по push выключен** (закомментирован) до тех пор,
+  пока в репозитории не появятся секреты `CLOUDFLARE_API_TOKEN` /
+  `CLOUDFLARE_ACCOUNT_ID` — иначе CI будет постоянно падать на заготовке,
+  которую ещё рано показывать пользователям. Запускается вручную
+  (`workflow_dispatch`).
 
 **Что нужно от владельца репозитория, чтобы включить Cloudflare:**
 
 1. Завести Cloudflare-аккаунт (если ещё нет) и получить `Account ID`.
-2. Создать API-токен с правами `Cloudflare Pages: Edit`.
+2. Создать API-токен с правами на Workers (Edit).
 3. Добавить `CLOUDFLARE_API_TOKEN` и `CLOUDFLARE_ACCOUNT_ID` в GitHub
    Actions secrets репозитория.
-4. Создать Pages-проекты `sova-sh` (и позже `podcast-sova-sh`,
-   `sergeysova-brand-en`, `sergeysova-brand-ru`) — можно первым же
-   `wrangler pages deploy`, он создаёт проект автоматически при первом
-   запуске с новым `--project-name`.
-5. В Cloudflare Pages → Custom domains добавить `sova.sh` (и
-   впоследствии остальные домены), обновить DNS записи на Cloudflare
-   (если домены ещё не там).
+4. Worker'ы `sova-sh` и `podcast-sova-sh` создаются автоматически первым
+   же `wrangler deploy` — отдельно ничего заводить не нужно.
+5. В Cloudflare Dashboard → Workers & Pages → выбрать Worker → Custom
+   domains добавить `sova.sh` (и позже `podcast.sova.sh`), обновить DNS
+   записи на Cloudflare (если домены ещё не там).
 
-Бесплатный тариф Cloudflare Pages: неограниченный трафик и запросы,
-лимит — 500 сборок в месяц **на аккаунт** (не на проект). При 3–5
-статических сайтах с нечастыми обновлениями это не проблема, но стоит
-иметь в виду при частых пушах.
+Бесплатный тариф Workers: запросы к статическим ассетам бесплатны и не
+лимитированы; лимит 100 000 запросов/день действует только на вызовы
+самого Worker-скрипта (у нас его нет — только `assets`), до 20 000
+файлов на версию и 25 MiB на файл, до 100 Worker'ов на аккаунт. При
+3–5 статических сайтах это не проблема.
 
 ## 4. Content collections
 
@@ -223,7 +235,7 @@ Phase 2):
 - [x] `packages/content` — общий `cachedFetch` + `getSimplecastEpisodes`,
       убрано дублирование `server-request.ts`/Simplecast-схемы.
 - [x] `apps/podcast-sova-sh` — заготовка нового Astro-приложения.
-- [x] Деплой `apps/sova-sh` переведён на Cloudflare Pages (wrangler).
+- [x] Деплой `apps/sova-sh` переведён на Cloudflare Workers (`wrangler deploy`).
 - [x] Деплой-заготовка для `apps/podcast-sova-sh` (ручной запуск).
 - [x] `sergeysova.com` (EN) деплой оставлен нетронутым осознанно.
 

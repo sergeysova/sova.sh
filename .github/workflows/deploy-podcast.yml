@@ -34,9 +34,10 @@ jobs:
           SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
           PUBLIC_SITE: https://podcast.sova.sh
 
-      - name: 🚀 Deploy to Cloudflare Pages
+      - name: 🚀 Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          command: pages deploy apps/podcast-sova-sh/dist --project-name=podcast-sova-sh --branch=main
+          workingDirectory: apps/podcast-sova-sh
+          command: deploy

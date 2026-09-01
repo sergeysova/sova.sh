@@ -41,12 +41,13 @@ jobs:
           PUBLIC_LANGUAGE: ru
           PUBLIC_GTAG: UA-67236238-5
 
-      - name: 🚀 Deploy to Cloudflare Pages
+      - name: 🚀 Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
-          command: pages deploy apps/sova-sh/dist --project-name=sova-sh --branch=main
+          workingDirectory: apps/sova-sh
+          command: deploy
 
   # sergeysova.com всё ещё собирается из apps/sova-sh, см. docs/sova-web-monorepo-plan.md
   sergeysova-com:
