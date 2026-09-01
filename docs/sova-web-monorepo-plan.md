@@ -119,21 +119,27 @@ Cloudflare-части — он остаётся только там, где де
   `wrangler deploy --dry-run` (валиден; сама сборка в песочнице CI-агента
   не имеет реальных API-ключей/сети, так что содержимое `dist` при этой
   проверке — не полноценный прод-билд, только подтверждение синтаксиса).
-- `.github/workflows/deploy.yml` — job `sova-sh` переведён на
-  `cloudflare/wrangler-action` (`command: deploy`, `workingDirectory:
-  apps/sova-sh`). Триггерится по `paths` только на изменения
-  `apps/sova-sh/**` и `packages/**`.
-- job `sergeysova-com` (EN) **намеренно оставлен как есть** (GitHub Pages
-  + PAT в чужой репозиторий) — потому что источник для него всё ещё
-  `apps/sova-sh` с `PUBLIC_LANGUAGE=en`, а не отдельное
-  `apps/sergeysova-brand`. Переводить деплой этого таргета раньше, чем
-  появится реальный brand-app, не имеет смысла — это Phase 2.
-- `.github/workflows/deploy-podcast.yml` — деплой `podcast-sova-sh` тем же
-  способом. **Автозапуск по push выключен** (закомментирован) до тех пор,
-  пока в репозитории не появятся секреты `CLOUDFLARE_API_TOKEN` /
-  `CLOUDFLARE_ACCOUNT_ID` — иначе CI будет постоянно падать на заготовке,
-  которую ещё рано показывать пользователям. Запускается вручную
-  (`workflow_dispatch`).
+Один workflow-файл на домен/группу доменов, а не общий `deploy.yml` на всё:
+
+- `.github/workflows/sova.yml` — деплой `apps/sova-sh` на Cloudflare
+  Workers (`cloudflare/wrangler-action`, `command: deploy`,
+  `workingDirectory: apps/sova-sh`). Триггерится по `paths` только на
+  изменения `apps/sova-sh/**` и `packages/**`.
+- `.github/workflows/sergeysova.yml` — job `en` **намеренно оставлен на
+  GitHub Pages** (+ PAT в чужой репозиторий `sergeysova/sergeysova.com`)
+  — потому что источник для него всё ещё `apps/sova-sh` с
+  `PUBLIC_LANGUAGE=en`, а не отдельное `apps/sergeysova-brand`. Job `ru`
+  для `ru.sergeysova.com` появится в этом же файле в Phase 2, когда будут
+  и brand-app, и сам домен. Переводить EN-таргет на Cloudflare раньше,
+  чем появится реальный brand-app, не имеет смысла.
+- `.github/workflows/podcast.yml` — деплой `podcast-sova-sh` на
+  Cloudflare Workers тем же способом. **Автозапуск по push выключен**
+  (закомментирован), запускается вручную (`workflow_dispatch`) — не
+  из-за секретов (они уже добавлены), а потому что сама заготовка ещё не
+  готова представлять боевой podcast.sova.sh (см. TODO в
+  `apps/podcast-sova-sh/README.md`).
+- `news.yml` пока не заведён — `news.sova.sh` всё ещё отдельный
+  репозиторий, а не `apps/news-sova-sh` в этой монорепе (см. Phase 2).
 
 **Что нужно от владельца репозитория, чтобы включить Cloudflare:**
 
