@@ -8,7 +8,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cv": "node scripts/build-cv.mjs"
   },
   "dependencies": {
     "@sova-web/content": "workspace:*",
@@ -36,13 +37,12 @@
     "cssnano": "^9.0.1",
     "dotenv": "^17.4.2",
     "glob": "^13.0.6",
-    "md-to-pdf": "^5.2.5",
     "postcss": "^8.5.26",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.3.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typst": "^0.10.0-8"
   }
 }

@@ -29,10 +29,10 @@ pnpm build   # turbo run build — собирает все apps
 Переменные окружения — в `.env.example` каждого приложения
 (`apps/*/.env.example`).
 
-`pnpm install` не скачивает Chrome для puppeteer (`.puppeteerrc.cjs`,
-`skipDownload: true`) — он нужен только для генерации CV PDF
-(`scripts/md-to-pdf.ts`). Если понадобится запустить этот скрипт:
-`npx puppeteer browsers install chrome`.
+CV собирается из Typst-исходника (`src/frontend.cv.typ`) через
+`pnpm cv` в `apps/sova.sh` / `apps/sergeysova.com` — компилятор
+(`typst` npm-пакет) ставится вместе с `pnpm install`, браузер/puppeteer
+для этого не нужны.
 
 ## Деплой
 
