@@ -48,7 +48,7 @@
 sova-web/ (= этот репозиторий)
 ├── apps/
 │   ├── sova.sh/               # sova.sh — самостоятельное приложение
-│   ├── sergeysova-com/        # sergeysova.com + ru.sergeysova.com
+│   ├── sergeysova.com/        # sergeysova.com + ru.sergeysova.com
 │   └── podcast-sova-sh/       # заготовка (scaffold), новый Astro-проект
 ├── packages/
 │   └── content/              # общий cachedFetch + Simplecast-загрузчик
@@ -66,7 +66,7 @@ sova-web/ (= этот репозиторий)
 
 ## 1. sova.sh как отдельное приложение
 
-Сделано: `apps/sergeysova-com` — новое приложение, механический клон
+Сделано: `apps/sergeysova.com` — новое приложение, механический клон
 `apps/sova.sh` на момент разделения (тот же код, тот же контент). Цель
 этого шага — перестать собирать sergeysova.com из `apps/sova.sh`, чтобы
 `sova.sh` перестал быть общим источником для двух разных доменов.
@@ -75,7 +75,7 @@ sova-web/ (= этот репозиторий)
 ещё рендерят одну и ту же лендинг-страницу с `IfLang`/`switchLang`.
 Настоящее разделение — sova.sh как индекс проектов/интересов
 (`content/projects`, `content/interests`, см. пункт 4) и
-sergeysova-com как About/Work/Talks/Consulting — не сделано, потому
+sergeysova.com как About/Work/Talks/Consulting — не сделано, потому
 что требует реального контента, которого пока не существует нигде в
 коде. Это авторская работа, не техническая, и она не блокирует
 инфраструктурное разделение приложений, сделанное здесь.
@@ -119,7 +119,7 @@ Pages ничего ещё не было задеплоено (ни одного 
 
 sergeysova.com (EN) и ru.sergeysova.com (RU) тоже на Cloudflare —
 кросс-репо пуш с PAT в `sergeysova/sergeysova.com` больше не нужен
-вообще, никакого GitHub Pages не осталось. `apps/sergeysova-com`
+вообще, никакого GitHub Pages не осталось. `apps/sergeysova.com`
 собирается дважды (два job'а в одном workflow, как в исходном плане) и
 деплоится в два разных Worker'а: EN — `wrangler deploy
 --name=sergeysova-com`, RU — `wrangler deploy --name=ru-sergeysova-com`.
@@ -129,7 +129,7 @@ sergeysova.com (EN) и ru.sergeysova.com (RU) тоже на Cloudflare —
 
 Реализовано в этом PR:
 
-- `apps/sova.sh/wrangler.jsonc`, `apps/sergeysova-com/wrangler.jsonc` и
+- `apps/sova.sh/wrangler.jsonc`, `apps/sergeysova.com/wrangler.jsonc` и
   `apps/podcast-sova-sh/wrangler.jsonc` — `assets.directory: "./dist"`,
   без биндингов. Конфиг проверен через `wrangler deploy --dry-run`
   (валиден для всех трёх и для обоих `--name` overrides; сама сборка в
@@ -143,11 +143,11 @@ sergeysova.com (EN) и ru.sergeysova.com (RU) тоже на Cloudflare —
   Workers (`cloudflare/wrangler-action`, `command: deploy`,
   `workingDirectory: apps/sova.sh`). Триггерится по `paths` только на
   изменения `apps/sova.sh/**` и `packages/**`.
-- `.github/workflows/sergeysova.yml` — деплой `apps/sergeysova-com` на
+- `.github/workflows/sergeysova.yml` — деплой `apps/sergeysova.com` на
   Cloudflare Workers, два job'а: `en` (`PUBLIC_LANGUAGE=en`,
   `--name=sergeysova-com`) и `ru` (`PUBLIC_LANGUAGE=ru`,
   `--name=ru-sergeysova-com`). Триггерится по `paths` на
-  `apps/sergeysova-com/**`.
+  `apps/sergeysova.com/**`.
 - `.github/workflows/podcast.yml` — деплой `podcast-sova-sh` на
   Cloudflare Workers тем же способом. **Автозапуск по push выключен**
   (закомментирован), запускается вручную (`workflow_dispatch`) — не
@@ -228,7 +228,7 @@ Phase 2):
   `apps/news-sova-sh` (или из общего `content/news/`), в build-time, без
   сети.
 - Свежесть решается не механизмом чтения, а тем, что и `apps/news-sova-sh`,
-  и `apps/sova.sh` (и позже `apps/sergeysova-com`) — теперь один
+  и `apps/sova.sh` (и позже `apps/sergeysova.com`) — теперь один
   репозиторий: публикация нового выпуска — это коммит в `content/news/`
   **в этом же репозитории**, и CI на пуш в `main` должен пересобирать
   и передеплоивать **все apps, зависящие от изменённого контента**, а не
@@ -240,7 +240,7 @@ Phase 2):
   job'ов, управляемых `turbo`) на пуш в `main`, который сам определяет,
   какие `apps/*` нужно пересобрать и передеплоить, вместо раздельных
   workflow с ручными `paths:` фильтрами на каждый app (то, что сделано
-  в этом PR для `sova.sh`/`sergeysova-com`/`podcast-sova-sh` — временное
+  в этом PR для `sova.sh`/`sergeysova.com`/`podcast-sova-sh` — временное
   решение до этого шага).
 
 Это фиксируется здесь как обязательное требование к Phase 2 деплой-пайплайна,
@@ -264,16 +264,16 @@ Phase 2):
 - [x] `apps/podcast-sova-sh` — заготовка нового Astro-приложения.
 - [x] Деплой `apps/sova.sh` переведён на Cloudflare Workers (`wrangler deploy`).
 - [x] Деплой-заготовка для `apps/podcast-sova-sh` (ручной запуск).
-- [x] `apps/sergeysova-com` — отдельное приложение (клон `apps/sova.sh`
+- [x] `apps/sergeysova.com` — отдельное приложение (клон `apps/sova.sh`
       на момент разделения), `sova.sh` больше не источник для
       sergeysova.com. Контент пока идентичен — см. пункт 1.
 - [x] `sergeysova.com` (EN) и `ru.sergeysova.com` (RU) деплоятся на
-      Cloudflare Workers из `apps/sergeysova-com` (job'ы `en`/`ru` в
+      Cloudflare Workers из `apps/sergeysova.com` (job'ы `en`/`ru` в
       `sergeysova.yml`), GitHub Pages/PAT больше не используется.
 
 ## Дальше (Phase 2, отдельная работа)
 
-1. Контентный редизайн sova.sh (index) vs. sergeysova-com
+1. Контентный редизайн sova.sh (index) vs. sergeysova.com
    (About/Work/Talks/Consulting) — сейчас оба приложения рендерят
    идентичный контент, реальное разделение смысла ещё предстоит.
    `ru.sergeysova.com` как домен (DNS) тоже ещё нужно завести у
