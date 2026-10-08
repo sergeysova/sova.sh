@@ -1,4 +1,6 @@
 ---
+import {getCollection} from 'astro:content';
+
 import AssetArticles from '../assets/articles.svg?url';
 import AssetNews from '../assets/news.svg?url';
 import AssetPodcast from '../assets/podcast.svg?url';
@@ -29,17 +31,21 @@ import {switchLang} from '../lib/language';
 
 const COUNT_OF_CONTENT = 6;
 
-const [forem, pages, videos, episodes, news] = await Promise.all([
+const [forem, pages, videos, episodes, news, projects, interests] = await Promise.all([
   getUniqueArticles(),
   getPages(),
   getVideos(),
   getEpisodes(),
   getNews(),
+  getCollection('projects'),
+  getCollection('interests'),
 ]);
 
 const articles = [...forem, ...pages]
   .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
   .slice(0, COUNT_OF_CONTENT);
+projects.sort((a, b) => a.data.order - b.data.order);
+interests.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout
@@ -94,30 +100,76 @@ const articles = [...forem, ...pages]
       </IfLang>
     </p>
 
-    <nav class="flex gap-2">
+    <nav class="flex gap-2" aria-label={switchLang({en: 'Page sections', ru: 'Разделы страницы'})}>
       <div class="section-nav">
+        <a href="#projects" class="section-link">
+          <span>{switchLang({en: 'Projects', ru: 'Проекты'})}</span>
+        </a>
+        <a href="#interests" class="section-link">
+          <span>{switchLang({en: 'Interests', ru: 'Интересы'})}</span>
+        </a>
+        <a href="#status" class="section-link">
+          <span>{switchLang({en: 'Status', ru: 'Сейчас'})}</span>
+        </a>
         <a href="#articles" class="section-link">
-          <img src={IconNotes} />
+          <img src={IconNotes} alt="" aria-hidden="true" />
           <span>{switchLang({en: 'Articles', ru: 'Статьи'})}</span>
         </a>
         <a href="#news" class="section-link">
-          <img src={IconNews} />
+          <img src={IconNews} alt="" aria-hidden="true" />
           <span>{switchLang({en: 'News', ru: 'Рассылка'})}</span>
         </a>
         <a href="#podcast" class="section-link">
-          <img src={IconMicrophone} />
+          <img src={IconMicrophone} alt="" aria-hidden="true" />
           <span>{switchLang({en: 'Podcast', ru: 'Подкаст'})}</span>
         </a>
         <a href="#youtube" class="section-link">
-          <img src={IconYoutube} />
+          <img src={IconYoutube} alt="" aria-hidden="true" />
           <span>Youtube</span>
         </a>
       </div>
     </nav>
 
+    <section class="directory-section" id="status" aria-labelledby="status-title">
+      <h2 id="status-title">{switchLang({en: 'Current focus', ru: 'Сейчас'})}</h2>
+      <p>
+        {
+          switchLang({
+            en: 'Open-source development in the Effector ecosystem.',
+            ru: 'Разработка open source для экосистемы Effector.',
+          })
+        }
+      </p>
+    </section>
+
+    <section class="directory-section" id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">{switchLang({en: 'Projects', ru: 'Проекты'})}</h2>
+      <ul class="project-list">
+        {
+          projects.map((project) => (
+            <li>
+              <a href={project.data.url} target="_blank" rel="noopener">
+                <strong>{project.data.title}</strong>
+                <span>{switchLang(project.data.description)}</span>
+                <span class="project-link">{switchLang({en: 'GitHub', ru: 'GitHub'})}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="directory-section" id="interests" aria-labelledby="interests-title">
+      <h2 id="interests-title">{switchLang({en: 'Interests', ru: 'Интересы'})}</h2>
+      <ul class="interest-list">
+        {interests.map((interest) => <li>{switchLang(interest.data.title)}</li>)}
+      </ul>
+    </section>
+
     <Section
       id="articles"
       titleImage={AssetArticles}
+      titleImageAlt={{ru: 'Статьи', en: 'Articles'}}
       links={[{text: 'Dev.to', url: 'https://dev.to/sergeysova'}]}
     >
       <Articles
@@ -134,6 +186,7 @@ const articles = [...forem, ...pages]
     <Section
       id="news"
       titleImage={AssetNews}
+      titleImageAlt={{ru: 'Рассылка', en: 'Newsletter'}}
       description={{
         ru: 'Email-рассылка с подборками статей, новостей и инструментов для web-разработчиков.',
         en: 'Email newsletter with a selection of articles, news and tools for web developers.',
@@ -146,6 +199,7 @@ const articles = [...forem, ...pages]
     <Section
       id="podcast"
       titleImage={AssetPodcast}
+      titleImageAlt={{ru: 'Подкаст', en: 'Podcast'}}
       description={{
         ru: 'Нерегулярные выпуски подкаста «Под куполом» это записи моих размышлений об устройстве мира, личных переживаний и открытии нового в формате ночных посиделок.',
         en: 'The occasional podcast “Under the Dome” is a recording of my reflections on the world is being, personal experiences, and favorite discoveries in the format of midnight insights.',
@@ -158,6 +212,7 @@ const articles = [...forem, ...pages]
     <Section
       id="youtube"
       titleImage={AssetYoutube}
+      titleImageAlt="YouTube"
       links={[{text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/@sova'}]}
     >
       <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
@@ -177,6 +232,79 @@ const articles = [...forem, ...pages]
     @apply flex flex-col gap-10;
   }
 
+  .directory-section {
+    border-top: 1px solid rgb(100 116 139 / 28%);
+    padding-top: 1.25rem;
+  }
+
+  .directory-section h2 {
+    @apply mb-3 text-2xl font-semibold;
+  }
+
+  .directory-section > p {
+    @apply text-slate-700;
+    margin: 0;
+  }
+
+  .project-list,
+  .interest-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .project-list li + li {
+    border-top: 1px solid rgb(100 116 139 / 18%);
+  }
+
+  .project-list a {
+    align-items: baseline;
+    color: inherit;
+    display: grid;
+    gap: 0.35rem 1rem;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr) auto;
+    padding: 0.85rem 0;
+    text-decoration: none;
+  }
+
+  .project-list a:focus-visible {
+    outline: 2px solid #4f39fa;
+    outline-offset: 3px;
+  }
+
+  .project-list a:hover strong,
+  .project-list a:focus-visible strong {
+    color: #4f39fa;
+  }
+
+  .project-list strong {
+    font-weight: 700;
+  }
+
+  .project-list a > span:nth-child(2) {
+    color: #475569;
+  }
+
+  .project-list .project-link {
+    color: #4f39fa;
+    font-size: 0.9rem;
+  }
+
+  .interest-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.35rem;
+  }
+
+  .interest-list li::before {
+    color: #4f39fa;
+    content: '— ';
+  }
+
+  .section-nav {
+    flex-wrap: wrap;
+  }
+
   main h1 {
     margin: 2rem 0;
   }
@@ -186,10 +314,10 @@ const articles = [...forem, ...pages]
   }
 
   main .about :global(a) {
-    @apply text-sky-600 underline;
+    @apply text-indigo-800 underline;
   }
   main .about :global(a):hover {
-    @apply text-sky-600 no-underline;
+    @apply text-indigo-800 no-underline;
   }
 
   main .section-nav {
@@ -199,7 +327,7 @@ const articles = [...forem, ...pages]
   main .section-nav .section-link {
     @apply inline-flex items-center justify-center gap-1 rounded-md py-1 pr-2 pl-1.5 align-middle transition-all;
     @apply hover:bg-slate-500/20;
-    @apply focus:outline-none;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600;
   }
 
   main .section-nav .section-link img {
@@ -217,6 +345,17 @@ const articles = [...forem, ...pages]
     background-position-y: 100%;
     border-radius: 0.4rem;
     animation: pulse 4s ease-in-out infinite;
+  }
+
+  @media (max-width: 560px) {
+    .project-list a {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .project-list a > span:nth-child(2) {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
   }
 
   @keyframes pulse {

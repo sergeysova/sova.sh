@@ -1,4 +1,6 @@
 ---
+import {getCollection} from 'astro:content';
+
 import Layout from '../layouts/Layout.astro';
 import LinkTo from '../components/LinkTo.astro';
 import {getPages} from '../data/markdown';
@@ -7,10 +9,12 @@ import {switchLang} from '../lib/language';
 
 const language = import.meta.env.PUBLIC_LANGUAGE as 'en' | 'ru';
 const alternateHome = language === 'ru' ? 'https://sergeysova.com/' : 'https://ru.sergeysova.com/';
-const articles = (await getPages())
+const [pageEntries, projects] = await Promise.all([getPages(), getCollection('projects')]);
+const articles = pageEntries
   .filter((article) => article.language === language && article.titleLanguage === language)
   .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
   .slice(0, 5);
+projects.sort((a, b) => a.data.order - b.data.order);
 const talks = invitedContent
   .filter(
     (item) => (item.type === 'video' || item.type === 'podcast') && item.titleLanguage === language,
@@ -110,20 +114,17 @@ const talks = invitedContent
           </h2>
         </div>
         <div class="work-list">
-          <a href="https://github.com/effector/patronum" target="_blank" rel="noopener">
-            <span class="work-name">patronum</span>
-            <span>{switchLang({en: 'Utilities for Effector', ru: 'Утилиты для Effector'})}</span>
-            <span class="external-mark" aria-hidden="true">↗</span>
-          </a>
-          <a href="https://github.com/effector/inspector" target="_blank" rel="noopener">
-            <span class="work-name">inspector</span>
-            <span
-              >{
-                switchLang({en: 'Effector debugging tools', ru: 'Инструменты отладки Effector'})
-              }</span
-            >
-            <span class="external-mark" aria-hidden="true">↗</span>
-          </a>
+          {
+            projects.map((project) => (
+              <a href={project.data.url} target="_blank" rel="noopener">
+                <span class="work-name">{project.data.title}</span>
+                <span>{switchLang(project.data.description)}</span>
+                <span class="external-mark" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))
+          }
           <a href="https://github.com/sergeysova" target="_blank" rel="noopener">
             <span class="work-name"
               >{switchLang({en: 'More on GitHub', ru: 'Другие проекты на GitHub'})}</span

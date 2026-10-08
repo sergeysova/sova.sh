@@ -1,7 +1,7 @@
 import {defineCollection} from 'astro:content';
 import {glob} from 'astro/loaders';
 
-import {ArticleSchema} from '@sova-web/content';
+import {ArticleSchema, InterestSchema, ProjectSchema} from '@sova-web/content';
 
 const articles = defineCollection({
   loader: glob({
@@ -12,4 +12,20 @@ const articles = defineCollection({
   schema: ArticleSchema,
 });
 
-export const collections = {articles};
+const projects = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: new URL('../../../content/projects/', import.meta.url),
+  }),
+  schema: ProjectSchema,
+});
+
+const interests = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: new URL('../../../content/interests/', import.meta.url),
+  }),
+  schema: InterestSchema,
+});
+
+export const collections = {articles, projects, interests};

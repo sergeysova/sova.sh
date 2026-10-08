@@ -10,6 +10,27 @@ export const ArticleSchema = z.object({
 
 export type ArticleData = z.infer<typeof ArticleSchema>;
 
+export const LocalizedTextSchema = z.object({
+  en: z.string(),
+  ru: z.string(),
+});
+
+export const ProjectSchema = z.object({
+  title: z.string(),
+  description: LocalizedTextSchema,
+  url: z.string().url(),
+  order: z.number().int().nonnegative(),
+});
+
+export type ProjectData = z.infer<typeof ProjectSchema>;
+
+export const InterestSchema = z.object({
+  title: LocalizedTextSchema,
+  order: z.number().int().nonnegative(),
+});
+
+export type InterestData = z.infer<typeof InterestSchema>;
+
 export interface ArticleSummary {
   title: string;
   description: string;

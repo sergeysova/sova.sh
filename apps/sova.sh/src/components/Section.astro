@@ -10,6 +10,7 @@ interface Link {
 export interface Props {
   title?: string;
   titleImage?: string;
+  titleImageAlt?: string | {ru: string; en: string};
   id?: string;
   description?: {
     ru: string;
@@ -18,13 +19,15 @@ export interface Props {
   links?: Link[];
 }
 
-const {title, titleImage, description, links, id} = Astro.props;
+const {title, titleImage, titleImageAlt, description, links, id} = Astro.props;
+const accessibleTitle = titleImageAlt ? optionalTranslate(titleImageAlt) : title;
 ---
 
 <section>
   {id ? <a id={id} /> : null}
   {title ? <h1 class="mb-2 text-3xl">{title}</h1> : null}
-  {titleImage ? <img src={titleImage} class="title-image" /> : null}
+  {accessibleTitle && !title ? <h2 class="sr-only">{accessibleTitle}</h2> : null}
+  {titleImage ? <img src={titleImage} class="title-image" alt="" aria-hidden="true" /> : null}
   <slot />
   {description ? <p class="pt-4">{switchLang(description)}</p> : null}
   {
