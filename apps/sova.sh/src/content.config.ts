@@ -1,7 +1,12 @@
 import {defineCollection} from 'astro:content';
 import {glob} from 'astro/loaders';
 
-import {ArticleSchema, InterestSchema, ProjectSchema} from '@sova-web/content';
+import {
+  ArticleSchema,
+  InterestSchema,
+  NewsletterIssueSchema,
+  ProjectSchema,
+} from '@sova-web/content';
 
 const articles = defineCollection({
   loader: glob({
@@ -28,4 +33,13 @@ const interests = defineCollection({
   schema: InterestSchema,
 });
 
-export const collections = {articles, projects, interests};
+const newsletter = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: new URL('../../../content/news/', import.meta.url),
+    generateId: ({entry}) => entry.replace(/\.md$/, ''),
+  }),
+  schema: NewsletterIssueSchema,
+});
+
+export const collections = {articles, projects, interests, newsletter};

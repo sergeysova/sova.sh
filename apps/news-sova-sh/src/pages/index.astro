@@ -2,10 +2,12 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import SubscribeForm from "../components/SubscribeForm.astro";
+import { getPublishedNewsletterIssues } from "@sova-web/content";
 
 import NewsIcon from "../assets/icons/news.svg?url";
 
-const issuesEntries = await getCollection("issues");
+const entries = await getCollection("newsletter");
+const issues = getPublishedNewsletterIssues(entries, "https://news.sova.sh");
 ---
 
 <Layout
@@ -16,37 +18,38 @@ const issuesEntries = await getCollection("issues");
   <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch]">
     <img src={NewsIcon} class="pr-10 my-10" />
     <p class="about text-xl text-slate-900">
-      Это веб-версия email-рассылки с подборками статей, новостей и инструментов для web-разработчиков. Меня зовут <a
+      Это веб-версия email-рассылки с подборками статей, новостей и инструментов
+      для web-разработчиков. Меня зовут <a
         href="https://sova.sh"
         target="_blank">Сергей Сова</a
-      >, я много говорю об effector, пишу на React всё самое сложное, руковожу фронтендом, практикую ночной Rust.
+      >, я много говорю об effector, пишу на React всё самое сложное, руковожу
+      фронтендом, практикую ночной Rust.
     </p>
 
     <SubscribeForm title="Подпишитесь на эту рассылку" />
 
     <ul class="flex flex-col gap-5 sm:grid sm:grid-cols-2">
       {
-        issuesEntries
-          .filter((issue) => !issue.data.draft)
-          .sort((a, b) => b.data.number - a.data.number)
-          .map((issue) => (
-            <li
-              class="group relative flex rounded-lg gap-2 bg-center bg-cover min-h-[20ch] overflow-hidden sm:first:aspect-video sm:first:col-span-2"
-              style={{ backgroundImage: `url(${issue.data.image})` }}
+        issues.map((issue) => (
+          <li
+            class="group relative flex rounded-lg gap-2 bg-center bg-cover min-h-[20ch] overflow-hidden sm:first:aspect-video sm:first:col-span-2"
+            style={{ backgroundImage: `url(${issue.image ?? ""})` }}
+          >
+            <a
+              href={`/issues/${issue.slug}`}
+              class="h-full absolute sm:relative flex justify-items-stretch flex-col rounded-lg sm:group-first:justify-end sm:group-first:bg-transparent"
             >
-              <a
-                href={`/issues/${issue.id}`}
-                class="h-full absolute sm:relative flex justify-items-stretch flex-col rounded-lg sm:group-first:justify-end sm:group-first:bg-transparent"
-              >
-                <div class="text-white bg-black/70 backdrop-blur-md h-full rounded-lg sm:group-first:rounded-t-none sm:group-first:h-max sm:group-hover:bg-transparent sm:group-hover:backdrop-blur-none sm:group-hover:text-transparent">
-                  <span class="inline text-3xl font-light float-right py-3 px-4">#{issue.data.number}</span>
-                  <p class="text-lg leading-7 text-white max-w-[auto] py-3 px-4 group-first:text-lg sm:group-hover:text-transparent ">
-                    <>{issue.data.introduction}</>
-                  </p>
-                </div>
-              </a>
-            </li>
-          ))
+              <div class="text-white bg-black/70 backdrop-blur-md h-full rounded-lg sm:group-first:rounded-t-none sm:group-first:h-max sm:group-hover:bg-transparent sm:group-hover:backdrop-blur-none sm:group-hover:text-transparent">
+                <span class="inline text-3xl font-light float-right py-3 px-4">
+                  #{issue.number}
+                </span>
+                <p class="text-lg leading-7 text-white max-w-[auto] py-3 px-4 group-first:text-lg sm:group-hover:text-transparent ">
+                  <>{issue.description}</>
+                </p>
+              </div>
+            </a>
+          </li>
+        ))
       }
     </ul>
   </main>

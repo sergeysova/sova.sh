@@ -30,6 +30,7 @@
     "vfile-matter": "^5.0.0"
   },
   "dependencies": {
+    "@sova-web/content": "workspace:*",
     "@astrojs/mdx": "^4.0.8",
     "@astrojs/prism": "^3.2.0",
     "@astrojs/react": "^4.2.0",

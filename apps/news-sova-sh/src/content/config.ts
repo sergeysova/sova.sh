@@ -1,17 +1,15 @@
-import { z, defineCollection } from "astro:content";
+import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 
-const issues = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/issues" }),
-  schema: z.object({
-    draft: z.boolean().optional(),
-    number: z.number(),
-    introduction: z.string(),
-    date: z.date(),
-    image: z.string().optional(),
+import { NewsletterIssueSchema } from "@sova-web/content";
+
+const newsletter = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: new URL("../../../../content/news/", import.meta.url),
+    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
   }),
+  schema: NewsletterIssueSchema,
 });
 
-export const collections = {
-  issues,
-};
+export const collections = { newsletter };
