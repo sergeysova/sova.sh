@@ -3,7 +3,6 @@ title: Структура моделей Effector
 description: Почему я называю файлики моделями и описываю логику отдельно от сторов и событий
 date: 2019-08-21
 language: ru
-layout: ../../layouts/MarkdownLayout.astro
 ---
 
 # Table of contents

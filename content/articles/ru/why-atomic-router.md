@@ -4,7 +4,6 @@ description: Есть много роутеров для frontend-проекто
 date: 2024-04-01
 language: ru
 titleLanguage: en
-layout: ../../layouts/MarkdownLayout.astro
 ---
 
 # Table of contents

@@ -1,58 +1,17 @@
-import * as z from 'zod';
+import {getCollection} from 'astro:content';
+import type {ArticleSummary} from '@sova-web/content';
 
-export interface Page {
-  title: string;
-  description: string;
-  cover_image: string | null;
-  language: 'ru' | 'en';
-  titleLanguage: 'ru' | 'en';
-  url: string;
-  published_at: string;
-}
-
-interface MarkdownFile {
-  frontmatter: Record<string, string>;
-  file: string;
-  url: string;
-}
-const FrontMatter = z.object({
-  title: z.string(),
-  description: z.string(),
-  date: z.string(),
-  language: z.enum(['ru', 'en']),
-  titleLanguage: z.enum(['ru', 'en']).optional(),
-});
-
-const MarkdownFile = z.object({
-  frontmatter: FrontMatter,
-  file: z.string(),
-  url: z.string(),
-});
-
-export async function getPages(): Promise<Page[]> {
-  const [md, mdx] = await Promise.all([
-    import.meta.glob('../pages/**/*.md'),
-    import.meta.glob('../pages/**/*.mdx'),
-  ]);
-  const descriptors = [...Object.values(md), ...Object.values(mdx)];
-  const files = await Promise.all(descriptors.map((fn) => fn()));
-  return files
-    .map((file) => {
-      try {
-        return MarkdownFile.parse(file);
-      } catch (error) {
-        console.error('Failed to check markdown file', (file as any).file);
-        throw error;
-      }
-    })
-    .map((file) => ({
-      title: file.frontmatter.title,
-      description: file.frontmatter.description,
+export async function getPages(): Promise<ArticleSummary[]> {
+  const articles = await getCollection('articles');
+  return articles
+    .map(({id, data}) => ({
+      title: data.title,
+      description: data.description,
       cover_image: null,
-      language: file.frontmatter.language,
-      titleLanguage: file.frontmatter.titleLanguage ?? file.frontmatter.language,
-      url: file.url,
-      published_at: file.frontmatter.date,
+      language: data.language,
+      titleLanguage: data.titleLanguage ?? data.language,
+      url: `/${id}`,
+      published_at: data.date.toISOString(),
     }))
     .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf());
 }
