@@ -1,0 +1,56 @@
+name: Build news.sova.sh
+
+on:
+  pull_request:
+    paths:
+      - 'apps/news-sova-sh/**'
+      - 'content/news/**'
+      - 'packages/content/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/news.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/news-sova-sh/**'
+      - 'content/news/**'
+      - 'packages/content/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/news.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: news-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build news.sova.sh
+        run: pnpm --filter @sergeysova/news.sova.sh build
+        env:
+          PUBLIC_SITE: https://news.sova.sh

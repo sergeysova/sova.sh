@@ -5,9 +5,12 @@ on:
     branches: [main]
     paths:
       - 'apps/sova.sh/**'
+      - 'content/**'
       - 'packages/**'
+      - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
+      - 'turbo.json'
       - '.github/workflows/sova.yml'
   workflow_dispatch:
 

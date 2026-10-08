@@ -181,23 +181,29 @@ Build-time endpoints `issues.json` и `rss.xml` формируются из эт
   и публикует Workers `sergeysova-com` и `ru-sergeysova-com`;
 - `podcast.yml` собирает подкаст и публикует Worker `podcast-sova-sh`,
   но запускается только вручную до готовности нового сайта.
+- `news.yml` собирает `apps/news-sova-sh` для PR и push в `main`,
+  но пока не публикует Worker.
+- `test.yml` запускает `pnpm test` без production-секретов.
 
 В каждом app есть `wrangler.jsonc` с `assets.directory: "./dist"`,
 без Worker-скрипта. EN/RU-job переопределяют имя Worker через `--name`,
 поэтому не затирают один production-таргет другим.
 
-Push ограничен ручными `paths`-фильтрами; сборки вызывают
-`pnpm --filter … build`, обходя Turbo cache. Кросс-репозиторный
-GitHub Pages/PAT-deploy удалён из workflows.
+Push ограничен ручными `paths`-фильтрами; сборки опубликованных сайтов
+вызывают `pnpm --filter … build`, обходя Turbo cache. Фильтры Sova и
+бренда включают `content/**`. Кросс-репозиторный GitHub Pages/PAT-deploy
+удалён из workflows.
 
 Upstream-документ сообщает о добавленных Cloudflare secrets и проверке
 Wrangler dry-run, но отмечает, что это не проверка полного production
 build. Доступность secrets, успешные реальные деплои и привязку
-доменов нужно подтвердить отдельно. `news.yml` ещё нет.
+доменов нужно подтвердить отдельно. Для news Worker ещё нет
+`wrangler.jsonc` и deploy-job.
 
-Корневые `lint` и `test` вызывают Turbo, но у приложений и
-`packages/content` нет соответствующих scripts. Существующий
-`text.test.ts` сам по себе не означает работающую тестовую проверку.
+Корневой `test` теперь исполняет шесть unit-тестов схем и адаптеров
+`packages/content`. Корневой `lint` пока не имеет package scripts.
+`turbo.json` включает `content/**` в глобальные cache inputs; это
+инвалидирует кэш, но само по себе не доказывает выбор верного deploy-job.
 
 ## 3. Целевая структура и правила данных
 
@@ -465,6 +471,10 @@ GitHub secrets, управление DNS, действующие production-де
 - [ ] Создать общий pipeline для PR-проверок и push в production-ветку.
       Учитывать apps, packages, корневой content, lockfile,
       конфигурации сборки и сам pipeline.
+- [ ] Текущее промежуточное состояние: `test.yml` запускает тесты
+      `packages/content` без секретов; `news.yml` собирает news-app для PR
+      и `main`, но не деплоит. Sova и brand path filters уже учитывают
+      `content/**`; общий build/deploy target selector ещё не создан.
 - [ ] Для affected-проверок получать историю Git и задавать base/head
       явно: диапазон всего push или merge-base PR с целевой веткой.
       Для production сравнивать каждый таргет с его последним успешно
@@ -475,12 +485,17 @@ GitHub secrets, управление DNS, действующие production-де
       безопасно проверять все приложения.
 - [ ] Связать файловые входы контента и граф зависимостей:
       каталог `content/` сам по себе не workspace-пакет.
-      Рекомендация для первого релиза: его изменения выбирают
-      все приложения, а root content входит в общие cache inputs.
-      Уточнять выбор потребителей после тестов, не раньше.
+      До появления проверенного affected selector выбирать приложения
+      по явным path filters и включать всех фактических потребителей.
+      Сейчас Sova и brand выбираются для `content/**`, news — для
+      `content/news/**`. `turbo.json` включает `content/**` и
+      `packages/content/**` в cache inputs; сами path filters ещё не
+      проверены сценариями affected selection.
 - [ ] Разделить cache invalidation и affected selection:
       `globalDependencies`/`inputs` меняют hash, но нельзя считать
       это доказательством выбора всех нужных build/deploy job [T2].
+      `turbo.json` уже включает `content/**` и `packages/content/**`
+      в cache hash; deployment selection этим не подтверждён.
 - [ ] Собирать через Turbo, описать outputs и environment каждой
       задачи; передавать серверные секреты только нужным build-job.
       Не включать API-кэш и секретные ответы в публикуемые assets.
