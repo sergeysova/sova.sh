@@ -4,6 +4,8 @@ export interface Page {
   title: string;
   description: string;
   cover_image: string | null;
+  language: 'ru' | 'en';
+  titleLanguage: 'ru' | 'en';
   url: string;
   published_at: string;
 }
@@ -18,6 +20,7 @@ const FrontMatter = z.object({
   description: z.string(),
   date: z.string(),
   language: z.enum(['ru', 'en']),
+  titleLanguage: z.enum(['ru', 'en']).optional(),
 });
 
 const MarkdownFile = z.object({
@@ -46,6 +49,8 @@ export async function getPages(): Promise<Page[]> {
       title: file.frontmatter.title,
       description: file.frontmatter.description,
       cover_image: null,
+      language: file.frontmatter.language,
+      titleLanguage: file.frontmatter.titleLanguage ?? file.frontmatter.language,
       url: file.url,
       published_at: file.frontmatter.date,
     }))

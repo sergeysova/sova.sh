@@ -25,6 +25,10 @@ const {
 } = Astro.props;
 const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
 const fullTitle = title ? `${title} · ${siteName}` : siteName;
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  import.meta.env.PUBLIC_SITE || Astro.url.origin,
+).toString();
 
 const gtagSource = `window.dataLayer = window.dataLayer || [];
 function gtag() {
@@ -61,8 +65,8 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
     {image ? <meta property="twitter:image" content={image} /> : null}
 
     <meta content="og:locale" content={realLocale} />
-    <meta property="og:url" content={`${Astro.url.toString()}`} />
-    <meta property="canonical" content={`${Astro.url.toString()}`} />
+    <meta property="og:url" content={canonicalUrl} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@sova_original" />

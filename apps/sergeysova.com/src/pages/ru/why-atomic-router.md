@@ -3,6 +3,7 @@ title: Atomic-Router Chains
 description: Есть много роутеров для frontend-проектов, но все они опираются на рендеры. Давайте это исправим
 date: 2024-04-01
 language: ru
+titleLanguage: en
 layout: ../../layouts/MarkdownLayout.astro
 ---
 

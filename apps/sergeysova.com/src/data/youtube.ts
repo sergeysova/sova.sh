@@ -15,13 +15,14 @@ const secrets = {
 // https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=UCQJ7pUY5jX8CQFDUAP-yjcw&key=
 // get videos for playlist:
 // https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=UUQJ7pUY5jX8CQFDUAP-yjcw&key=AIzaSyCbm_LeywVkvB7qGYswrziuS4Er84-tm1A
-function createUrl() {
+function createUrl(pageToken?: string) {
   const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
   url.searchParams.set('key', secrets.apiKey);
   url.searchParams.set('playlistId', secrets.playListId);
   url.searchParams.set('part', 'snippet');
   url.searchParams.set('order', 'date');
-  url.searchParams.set('maxResults', '600');
+  url.searchParams.set('maxResults', '50');
+  if (pageToken) url.searchParams.set('pageToken', pageToken);
   return url.toString();
 }
 
@@ -83,36 +84,40 @@ const Response = z.object({
   items: z.array(ResponseItem),
 });
 
-export function getVideos(): Promise<YoutubeVideo[]> {
+export async function getVideos(): Promise<YoutubeVideo[]> {
   console.log('fetching youtube videos');
-  const url = createUrl();
-  return cachedFetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        console.info('failed to fetch videos', response.status, response.text());
-        throw new Error(response.statusText);
-      }
-      return response;
-    })
-    .then((response) => response.json())
-    .then((answer) => {
-      try {
-        return Response.parse(answer);
-      } catch (error) {
-        console.error('Failed to check youtube response', answer, JSON.stringify(error, null, 2));
-        throw error;
-      }
-    })
-    .then((answer) =>
-      answer.items
-        .sort((a, b) => a.snippet.position - b.snippet.position)
-        .map((item) => ({
-          id: item.snippet.resourceId.videoId,
-          title: removeExtraFromSeparator(' | ', item.snippet.title),
-          description: firstWords(20, firstThreeLines(removeCredits(item.snippet.description))),
-          thumbnails: item.snippet.thumbnails,
-          url: linkToVideo(item.snippet.resourceId.videoId),
-          publishedAt: item.snippet.publishedAt,
-        })),
-    );
+  const items: z.infer<typeof ResponseItem>[] = [];
+  let pageToken: string | undefined;
+
+  do {
+    const url = createUrl(pageToken);
+    const response = await cachedFetch(url);
+    if (!response.ok) {
+      console.info('failed to fetch videos', response.status, await response.text());
+      throw new Error(response.statusText);
+    }
+
+    const answer = await response.json();
+    let page: z.infer<typeof Response>;
+    try {
+      page = Response.parse(answer);
+    } catch (error) {
+      console.error('Failed to check youtube response', answer, JSON.stringify(error, null, 2));
+      throw error;
+    }
+
+    items.push(...page.items);
+    pageToken = page.nextPageToken;
+  } while (pageToken);
+
+  return items
+    .sort((a, b) => a.snippet.position - b.snippet.position)
+    .map((item) => ({
+      id: item.snippet.resourceId.videoId,
+      title: removeExtraFromSeparator(' | ', item.snippet.title),
+      description: firstWords(20, firstThreeLines(removeCredits(item.snippet.description))),
+      thumbnails: item.snippet.thumbnails,
+      url: linkToVideo(item.snippet.resourceId.videoId),
+      publishedAt: item.snippet.publishedAt,
+    }));
 }

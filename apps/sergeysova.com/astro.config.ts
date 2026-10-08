@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import dotenv from 'dotenv';
 import {defineConfig} from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -11,6 +12,8 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 import tailwindcss from '@tailwindcss/vite';
+
+dotenv.config({path: '../../.env'});
 
 // https://astro.build/config
 export default defineConfig({

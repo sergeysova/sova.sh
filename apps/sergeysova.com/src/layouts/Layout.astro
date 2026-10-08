@@ -9,6 +9,10 @@ export interface Props {
   type?: 'website' | 'article' | 'profile';
   image?: string;
   locale?: 'ru' | 'en';
+  alternateLanguages?: {
+    en: string;
+    ru: string;
+  };
 }
 
 const siteName = switchLang({
@@ -22,9 +26,14 @@ const {
   type = 'website',
   image,
   locale = import.meta.env.PUBLIC_LANGUAGE,
+  alternateLanguages,
 } = Astro.props;
 const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
 const fullTitle = title ? `${title} · ${siteName}` : siteName;
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  import.meta.env.PUBLIC_SITE || Astro.url.origin,
+).toString();
 
 const gtagSource = `window.dataLayer = window.dataLayer || [];
 function gtag() {
@@ -61,8 +70,23 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
     {image ? <meta property="twitter:image" content={image} /> : null}
 
     <meta content="og:locale" content={realLocale} />
-    <meta property="og:url" content={`${Astro.url.toString()}`} />
-    <meta property="canonical" content={`${Astro.url.toString()}`} />
+    <meta property="og:url" content={canonicalUrl} />
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="en" href={alternateLanguages.en} />
+      ) : null
+    }
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="ru" href={alternateLanguages.ru} />
+      ) : null
+    }
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="x-default" href={alternateLanguages.en} />
+      ) : null
+    }
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@sova_original" />
