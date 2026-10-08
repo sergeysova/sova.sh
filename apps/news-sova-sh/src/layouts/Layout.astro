@@ -1,0 +1,99 @@
+---
+import "../styles/global.css";
+
+import { SEO, type Meta } from "astro-seo";
+export interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  publishedDate?: Date;
+}
+
+const { title, description, slug, image, publishedDate } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru" prefix="og: https://ogp.me/ns#">
+  <head>
+    <link rel="icon" href="/favicon.png" />
+    <SEO
+      charset="UTF-8"
+      title={title}
+      description={description}
+      canonical={Astro.url.toString()}
+      twitter={{
+        card: image ? "summary_large_image" : "summary",
+        creator: "@sova_original",
+        site: "@sova_original",
+        image,
+        title,
+        description,
+      }}
+      openGraph={{
+        basic: {
+          title: title,
+          type: slug === "/" ? "website" : "article",
+          image: image ?? "/banner.jpg",
+          url: Astro.url?.toString(),
+        },
+        image: {
+          alt: title,
+        },
+        article: {
+          publishedTime: publishedDate?.toISOString(),
+        },
+        optional: { description: `${description} ` },
+      }}
+      extend={{
+        link: [
+          {
+            rel: "alternate",
+            type: "application/rss+xml",
+            title: "Сова рассылает новости",
+            href: "/rss.xml",
+          },
+        ],
+        meta: [
+          image
+            ? {
+                name: "image",
+                content: image,
+              }
+            : null,
+          {
+            name: "theme-color",
+            content: "#5b21b6",
+          },
+          {
+            name: "color-scheme",
+            // content: "dark light",
+            content: "light",
+          },
+          {
+            name: "viewport",
+            content: "width=device-width,initial-scale=1,viewport-fit=cover",
+          },
+        ].filter(Boolean) as Meta[],
+      }}
+    />
+  </head>
+  <body class="bg-slate-50">
+    <slot />
+    <style is:global>
+      @import "../styles/global.css";
+
+      code {
+        font-family:
+          Menlo,
+          Monaco,
+          Lucida Console,
+          Liberation Mono,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Courier New,
+          monospace;
+      }
+    </style>
+  </body>
+</html>

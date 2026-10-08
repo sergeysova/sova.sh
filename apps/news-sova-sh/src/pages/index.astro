@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import SubscribeForm from "../components/SubscribeForm.astro";
+
+import NewsIcon from "../assets/icons/news.svg?url";
+
+const issuesEntries = await getCollection("issues");
+---
+
+<Layout
+  title="Сова рассылает новости"
+  description="Email-рассылка с подборками статей, новостей и инструментов для web-разработчиков"
+  slug="/"
+>
+  <main class="w-full mx-auto px-6 mb-10 max-w-[65ch] md:max-w-[80ch]">
+    <img src={NewsIcon} class="pr-10 my-10" />
+    <p class="about text-xl text-slate-900">
+      Это веб-версия email-рассылки с подборками статей, новостей и инструментов для web-разработчиков. Меня зовут <a
+        href="https://sova.sh"
+        target="_blank">Сергей Сова</a
+      >, я много говорю об effector, пишу на React всё самое сложное, руковожу фронтендом, практикую ночной Rust.
+    </p>
+
+    <SubscribeForm title="Подпишитесь на эту рассылку" />
+
+    <ul class="flex flex-col gap-5 sm:grid sm:grid-cols-2">
+      {
+        issuesEntries
+          .filter((issue) => !issue.data.draft)
+          .sort((a, b) => b.data.number - a.data.number)
+          .map((issue) => (
+            <li
+              class="group relative flex rounded-lg gap-2 bg-center bg-cover min-h-[20ch] overflow-hidden sm:first:aspect-video sm:first:col-span-2"
+              style={{ backgroundImage: `url(${issue.data.image})` }}
+            >
+              <a
+                href={`/issues/${issue.id}`}
+                class="h-full absolute sm:relative flex justify-items-stretch flex-col rounded-lg sm:group-first:justify-end sm:group-first:bg-transparent"
+              >
+                <div class="text-white bg-black/70 backdrop-blur-md h-full rounded-lg sm:group-first:rounded-t-none sm:group-first:h-max sm:group-hover:bg-transparent sm:group-hover:backdrop-blur-none sm:group-hover:text-transparent">
+                  <span class="inline text-3xl font-light float-right py-3 px-4">#{issue.data.number}</span>
+                  <p class="text-lg leading-7 text-white max-w-[auto] py-3 px-4 group-first:text-lg sm:group-hover:text-transparent ">
+                    <>{issue.data.introduction}</>
+                  </p>
+                </div>
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </main>
+</Layout>
+
+<style is:global>
+  @import "../styles/global.css";
+
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .group:hover .sm\:group-hover\:backdrop-blur-none {
+    -webkit-backdrop-filter: none;
+  }
+</style>
+
+<style>
+  @import "../styles/global.css";
+
+  .about :global(a) {
+    @apply text-sky-600 underline;
+  }
+
+  .about :global(a):hover {
+    @apply text-sky-600 no-underline;
+  }
+</style>
+
+<script>
+  import "@github/relative-time-element";
+</script>
