@@ -4,7 +4,7 @@ import {getCollection} from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import LinkTo from '../components/LinkTo.astro';
 import {getPages} from '../data/markdown';
-import {invitedContent} from '../data/invited-content';
+import {getFeaturedTalks, invitedContent} from '@sova-web/content';
 import {switchLang} from '../lib/language';
 
 const language = import.meta.env.PUBLIC_LANGUAGE as 'en' | 'ru';
@@ -15,12 +15,7 @@ const articles = pageEntries
   .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
   .slice(0, 5);
 projects.sort((a, b) => a.data.order - b.data.order);
-const talks = invitedContent
-  .filter(
-    (item) => (item.type === 'video' || item.type === 'podcast') && item.titleLanguage === language,
-  )
-  .sort((a, b) => b.publishedAt.valueOf() - a.publishedAt.valueOf())
-  .slice(0, 6);
+const talks = getFeaturedTalks(language);
 ---
 
 <Layout

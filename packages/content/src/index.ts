@@ -6,3 +6,4 @@ export {ArticleSchema, InterestSchema, LocalizedTextSchema, ProjectSchema} from 
 export type {ArticleData, ArticleSummary, InterestData, ProjectData} from './article';
 export {getPublishedNewsletterIssues, NewsletterIssueSchema} from './newsletter';
 export type {NewsletterIssueData, NewsletterIssueSummary} from './newsletter';
+export {getFeaturedTalks, invitedContent} from './invited-content';
