@@ -4,7 +4,8 @@
 и независимо публиковать статические Astro-приложения. При переносе
 сохранить контент, историю доступных исходников и опубликованные ссылки.
 
-Срез отслеживаемого кода: коммит `3af14c8` от 9 октября 2026 года.
+Срез исходного кода до подготовки Cloudflare Workers: коммит `a2dfc1a`
+от 9 октября 2026 года.
 Публичные репозитории и технические ограничения проверены по источникам
 в конце документа. Настройки GitHub secrets, Cloudflare, DNS и фактические
 production-деплои из этого документа не подтверждены.
@@ -192,19 +193,27 @@ Build-time endpoints `issues.json` и `rss.xml` формируются из эт
 
 В каждом app есть `wrangler.jsonc` с `assets.directory: "./dist"`,
 без Worker-скрипта. Выбранный аккаунт и `workers_dev: true` закреплены
-во всех четырёх app-конфигах. EN/RU-job переопределяют имя Worker через
-`--name`, поэтому не затирают один production-таргет другим.
+во всех четырёх app-конфигах. Для EN и RU бренда применяются отдельные
+Wrangler-конфиги, чтобы не направить обе локали на один Custom Domain.
 
 Push ограничен ручными `paths`-фильтрами; сборки опубликованных сайтов
 вызывают `pnpm --filter … build`, обходя Turbo cache. Фильтры Sova и
 бренда включают `content/**`. Кросс-репозиторный GitHub Pages/PAT-deploy
 удалён из workflows.
 
-Wrangler dry-run проверен для четырёх приложений. Сергей выбрал аккаунт
-`SergeySova`; его ID закреплён в конфигах и deploy-workflows.
-Локальная попытка создать `news-sova-sh` завершилась ошибкой Cloudflare
-`10001`, поэтому Worker не создан. Новый deploy-step для news ещё не проверен
-GitHub Actions. Production DNS и origin не переключали.
+Wrangler 4.148.0 завершал создание Worker ошибкой `10001`; обновление
+до 4.149.0 устранило её. Все пять Worker-таргетов созданы в выбранном аккаунте
+`SergeySova` и опубликованы на `workers.dev`. Deploy workflow фиксирует эту
+версию. News index/JSON, Sova RU, обе locale бренда и список 18 эпизодов
+проверены на preview URL. Успешный deploy workflow ещё не проверен через
+GitHub Actions.
+
+`ru.sergeysova.com`, ранее не разрешавшийся в DNS, привязан к RU Worker
+и проверен по HTTPS. Остальные домены не переключены. Попытка привязать
+`sergeysova.com` остановилась на `100117`: у hostname остаются внешние DNS
+записи GitHub Pages. Остальные текущие записи также ведут на GitHub Pages
+или прежний podcast origin. Конфигурация `sergeysova-com` уже обновлена,
+но Custom Domain не появился.
 
 Корневой `test` теперь исполняет шесть unit-тестов схем и адаптеров
 `packages/content`. Корневой `lint` пока не имеет package scripts.
@@ -564,27 +573,31 @@ GitHub secrets, управление DNS, действующие production-де
       обслуживается старым Caddy/nginx origin, `ru.sergeysova.com`
       не разрешается. Apex-зоны используют Cloudflare nameservers, но
       веб-запросы сейчас идут к прежним origin.
-- [x] Проверить локальную Wrangler OAuth-авторизацию: доступны два аккаунта,
-      токен имеет права Workers read/write. Имена production Workers из
-      workflows (`sova-sh`, `sergeysova-com`, `ru-sergeysova-com`,
-      `podcast-sova-sh`, `news-sova-sh`) не существуют ни в одном из них.
-      Проверены только эти известные имена, а не полный список Workers.
-- [x] По указанию Сергея выбрать production account `SergeySova`; закрепить
-      его ID в четырёх Wrangler-конфигах и в deploy-workflows. ID не является
-      секретом. GitHub secret `CLOUDFLARE_API_TOKEN` существует, его значение
-      и доступы не считывались.
-- [ ] Проверить разрешение создавать Workers. Локальный `wrangler deploy`
-      получил API error `10001` на создании `news-sova-sh`; Worker не создан.
-      Cloudflare указывает, что для создания Workers нужен product-level
-      Admin [C7]. Проверить роль OAuth-пользователя или использовать
-      Actions-токен с нужным доступом.
-- [ ] После устранения ошибки авторизации проверить каждый таргет на
-      `workers.dev` или Version URL без переключения production.
-      PR-публикацию настроить отдельным шагом; URL публичен, если не
-      защищён Access [C4]. Аккаунт выбран; Worker пока не создан.
-- [ ] До первого переключения опубликовать известный рабочий текущий
-      артефакт как production baseline соответствующего Worker,
-      записать version ID и проверить возврат к нему.
+- [x] Выбрать production account `SergeySova`; ID закреплён в Wrangler-конфигах
+      и deploy-workflows. ID не является секретом. GitHub secret
+      `CLOUDFLARE_API_TOKEN` существует, его значение и доступы не считывались.
+- [x] Обойти ошибку `10001` Wrangler 4.148.0 обновлением до 4.149.0.
+      Создать `news-sova-sh`, `sova-sh`, `sergeysova-com`,
+      `ru-sergeysova-com` и `podcast-sova-sh` и проверить их `workers.dev`
+      endpoints. Последние проверенные version IDs: `news-sova-sh`
+      `d1379667-8f9a-4330-bce5-773ac1e7c2fb`, `sova-sh`
+      `08e395c9-6a14-40eb-b01b-caa707a8c0ec`, `sergeysova-com`
+      `d65eba9b-7b58-451b-9854-ffb97439a076`, `ru-sergeysova-com`
+      `ff6943b9-12f2-4352-9177-cc4e1516afde`, `podcast-sova-sh`
+      `7c8f224b-7f55-480f-8737-1832d679da83`.
+- [ ] Проверить deploy из GitHub Actions и account/token scopes.
+      Секрет `CLOUDFLARE_API_TOKEN` не считывался локально.
+- [x] Переключить `ru.sergeysova.com`: прежней DNS-записи не было;
+      Cloudflare provisioned Custom Domain, HTTPS вернул 200 и RU-страницу.
+- [ ] Для остальных доменов удалить существующие A/AAAA/CNAME записи,
+      ведущие на старые origins, затем привязать Custom Domains. Попытка
+      на `sergeysova.com` вернула `100117` (“externally managed DNS records”).
+      Для news также убрать CNAME `news.sova.sh` на GitHub Pages. Нужен
+      API-токен со scope Zone DNS Edit для `sova.sh` и `sergeysova.com`;
+      текущий Wrangler OAuth имеет только Zone Read. Веб-запросы подтвердили,
+      что старые DNS записи остались: GitHub Pages/Caddy origins не затронуты.
+- [ ] Перед каждым следующим переключением зафиксировать текущие DNS
+      записи для rollback; проверить сайты, canonical, assets, RSS/JSON.
 - [ ] Подготовить активные Cloudflare zones для `sova.sh` и
       `sergeysova.com`. При переносе nameservers сначала сохранить
       прежний хостинг через старые DNS-записи, включая MX/TXT,
@@ -592,9 +605,8 @@ GitHub secrets, управление DNS, действующие production-де
 - [ ] Привязать Custom Domains к нужным Workers через dashboard
       или Wrangler `routes` с `custom_domain: true` [C3].
       Для RU-бренда не наследовать EN-домен: locale-таргеты должны
-      иметь отдельные привязки и Worker names. `news.sova.sh` пока имеет
-      CNAME на GitHub Pages; перед созданием Custom Domain эту запись
-      потребуется заменить.
+      иметь отдельные привязки и Worker names. RU уже привязан; остальные
+      route definitions готовы, но DNS records ещё не освобождены.
 - [ ] Переключать домены по одному, проверяя HTML, редиректы,
       assets, RSS/JSON, canonical, языки и реальный контент.
 - [ ] Проверить, что старый GitHub Pages deploy больше не запускается;
@@ -701,6 +713,8 @@ workflows на Workers уже есть в коде.
 - [C5: Workers Static Assets billing and limitations](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/).
 - [C6: Workers rollbacks](https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/).
 - [C7: Workers roles and permissions](https://developers.cloudflare.com/workers/authorization/workers/).
+- [C8: API token creation](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/)
+  and [token permission groups](https://developers.cloudflare.com/fundamentals/api/reference/permissions/).
 - [S1: Simplecast API, authentication и pagination](https://help.simplecast.com/hc/en-us/articles/21953603587613-Simplecast-API).
 - [E1: Eleventy Fetch, TTL и поведение при сетевых ошибках](https://www.11ty.dev/docs/plugins/fetch/).
 - [Y1: YouTube playlistItems.list](https://developers.google.com/youtube/v3/docs/playlistItems/list).

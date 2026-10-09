@@ -50,6 +50,7 @@ jobs:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '7cbe0e9d17c68ddb7e72472d1e85a976'
           workingDirectory: apps/sergeysova.com
+          wranglerVersion: '4.149.0'
           command: deploy --name=sergeysova-com
 
   ru:
@@ -87,4 +88,5 @@ jobs:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '7cbe0e9d17c68ddb7e72472d1e85a976'
           workingDirectory: apps/sergeysova.com
-          command: deploy --name=ru-sergeysova-com
+          wranglerVersion: '4.149.0'
+          command: deploy --config wrangler.ru.jsonc

@@ -62,4 +62,5 @@ jobs:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '7cbe0e9d17c68ddb7e72472d1e85a976'
           workingDirectory: apps/news-sova-sh
+          wranglerVersion: '4.149.0'
           command: deploy
