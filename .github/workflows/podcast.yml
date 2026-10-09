@@ -38,6 +38,6 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
-          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          accountId: '7cbe0e9d17c68ddb7e72472d1e85a976'
           workingDirectory: apps/podcast-sova-sh
           command: deploy

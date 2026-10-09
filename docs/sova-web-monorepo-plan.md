@@ -563,10 +563,15 @@ GitHub secrets, управление DNS, действующие production-де
       workflows (`sova-sh`, `sergeysova-com`, `ru-sergeysova-com`,
       `podcast-sova-sh`, `news-sova-sh`) не существуют ни в одном из них.
       Проверены только эти известные имена, а не полный список Workers.
-- [ ] Уточнить, какой из доступных аккаунтов должен быть production target,
-      и проверить, что `CLOUDFLARE_ACCOUNT_ID` в GitHub Actions указывает на
-      него. Секреты Actions локально не проверялись; значение OAuth-токена
-      не считывалось.
+- [x] По указанию Сергея выбрать production account `SergeySova`; закрепить
+      его ID в четырёх Wrangler-конфигах и в deploy-workflows. ID не является
+      секретом. GitHub secret `CLOUDFLARE_API_TOKEN` существует, его значение
+      и доступы не считывались.
+- [ ] Проверить разрешение создавать Workers. Локальный `wrangler deploy`
+      получил API error `10001` на создании `news-sova-sh`; Worker не создан.
+      Cloudflare указывает, что для создания Workers нужен product-level
+      Admin [C7]. Проверить роль OAuth-пользователя или использовать
+      Actions-токен с нужным доступом.
 - [ ] Проверить каждый таргет на `workers.dev` или Version URL
       без переключения production. PR-публикацию настроить отдельным
       шагом; URL публичен, если не защищён Access [C4]. Пока Workers с
@@ -582,7 +587,9 @@ GitHub secrets, управление DNS, действующие production-де
 - [ ] Привязать Custom Domains к нужным Workers через dashboard
       или Wrangler `routes` с `custom_domain: true` [C3].
       Для RU-бренда не наследовать EN-домен: locale-таргеты должны
-      иметь отдельные привязки и Worker names.
+      иметь отдельные привязки и Worker names. `news.sova.sh` пока имеет
+      CNAME на GitHub Pages; перед созданием Custom Domain эту запись
+      потребуется заменить.
 - [ ] Переключать домены по одному, проверяя HTML, редиректы,
       assets, RSS/JSON, canonical, языки и реальный контент.
 - [ ] Проверить, что старый GitHub Pages deploy больше не запускается;
@@ -688,6 +695,7 @@ workflows на Workers уже есть в коде.
 - [C4: Workers Version URLs](https://developers.cloudflare.com/workers/configuration/previews/).
 - [C5: Workers Static Assets billing and limitations](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/).
 - [C6: Workers rollbacks](https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/).
+- [C7: Workers roles and permissions](https://developers.cloudflare.com/workers/authorization/workers/).
 - [S1: Simplecast API, authentication и pagination](https://help.simplecast.com/hc/en-us/articles/21953603587613-Simplecast-API).
 - [E1: Eleventy Fetch, TTL и поведение при сетевых ошибках](https://www.11ty.dev/docs/plugins/fetch/).
 - [Y1: YouTube playlistItems.list](https://developers.google.com/youtube/v3/docs/playlistItems/list).
