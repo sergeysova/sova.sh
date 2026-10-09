@@ -8,7 +8,7 @@ export interface Props {
 const issues = Astro.props.news;
 ---
 
-<ul class="list">
+<ul class="content-grid">
   {
     issues.map((issue) => (
       <li class="issue" style={`background-image: url(${issue.image})`}>
@@ -22,19 +22,7 @@ const issues = Astro.props.news;
 </ul>
 
 <style>
-  @import '../styles/global.css';
-
-  .list {
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  @media (min-width: 560px) {
-    .list {
-      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
-    }
-  }
+  @reference '../styles/global.css';
 
   @media (max-width: 559px) {
     .issue:nth-child(n + 4) {
@@ -43,27 +31,22 @@ const issues = Astro.props.news;
   }
 
   @media (min-width: 400px) {
-    .list .issue {
+    .issue {
       min-height: 20ch;
     }
   }
 
   .issue {
-    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white bg-cover bg-center;
-    box-shadow: var(--shadow-elevation);
-    transition:
-      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950 bg-cover bg-center;
   }
 
   .issue a {
-    @apply h-full overflow-hidden rounded-md bg-black/50 text-white backdrop-blur-lg;
+    @apply h-full overflow-hidden bg-zinc-950/90 text-zinc-100;
   }
 
   .issue:hover a {
-    color: transparent;
-    background-color: transparent;
-    backdrop-filter: none;
+    color: var(--color-text);
+    background-color: rgb(10 10 11 / 90%);
   }
 
   .issue .number {

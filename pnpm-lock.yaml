@@ -47,6 +47,9 @@ importers:
       '@sova-web/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@sova-web/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@tabler/icons':
         specifier: ^3.29.0
         version: 3.49.0
@@ -132,6 +135,9 @@ importers:
       '@sova-web/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@sova-web/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@astrojs/markdown-remark@7.2.4)(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.1)
@@ -163,6 +169,9 @@ importers:
       '@sova-web/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@sova-web/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@astrojs/markdown-remark@7.2.4)(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.1)
@@ -260,6 +269,9 @@ importers:
       '@sova-web/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@sova-web/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@astrojs/markdown-remark@7.2.4)(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.1)
@@ -364,6 +376,8 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+
+  packages/ui: {}
 
 packages:
 

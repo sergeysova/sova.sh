@@ -1,4 +1,9 @@
 ---
+import '../styles/global.css';
+import SiteHeader from '@sova-web/ui/SiteHeader.astro';
+import SiteFooter from '@sova-web/ui/SiteFooter.astro';
+import ThemeHead from '@sova-web/ui/ThemeHead.astro';
+
 export interface Props {
   title: string;
   description?: string;
@@ -15,23 +20,12 @@ const {title, description = 'Подкаст «Под куполом» — Сер
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={Astro.url.href} />
+    <ThemeHead />
     <title>{title}</title>
   </head>
   <body>
-    <header class="site-header">
-      <a href="/">Под куполом</a>
-      <nav>
-        <a href="https://sova.sh">sova.sh</a>
-      </nav>
-    </header>
+    <SiteHeader site="podcast" locale="ru" />
     <slot />
+    <SiteFooter locale="ru" />
   </body>
 </html>
-
-<style>
-  @import '../styles/global.css';
-
-  .site-header {
-    @apply mx-auto flex max-w-[65ch] items-center justify-between gap-4 px-6 py-6;
-  }
-</style>

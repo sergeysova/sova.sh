@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@sova-web/content": "workspace:*",
+    "@sova-web/ui": "workspace:*",
     "astro": "^7.2.9"
   },
   "devDependencies": {

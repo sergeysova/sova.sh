@@ -6,29 +6,41 @@ const episodes = await getAllEpisodes();
 ---
 
 <Layout title="Под куполом — подкаст Сергея Совы">
-  <main class="mx-auto flex max-w-[65ch] flex-col gap-6 px-6 pb-16">
-    <h1 class="text-4xl font-bold">Под куполом</h1>
-    <p class="text-lg text-slate-700">
-      Нерегулярные выпуски подкаста — записи размышлений об устройстве мира, личных переживаний и
-      открытии нового в формате ночных посиделок.
-    </p>
+  <main id="main-content" class="site-container podcast-main">
+    <section class="podcast-hero site-hero">
+      <h1>Под куполом</h1>
+      <p>
+        Нерегулярные выпуски подкаста — записи размышлений об устройстве мира, личных переживаний и
+        открытии нового в формате ночных посиделок.
+      </p>
+      <nav class="podcast-links" aria-label="Подписка на подкаст">
+        <a href="https://feeds.simplecast.com/sZjtmMOM">RSS-лента</a>
+      </nav>
+    </section>
 
-    <ul class="flex flex-col gap-6">
-      {
-        episodes.map((episode) => (
-          <li class="flex gap-4 border-b border-slate-200 pb-6">
-            <img src={episode.imageURL} alt="" width="96" height="96" class="h-24 w-24 rounded-md object-cover" />
-            <div class="flex flex-col gap-1">
-              <a href={`/episodes/${episode.slug}/`} class="text-xl font-semibold hover:underline">
-                {episode.title}
+    <section aria-label="Все выпуски">
+      <ul class="episode-list">
+        {
+          episodes.map((episode) => (
+            <li class="episode-card">
+              <a href={`/episodes/${episode.slug}/`}>
+                <img src={episode.imageURL} alt="" width="120" height="120" loading="lazy" />
+                <div class="episode-card-copy">
+                  <span class="meta">
+                    Сезон {episode.season}, выпуск {episode.number}
+                  </span>
+                  <h2>{episode.title}</h2>
+                  <time class="meta" datetime={episode.publishedAt}>
+                    {new Date(episode.publishedAt).toLocaleDateString('ru-RU', {
+                      dateStyle: 'medium',
+                    })}
+                  </time>
+                </div>
               </a>
-              <p class="text-sm text-slate-500">
-                Сезон {episode.season}, выпуск {episode.number}
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </main>
 </Layout>

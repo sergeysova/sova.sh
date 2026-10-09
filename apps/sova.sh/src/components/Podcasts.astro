@@ -24,7 +24,7 @@ const episodes = await Promise.all(
 );
 ---
 
-<ul class="list">
+<ul class="content-grid">
   {
     episodes.map((episode) => (
       <li class="episode">
@@ -43,19 +43,7 @@ const episodes = await Promise.all(
 </ul>
 
 <style>
-  @import '../styles/global.css';
-
-  .list {
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  @media (min-width: 560px) {
-    .list {
-      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
-    }
-  }
+  @reference '../styles/global.css';
 
   @media (max-width: 559px) {
     .episode:nth-child(n + 4) {
@@ -64,19 +52,11 @@ const episodes = await Promise.all(
   }
 
   .episode {
-    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
-    box-shadow:
-      var(--shadow-inset),
-      rgba(0, 0, 0, 0.4) 0px 2px 4px,
-      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px;
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950;
   }
 
   .episode:hover {
-    box-shadow:
-      var(--shadow-inset),
-      rgba(91, 33, 182, 0.2) 0px 8px 8px,
-      rgba(91, 33, 182, 0.2) 0px 13px 26px -3px;
+    border-color: var(--color-accent);
   }
 
   .episode .cover {
@@ -85,14 +65,14 @@ const episodes = await Promise.all(
   }
 
   .episode .cover kbd {
-    @apply float-right rounded-tr-md rounded-bl bg-black/30 px-2 py-1 text-white backdrop-blur;
+    @apply float-right rounded-tr-md rounded-bl bg-black/85 px-2 py-1 text-white;
   }
 
   .episode .title {
-    @apply absolute bottom-0 block w-full bg-black/30 px-4 py-2 text-2xl font-light text-white backdrop-blur-xl;
+    @apply absolute bottom-0 block w-full bg-black/85 px-4 py-2 text-xl font-light text-white;
   }
 
   .episode .description {
-    @apply px-4 py-3 text-lg;
+    @apply px-4 py-3 text-lg text-zinc-300;
   }
 </style>

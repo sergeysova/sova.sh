@@ -1,7 +1,9 @@
 ---
 import {switchLang} from '../lib/language';
-
-import Footer from '../components/Footer.astro';
+import SiteHeader from '@sova-web/ui/SiteHeader.astro';
+import SiteFooter from '@sova-web/ui/SiteFooter.astro';
+import ThemeHead from '@sova-web/ui/ThemeHead.astro';
+import '../styles/global.css';
 
 export interface Props {
   title?: string;
@@ -74,7 +76,7 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
 
     <link rel="me" href="https://techhub.social/@sergeysova" />
 
-    <meta name="theme-color" content="#1F2028" />
+    <ThemeHead />
     <script
       is:inline
       type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
@@ -88,48 +90,8 @@ gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
   </head>
 
   <body>
+    <SiteHeader site="index" locale={locale} />
     <slot />
-    <Footer />
-    <style>
-      @import '../styles/global.css';
-
-      html {
-        @apply bg-slate-50;
-      }
-
-      body {
-        margin: 0;
-      }
-    </style>
-
-    <style is:global>
-      @import '../styles/global.css';
-
-      code {
-        font-family:
-          Menlo,
-          Monaco,
-          Lucida Console,
-          Liberation Mono,
-          DejaVu Sans Mono,
-          Bitstream Vera Sans Mono,
-          Courier New,
-          monospace;
-      }
-
-      :root {
-        /* --shadow-color: 122deg 22% 5%; */
-        --shadow-color: 0, 0, 0;
-        --shadow-elevation:
-          rgba(var(--shadow-color), 0.1) 0px 1px 2px, rgba(var(--shadow-color), 0.1) 0px 2px 6px,
-          rgba(var(--shadow-color), 0.3) 0px 8px 10px -3px;
-
-        --shadow-elevation-hover:
-          rgba(var(--shadow-color), 0.1) 0px 4px 6px, rgba(var(--shadow-color), 0.1) 0px 8px 8px,
-          rgba(var(--shadow-color), 0.2) 0px 13px 26px -3px;
-
-        --shadow-inset: rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-      }
-    </style>
+    <SiteFooter locale={locale} historyHref="/history" />
   </body>
 </html>

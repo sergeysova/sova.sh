@@ -2,6 +2,9 @@
 import "../styles/global.css";
 
 import { SEO, type Meta } from "astro-seo";
+import SiteHeader from "@sova-web/ui/SiteHeader.astro";
+import SiteFooter from "@sova-web/ui/SiteFooter.astro";
+import ThemeHead from "@sova-web/ui/ThemeHead.astro";
 export interface Props {
   title: string;
   description: string;
@@ -17,6 +20,7 @@ const { title, description, slug, image, publishedDate } = Astro.props;
 <html lang="ru" prefix="og: https://ogp.me/ns#">
   <head>
     <link rel="icon" href="/favicon.png" />
+    <ThemeHead />
     <SEO
       charset="UTF-8"
       title={title}
@@ -62,13 +66,8 @@ const { title, description, slug, image, publishedDate } = Astro.props;
               }
             : null,
           {
-            name: "theme-color",
-            content: "#5b21b6",
-          },
-          {
             name: "color-scheme",
-            // content: "dark light",
-            content: "light",
+            content: "dark",
           },
           {
             name: "viewport",
@@ -78,22 +77,9 @@ const { title, description, slug, image, publishedDate } = Astro.props;
       }}
     />
   </head>
-  <body class="bg-slate-50">
+  <body>
+    <SiteHeader site="news" locale="ru" />
     <slot />
-    <style is:global>
-      @import "../styles/global.css";
-
-      code {
-        font-family:
-          Menlo,
-          Monaco,
-          Lucida Console,
-          Liberation Mono,
-          DejaVu Sans Mono,
-          Bitstream Vera Sans Mono,
-          Courier New,
-          monospace;
-      }
-    </style>
+    <SiteFooter locale="ru" />
   </body>
 </html>

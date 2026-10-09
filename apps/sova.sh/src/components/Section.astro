@@ -8,9 +8,7 @@ interface Link {
 }
 
 export interface Props {
-  title?: string;
-  titleImage?: string;
-  titleImageAlt?: string | {ru: string; en: string};
+  title?: string | {ru: string; en: string};
   id?: string;
   description?: {
     ru: string;
@@ -19,15 +17,13 @@ export interface Props {
   links?: Link[];
 }
 
-const {title, titleImage, titleImageAlt, description, links, id} = Astro.props;
-const accessibleTitle = titleImageAlt ? optionalTranslate(titleImageAlt) : title;
+const {title, description, links, id} = Astro.props;
+const sectionTitle = title ? optionalTranslate(title) : undefined;
 ---
 
-<section>
+<section class="content-section">
   {id ? <a id={id} /> : null}
-  {title ? <h1 class="mb-2 text-3xl">{title}</h1> : null}
-  {accessibleTitle && !title ? <h2 class="sr-only">{accessibleTitle}</h2> : null}
-  {titleImage ? <img src={titleImage} class="title-image" alt="" aria-hidden="true" /> : null}
+  {sectionTitle ? <h2 class="section-title">{sectionTitle}</h2> : null}
   <slot />
   {description ? <p class="pt-4">{switchLang(description)}</p> : null}
   {
@@ -42,21 +38,8 @@ const accessibleTitle = titleImageAlt ? optionalTranslate(titleImageAlt) : title
 </section>
 
 <style>
-  @import '../styles/global.css';
-
-  .title-image {
-    @apply -mb-2 max-h-14;
-  }
-
-  @media (min-width: 560px) {
-    .title-image {
-      @apply mr-6 -mb-3 max-h-20;
-    }
-  }
-
-  @media (min-width: 960px) {
-    .title-image {
-      @apply -mb-4 -ml-20 max-h-24;
-    }
+  .section-title {
+    font: 400 clamp(1.7rem, 3vw, 2.5rem)/1.2 var(--font-display);
+    margin: 0 0 1rem;
   }
 </style>

@@ -15,7 +15,7 @@ export interface Props {
 const {articles} = Astro.props;
 ---
 
-<ul class="list">
+<ul class="content-grid">
   {
     articles.map((article) => (
       <li class="article">
@@ -33,19 +33,7 @@ const {articles} = Astro.props;
 </ul>
 
 <style>
-  @import '../styles/global.css';
-
-  .list {
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  @media (min-width: 560px) {
-    .list {
-      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
-    }
-  }
+  @reference '../styles/global.css';
 
   @media (max-width: 559px) {
     .article:nth-child(n + 4) {
@@ -54,17 +42,11 @@ const {articles} = Astro.props;
   }
 
   .article {
-    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
-
-    box-shadow: var(--shadow-inset), var(--shadow-elevation);
-    transition:
-      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950;
   }
 
   .article:hover {
-    box-shadow: var(--shadow-inset), var(--shadow-elevation-hover);
-    transform: translateY(-3px);
+    border-color: var(--color-accent);
   }
 
   .article .cover {
@@ -73,16 +55,15 @@ const {articles} = Astro.props;
   }
 
   .article .cover.empty {
-    background-image: linear-gradient(45deg, #4f39fa, #da62c4 30%, #cffafe 60%);
-    background-size: 400%;
-    background-position: 50%;
+    background-color: var(--color-line);
+    background-image: none;
   }
 
   .article .title {
-    @apply block px-4 py-2 text-2xl font-light;
+    @apply block px-4 py-2 text-2xl font-light text-zinc-100;
   }
 
   .article .description {
-    @apply px-4 py-3 text-lg;
+    @apply px-4 py-3 text-lg text-zinc-300;
   }
 </style>

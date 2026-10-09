@@ -1,0 +1,48 @@
+---
+export interface Props {
+  site: 'index' | 'profile' | 'news' | 'podcast';
+  locale?: 'ru' | 'en';
+  links?: Array<{href: string; label: string}>;
+  alternateHref?: string;
+}
+
+const {site, locale = 'ru', links = [], alternateHref} = Astro.props;
+const labels =
+  locale === 'ru'
+    ? {index: 'Главная', profile: 'Профиль', news: 'Рассылка', podcast: 'Подкаст'}
+    : {index: 'Home', profile: 'Profile', news: 'Newsletter', podcast: 'Podcast'};
+const destinations = [
+  {site: 'index', href: 'https://sova.sh', label: labels.index},
+  {
+    site: 'profile',
+    href: locale === 'ru' ? 'https://ru.sergeysova.com' : 'https://sergeysova.com',
+    label: labels.profile,
+  },
+  {site: 'news', href: 'https://news.sova.sh', label: labels.news},
+  {site: 'podcast', href: 'https://podcast.sova.sh', label: labels.podcast},
+];
+---
+
+<a class="skip-link" href="#main-content"
+  >{locale === 'ru' ? 'К основному содержимому' : 'Skip to content'}</a
+>
+<header class="site-header site-container">
+  <a class="site-wordmark" href="https://sova.sh" aria-label="Sova network">sova<span>.</span>sh</a>
+  <nav aria-label={locale === 'ru' ? 'Сайты' : 'Sites'}>
+    {
+      destinations.map(({site: destination, href, label}) => (
+        <a href={href} aria-current={site === destination ? 'page' : undefined}>
+          {label}
+        </a>
+      ))
+    }
+    {links.map(({href, label}) => <a href={href}>{label}</a>)}
+    {
+      alternateHref && (
+        <a class="locale-link" href={alternateHref}>
+          {locale === 'ru' ? 'EN' : 'RU'}
+        </a>
+      )
+    }
+  </nav>
+</header>

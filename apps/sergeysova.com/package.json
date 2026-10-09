@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@sova-web/content": "workspace:*",
+    "@sova-web/ui": "workspace:*",
     "astro": "^7.2.9",
     "dayjs": "^1.11.23",
     "jsdom": "^30.0.1",

@@ -6,7 +6,6 @@ import LocaleData from 'dayjs/plugin/localeData';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 import Layout from '../layouts/Layout.astro';
-import AssetHistory from '../assets/history.svg?url';
 import IconMicrophone from '../assets/icons/microphone.svg?url';
 import IconNews from '../assets/icons/news.svg?url';
 import IconNotes from '../assets/icons/notes.svg?url';
@@ -127,9 +126,12 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
     ru: 'Весь мой контент в хронологическом порядке',
   })}
 >
-  <main class="relative">
-    <img src={AssetHistory} class="title-image z-10" />
-    <div class="relative space-y-5">
+  <main id="main-content" class="history-page site-container">
+    <header class="history-heading">
+      <p class="eyebrow">{switchLang({en: 'Archive', ru: 'Архив'})}</p>
+      <h1 class="display-title">{switchLang({en: 'Publish history', ru: 'История публикаций'})}</h1>
+    </header>
+    <div class="history-list">
       {
         records.map((record, index) => {
           const recordYear = record.publishedAt.getUTCFullYear();
@@ -139,24 +141,28 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
           return (
             <Fragment>
               {recordYear !== previousYear ? (
-                <a href={`#r-${recordYear}`} id={`r-${recordYear}`} class="year">
-                  {record.publishedAt.getUTCFullYear()}
-                </a>
+                <h2 class="year meta">
+                  <a href={`#r-${recordYear}`} id={`r-${recordYear}`}>
+                    {recordYear}
+                  </a>
+                </h2>
               ) : null}
               {recordMonth !== previousMonth || recordYear !== previousYear ? (
-                <a
-                  href={`#r-${recordYear}-${recordMonth}`}
-                  id={`r-${recordYear}-${recordMonth}`}
-                  class="month capitalize"
-                >
-                  {dayjs(record.publishedAt).format('MMMM')}
-                </a>
+                <h3 class="month-heading">
+                  <a
+                    href={`#r-${recordYear}-${recordMonth}`}
+                    id={`r-${recordYear}-${recordMonth}`}
+                    class="month meta capitalize"
+                  >
+                    {dayjs(record.publishedAt).format('MMMM')}
+                  </a>
+                </h3>
               ) : null}
               <a
                 data-type={record.type}
                 data-invited={switchLang({en: 'invited', ru: 'приглашен'})}
                 class:list={[
-                  'record z-50',
+                  'record',
                   {
                     invited: record.invited,
                   },
@@ -165,137 +171,178 @@ const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
                 rel="noopener"
                 target="_blank"
               >
-                <div class="flex space-x-2 px-4 text-xl">
+                <div class="record-title">
                   <img
                     src={icon[record.type]}
-                    class="inline-block w-5"
+                    class="record-icon"
                     title={articleTypeTitle[record.type]}
+                    alt=""
                   />
                   <span>{record.title}</span>
                 </div>
-                <span class="pr-4 pl-12 text-sm">{dayjs(record.publishedAt).format('LL')}</span>
-                <p class="pr-4 pl-12">{record.description}</p>
+                <span class="record-date meta">{dayjs(record.publishedAt).format('LL')}</span>
+                <p class="record-description">{record.description}</p>
               </a>
             </Fragment>
           );
         })
       }
-      <div class="line"></div>
     </div>
   </main>
 </Layout>
 <style>
-  @import '../styles/global.css';
-
-  main {
-    margin: auto;
-    padding: 1em;
-    max-width: 70ch;
-    @apply flex flex-col gap-10;
+  .history-page {
+    margin-inline: auto;
+    max-width: 920px;
+    padding-block: clamp(64px, 9vw, 110px) 100px;
   }
 
-  .title-image {
-    @apply my-2 max-h-14;
+  .history-heading {
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: 48px;
+    padding-bottom: 38px;
   }
 
-  @media (min-width: 560px) {
-    .title-image {
-      @apply my-3 mr-6 max-h-20;
-    }
+  .eyebrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    margin: 0 0 16px;
+    text-transform: uppercase;
   }
 
-  @media (min-width: 960px) {
-    .title-image {
-      @apply my-4 -ml-24 max-h-24;
-    }
+  .history-heading .display-title {
+    margin: 0;
   }
 
-  .line {
-    @apply absolute top-0 bottom-0 left-6 w-1 rounded bg-slate-400;
-    z-index: -1;
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .year {
-    @apply sticky top-1 -mx-3 block bg-black px-5 py-2 text-white;
-    border-radius: 50px;
-    z-index: 90;
-    transition: scale 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+    background: var(--color-bg);
+    color: var(--color-text);
+    display: block;
+    margin: 0;
+    padding: 20px 0 10px;
+    position: sticky;
+    text-decoration: none;
+    top: 0;
+    z-index: 1;
+  }
+  .year a {
+    color: inherit;
+    text-decoration: none;
   }
 
-  @media (min-width: 560px) {
-    .year:hover {
-      scale: 1.03;
-    }
+  .month-heading {
+    margin: 0;
   }
-
-  .year:not(:first-child) {
-    margin-top: 4rem !important;
-  }
-
   .month {
-    @apply ml-10 inline-block rounded px-2 py-0.5 font-medium text-slate-600 hover:bg-slate-500 hover:text-white;
-    transition:
-      background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    align-self: flex-start;
+    color: var(--color-accent);
+    margin: 12px 0 10px;
+    text-decoration: none;
   }
 
   .record {
-    --border-brand-color: transparent;
-    @apply relative flex flex-col gap-1 overflow-hidden rounded-md bg-white py-3;
-    --shadow-color: 0deg 0% 0%;
-
-    box-shadow:
-      hsla(var(--shadow-color) / 0.4) 0px 2px 4px,
-      hsla(var(--shadow-color) / 0.3) 0px 7px 13px -3px,
-      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
-    transition:
-      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid var(--color-line);
+    color: var(--color-text);
+    display: grid;
+    gap: 8px 18px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    margin-bottom: 10px;
+    padding: 18px 20px;
+    position: relative;
+    text-decoration: none;
+    transition: border-color 160ms ease;
   }
 
   .record:hover {
-    box-shadow:
-      hsla(var(--shadow-color) / 0.2) 0px 8px 8px,
-      hsla(var(--shadow-color) / 0.2) 0px 13px 26px -3px,
-      hsla(var(--shadow-color) / 0.2) 0px -3px 0px inset;
-    transform: translateY(-3px);
+    border-color: var(--color-accent);
   }
 
-  .record::after {
+  .record-title {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+    grid-column: 1;
+    grid-row: 1;
+    line-height: 1.5;
+  }
+
+  .record-icon {
+    flex: 0 0 18px;
+    height: 18px;
+    margin-top: 3px;
+    object-fit: contain;
+    opacity: 0.72;
+    width: 18px;
+  }
+
+  .record-date {
+    color: var(--color-muted);
+    grid-column: 2;
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  .record-description {
+    color: var(--color-muted);
+    grid-column: 1 / -1;
+    line-height: 1.6;
+    margin: 0 0 0 30px;
+  }
+
+  .record.invited::before {
+    background: var(--color-accent);
     content: '';
-    @apply absolute top-0 bottom-0 left-0 w-1;
-    background-color: hsl(var(--border-brand-color));
-    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    inset: 0 auto 0 0;
+    position: absolute;
+    width: 2px;
   }
 
-  .record:hover::after {
-    @apply w-1.5;
-  }
-
-  .record.invited {
-    --shadow-color: var(--border-brand-color);
-    @apply -ml-3 pl-3;
-  }
   .record.invited::after {
-    @apply w-5 py-1 text-sm text-white;
+    color: var(--color-accent);
     content: attr(data-invited);
-    text-orientation: sideways;
-    writing-mode: vertical-lr;
-    transform: rotate(180deg);
-    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    letter-spacing: 0.06em;
+    margin-left: 30px;
+    text-transform: uppercase;
   }
 
-  .record[data-type='video'] {
-    --border-brand-color: 0deg 100% 50%;
+  @media (max-width: 600px) {
+    .history-heading {
+      margin-bottom: 30px;
+    }
+
+    .record {
+      gap: 8px;
+      grid-template-columns: 1fr;
+      padding: 16px;
+    }
+
+    .record-date,
+    .record-description {
+      grid-column: 1;
+      grid-row: auto;
+      margin-left: 30px;
+    }
+
+    .record-date {
+      text-align: left;
+    }
   }
-  .record[data-type='podcast'] {
-    --border-brand-color: 222deg 79% 55%;
-  }
-  .record[data-type='news'] {
-    --border-brand-color: 0deg 0% 16%;
-  }
-  .record[data-type='article'].invited {
-    --shadow-color: 142deg 76% 36%;
-    --border-brand-color: 142deg 76% 36%;
+
+  @media (prefers-reduced-motion: reduce) {
+    .record {
+      transition: none;
+    }
   }
 </style>

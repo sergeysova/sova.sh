@@ -8,7 +8,7 @@ export interface Props {
 const {videos} = Astro.props;
 ---
 
-<ul class="list">
+<ul class="content-grid">
   {
     videos.map((video) => (
       <li class="video">
@@ -25,19 +25,7 @@ const {videos} = Astro.props;
 </ul>
 
 <style>
-  @import '../styles/global.css';
-
-  .list {
-    display: grid;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  @media (min-width: 560px) {
-    .list {
-      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
-    }
-  }
+  @reference '../styles/global.css';
 
   @media (max-width: 559px) {
     .video:nth-child(n + 4) {
@@ -46,20 +34,11 @@ const {videos} = Astro.props;
   }
 
   .video {
-    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white;
-
-    box-shadow:
-      rgba(0, 0, 0, 0.4) 0px 2px 4px,
-      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
-      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    transition: box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950;
   }
 
   .video:hover {
-    box-shadow:
-      rgba(91, 33, 182, 0.2) 0px 8px 8px,
-      rgba(91, 33, 182, 0.2) 0px 13px 26px -3px,
-      rgba(91, 33, 182, 0.2) 0px -3px 5px inset;
+    border-color: var(--color-accent);
   }
 
   .video .cover {
@@ -69,7 +48,7 @@ const {videos} = Astro.props;
   }
 
   .video .cover .blind {
-    @apply bg-black/30 font-light backdrop-blur-xl;
+    @apply bg-black/85 font-light;
   }
 
   .video .cover .title {
