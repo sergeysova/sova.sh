@@ -1,21 +1,25 @@
-# sergeysova.com / ru.sergeysova.com
+# `sergeysova.com` / `ru.sergeysova.com`
 
-Отдельное Astro-приложение для англо- и русскоязычной версии
-профессионального бренда Сергея, два locale-билда:
+One Astro app builds the professional profile in English and Russian.
+The English and Russian builds use separate `PUBLIC_SITE` and
+`PUBLIC_LANGUAGE` values:
 
 ```bash
-PUBLIC_SITE=https://sergeysova.com    PUBLIC_LANGUAGE=en pnpm build
-PUBLIC_SITE=https://ru.sergeysova.com PUBLIC_LANGUAGE=ru pnpm build
+PUBLIC_SITE=https://sergeysova.com PUBLIC_LANGUAGE=en \
+  pnpm --filter @sova-web/sergeysova.com build
+
+PUBLIC_SITE=https://ru.sergeysova.com PUBLIC_LANGUAGE=ru \
+  pnpm --filter @sova-web/sergeysova.com build
 ```
 
-## Статус
+The homepage has About, Work, Writing, Talks, Consulting, and Contact
+sections. It shares articles, projects, interests, and Simplecast data
+with the other apps through root `content/` and `packages/content`.
 
-Это механический клон `apps/sova.sh` на момент разделения — контент
-пока полностью идентичен (та же лендинг-страница, статьи, CV). Цель
-этого шага — перестать собирать sergeysova.com из `apps/sova.sh`, чтобы
-`sova.sh` мог стать самостоятельным индексом со своим контентом, не
-трогая sergeysova.com при каждом изменении.
+For a selected locale, the app shows translated titles when available
+and omits entries without a translation. It does not translate
+automatically or fall back to the source-language title.
 
-Настоящее разделение контента (About/Work/Writing/Talks/Consulting/Contact
-вместо копии лендинга sova.sh) — отдельная работа с текстами, требует
-реального авторского контента, см. `docs/sova-web-monorepo-plan.md`.
+Content still needs owner review. See
+[`docs/sova-web-monorepo-plan.md`](../../docs/sova-web-monorepo-plan.md)
+for migration status, open decisions, and deployment status.
