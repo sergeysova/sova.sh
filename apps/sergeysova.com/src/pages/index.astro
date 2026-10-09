@@ -1,0 +1,602 @@
+---
+import {getCollection} from 'astro:content';
+
+import Layout from '../layouts/Layout.astro';
+import LinkTo from '../components/LinkTo.astro';
+import {getPages} from '../data/markdown';
+import {getFeaturedTalks, invitedContent} from '@sova-web/content';
+import {switchLang} from '../lib/language';
+
+const language = import.meta.env.PUBLIC_LANGUAGE as 'en' | 'ru';
+const alternateHome = language === 'ru' ? 'https://sergeysova.com/' : 'https://ru.sergeysova.com/';
+const [pageEntries, projects] = await Promise.all([getPages(), getCollection('projects')]);
+const articles = pageEntries
+  .filter((article) => article.language === language && article.titleLanguage === language)
+  .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
+  .slice(0, 5);
+projects.sort((a, b) => a.data.order - b.data.order);
+const talks = getFeaturedTalks(language);
+---
+
+<Layout
+  title={switchLang({
+    en: 'Open-source developer and frontend engineer',
+    ru: 'Разработчик и frontend-инженер',
+  })}
+  description={switchLang({
+    en: 'Sergey Sova builds open-source tools for the Effector ecosystem and writes about frontend engineering.',
+    ru: 'Сергей Сова развивает open-source инструменты для экосистемы Effector и пишет о frontend-разработке.',
+  })}
+  type="profile"
+  image="https://avatars.githubusercontent.com/u/5620073?v=4"
+  alternateLanguages={{
+    en: 'https://sergeysova.com/',
+    ru: 'https://ru.sergeysova.com/',
+  }}
+>
+  <div class="profile-shell">
+    <header class="site-header">
+      <a
+        class="wordmark"
+        href="/"
+        aria-label={switchLang({en: 'Sergey Sova, home', ru: 'Сергей Сова, главная'})}
+      >
+        <span class="monogram" aria-hidden="true">SS</span>
+        <span>{switchLang({en: 'Sergey Sova', ru: 'Сергей Сова'})}</span>
+      </a>
+      <nav aria-label={switchLang({en: 'Main navigation', ru: 'Основная навигация'})}>
+        <a href="#about">{switchLang({en: 'About', ru: 'Обо мне'})}</a>
+        <a href="#work">{switchLang({en: 'Work', ru: 'Работа'})}</a>
+        <a href="#writing">{switchLang({en: 'Writing', ru: 'Тексты'})}</a>
+        <a href="#talks">{switchLang({en: 'Talks', ru: 'Выступления'})}</a>
+        <a href="#consulting">{switchLang({en: 'Consulting', ru: 'Консультации'})}</a>
+        <a href="#contact">{switchLang({en: 'Contact', ru: 'Контакт'})}</a>
+        <a class="language-link" href={alternateHome}>{language === 'ru' ? 'EN' : 'RU'}</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="about">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            {
+              switchLang({
+                en: 'Open source · frontend engineering · podcasting',
+                ru: 'Open source · frontend-разработка · подкаст',
+              })
+            }
+          </p>
+          <h1>{switchLang({en: 'Sergey Sova', ru: 'Сергей Сова'})}</h1>
+          <p class="intro">
+            {
+              switchLang({
+                en: 'I build tools for the Effector ecosystem and write about frontend engineering.',
+                ru: 'Развиваю инструменты для экосистемы Effector и пишу о frontend-разработке.',
+              })
+            }
+          </p>
+          <div class="hero-links">
+            <LinkTo name="github" />
+            <LinkTo name="telegram" />
+            <a href="mailto:contact@sergeysova.com">
+              {switchLang({en: 'Email', ru: 'Электронная почта'})}
+            </a>
+          </div>
+        </div>
+        <aside
+          class="hero-note"
+          aria-label={switchLang({en: 'Current focus', ru: 'Основная работа'})}
+        >
+          <span class="note-mark" aria-hidden="true"></span>
+          <p>{switchLang({en: 'Building in public', ru: 'Разработка open source'})}</p>
+          <strong>Effector</strong>
+          <span
+            >{
+              switchLang({
+                en: 'JavaScript and TypeScript ecosystem',
+                ru: 'Экосистема JavaScript и TypeScript',
+              })
+            }</span
+          >
+        </aside>
+      </section>
+
+      <section class="section work-section" id="work">
+        <div class="section-heading">
+          <p class="eyebrow">{switchLang({en: 'Selected work', ru: 'Проекты'})}</p>
+          <h2>
+            {switchLang({en: 'Tools people build with', ru: 'Инструменты для разработчиков'})}
+          </h2>
+        </div>
+        <div class="work-list">
+          {
+            projects.map((project) => (
+              <a href={project.data.url} target="_blank" rel="noopener">
+                <span class="work-name">{project.data.title}</span>
+                <span>{switchLang(project.data.description)}</span>
+                <span class="external-mark" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))
+          }
+          <a href="https://github.com/sergeysova" target="_blank" rel="noopener">
+            <span class="work-name"
+              >{switchLang({en: 'More on GitHub', ru: 'Другие проекты на GitHub'})}</span
+            >
+            <span
+              >{
+                switchLang({en: 'Open-source contributions', ru: 'Open-source проекты и вклад'})
+              }</span
+            >
+            <span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section writing-section" id="writing">
+        <div class="section-heading">
+          <p class="eyebrow">{switchLang({en: 'Writing', ru: 'Тексты'})}</p>
+          <h2>
+            {switchLang({en: 'Notes on building software', ru: 'О разработке и архитектуре'})}
+          </h2>
+          <p>
+            {
+              switchLang({
+                en: 'Articles are published on sova.sh.',
+                ru: 'Полные версии статей опубликованы на sova.sh.',
+              })
+            }
+            <a href="https://sova.sh">{switchLang({en: 'Browse all articles', ru: 'Все статьи'})}</a
+            >
+          </p>
+        </div>
+        <ul class="article-list">
+          {
+            articles.map((article) => (
+              <li>
+                <a href={new URL(article.url, 'https://sova.sh').toString()}>
+                  <span>{article.title}</span>
+                  <time datetime={new Date(article.published_at).toISOString()}>
+                    {new Date(article.published_at).getFullYear()}
+                  </time>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="section talks-section" id="talks">
+        <div class="section-heading">
+          <p class="eyebrow">
+            {switchLang({en: 'Talks and guest appearances', ru: 'Выступления и интервью'})}
+          </p>
+          <h2>{switchLang({en: 'Conversations beyond the code', ru: 'Разговоры о разработке'})}</h2>
+          <p>
+            {
+              switchLang({
+                en: 'Selected appearances from the existing archive.',
+                ru: 'Выступления и интервью из существующего архива.',
+              })
+            }
+            <a href="/history">{switchLang({en: 'Full history', ru: 'Вся история публикаций'})}</a>
+          </p>
+        </div>
+        <ul class="talk-list">
+          {
+            talks.map((talk) => (
+              <li>
+                <a href={talk.url} target="_blank" rel="noopener">
+                  <span>{talk.title}</span>
+                  <time datetime={talk.publishedAt.toISOString()}>
+                    {talk.publishedAt.getUTCFullYear()}
+                  </time>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="section consulting-section" id="consulting">
+        <div class="section-heading">
+          <p class="eyebrow">{switchLang({en: 'Consulting', ru: 'Консультации'})}</p>
+          <h2>
+            {
+              switchLang({
+                en: 'Talk through a technical problem',
+                ru: 'Обсудить техническую задачу',
+              })
+            }
+          </h2>
+          <p>
+            {
+              switchLang({
+                en: 'For questions about Effector or frontend architecture, email me to discuss a possible consulting engagement.',
+                ru: 'По вопросам Effector и frontend-архитектуры напишите мне, чтобы обсудить возможную консультацию.',
+              })
+            }
+          </p>
+        </div>
+        <a
+          class="consulting-link"
+          href="mailto:contact@sergeysova.com?subject=Consulting%20inquiry"
+        >
+          {switchLang({en: 'Ask about consulting', ru: 'Обсудить консультацию'})}
+        </a>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <p class="eyebrow">{switchLang({en: 'Contact', ru: 'Связаться'})}</p>
+        <h2>{switchLang({en: 'Get in touch', ru: 'Написать мне'})}</h2>
+        <p>
+          {
+            switchLang({
+              en: 'Email is the best way to reach me.',
+              ru: 'Лучше всего написать мне по электронной почте.',
+            })
+          }
+        </p>
+        <a class="contact-link" href="mailto:contact@sergeysova.com"> contact@sergeysova.com </a>
+        <p class="social-contact">
+          <LinkTo name="telegram" />
+          <span aria-hidden="true"> · </span>
+          <LinkTo name="github" />
+        </p>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  @import '../styles/global.css';
+
+  :global(html) {
+    background: #f5f8fc;
+    color: #17263f;
+    scroll-behavior: smooth;
+  }
+
+  :global(body) {
+    background:
+      radial-gradient(ellipse at 82% 9%, rgb(208 224 249 / 55%), transparent 34rem), #f5f8fc;
+    color: #17263f;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .profile-shell {
+    --ink: #17263f;
+    --muted: #52647e;
+    --blue: #2859c5;
+    --line: #d7e1ef;
+    margin: 0 auto;
+    max-width: 1120px;
+    padding: 0 28px;
+  }
+
+  .site-header {
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    min-height: 82px;
+  }
+
+  .wordmark,
+  .site-header nav,
+  .hero-links {
+    align-items: center;
+    display: flex;
+  }
+
+  .wordmark {
+    color: var(--ink);
+    font-size: 0.95rem;
+    font-weight: 700;
+    gap: 11px;
+    text-decoration: none;
+  }
+
+  .monogram {
+    align-items: center;
+    background: var(--ink);
+    border-radius: 50%;
+    color: white;
+    display: inline-flex;
+    font-size: 0.68rem;
+    height: 36px;
+    justify-content: center;
+    letter-spacing: -0.04em;
+    width: 36px;
+  }
+
+  .site-header nav {
+    gap: clamp(14px, 2.4vw, 30px);
+  }
+
+  .site-header nav a {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .site-header nav a:hover,
+  .site-header nav a:focus-visible,
+  .hero-links a:hover,
+  .hero-links a:focus-visible {
+    color: var(--blue);
+  }
+
+  .site-header nav .language-link {
+    border: 1px solid #bdcde2;
+    border-radius: 3px;
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 8px;
+  }
+
+  main {
+    margin: 0 auto;
+    max-width: 970px;
+  }
+
+  .hero {
+    align-items: center;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    min-height: 510px;
+    padding: 76px 0 88px;
+  }
+
+  .eyebrow {
+    color: var(--blue);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin: 0 0 18px;
+  }
+
+  .hero h1 {
+    color: var(--ink);
+    font-size: clamp(3.7rem, 9vw, 7.5rem);
+    font-weight: 760;
+    letter-spacing: -0.085em;
+    line-height: 0.94;
+    margin: 0;
+    max-width: 9ch;
+  }
+
+  .intro {
+    color: #40536f;
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    line-height: 1.45;
+    margin: 32px 0 26px;
+    max-width: 30ch;
+  }
+
+  .hero-links {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .hero-links a {
+    color: var(--ink);
+    font-size: 0.92rem;
+    font-weight: 650;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .hero-note {
+    border-left: 1px solid #9db3d2;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px 0 15px 24px;
+  }
+
+  .note-mark {
+    background: var(--blue);
+    height: 9px;
+    margin-bottom: 10px;
+    width: 9px;
+  }
+
+  .hero-note p,
+  .hero-note span {
+    font-size: 0.83rem;
+    margin: 0;
+  }
+
+  .hero-note strong {
+    color: var(--ink);
+    font-size: 1.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  .section {
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: clamp(28px, 7vw, 100px);
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+    padding: 76px 0;
+  }
+
+  .section-heading h2,
+  .contact-section h2 {
+    color: var(--ink);
+    font-size: clamp(1.8rem, 3.3vw, 2.65rem);
+    letter-spacing: -0.055em;
+    line-height: 1.1;
+    margin: 0 0 16px;
+  }
+
+  .section-heading > p:not(.eyebrow) {
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  .section-heading > p a {
+    color: var(--blue);
+    display: inline-block;
+    margin-top: 10px;
+    text-underline-offset: 3px;
+  }
+
+  .work-list,
+  .article-list,
+  .talk-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .work-list a,
+  .article-list a,
+  .talk-list a {
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    display: grid;
+    gap: 14px;
+    min-height: 66px;
+    text-decoration: none;
+  }
+
+  .work-list a {
+    grid-template-columns: minmax(100px, 0.8fr) minmax(0, 1.2fr) 18px;
+  }
+
+  .work-name {
+    font-weight: 700;
+  }
+
+  .work-list a > span:nth-child(2) {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .external-mark {
+    color: var(--blue);
+    font-size: 1.1rem;
+  }
+
+  .article-list a,
+  .talk-list a {
+    grid-template-columns: minmax(0, 1fr) 42px;
+    line-height: 1.45;
+    padding: 13px 0;
+  }
+
+  .article-list a:hover span,
+  .talk-list a:hover span,
+  .work-list a:hover .work-name {
+    color: var(--blue);
+  }
+
+  time {
+    color: #596b83;
+    font-size: 0.8rem;
+    text-align: right;
+  }
+
+  .contact-section {
+    background: #e8eef8;
+    border-top: 2px solid var(--blue);
+    margin: 8px 0 88px;
+    padding: clamp(28px, 5vw, 54px);
+  }
+
+  .consulting-link {
+    align-self: end;
+    color: var(--blue);
+    font-weight: 700;
+    text-underline-offset: 4px;
+  }
+
+  .contact-section h2 {
+    max-width: 17ch;
+  }
+
+  .contact-section > p:not(.eyebrow) {
+    color: var(--muted);
+    margin: 0 0 18px;
+  }
+
+  .contact-link {
+    color: var(--blue);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-underline-offset: 4px;
+  }
+
+  .social-contact {
+    color: var(--muted);
+    margin: 16px 0 0;
+  }
+
+  .social-contact a {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  a:focus-visible {
+    outline: 3px solid #2859c5;
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 700px) {
+    .profile-shell {
+      padding: 0 20px;
+    }
+
+    .site-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 18px;
+      padding: 18px 0;
+    }
+
+    .site-header nav {
+      flex-wrap: wrap;
+      gap: 12px 18px;
+    }
+
+    .hero {
+      gap: 35px;
+      grid-template-columns: 1fr;
+      min-height: auto;
+      padding: 72px 0;
+    }
+
+    .hero-note {
+      max-width: 310px;
+    }
+
+    .section {
+      gap: 30px;
+      grid-template-columns: 1fr;
+      padding: 55px 0;
+    }
+
+    .contact-section {
+      margin-bottom: 55px;
+    }
+
+    .consulting-link {
+      align-self: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
+  }
+</style>

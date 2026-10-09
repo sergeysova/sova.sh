@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  @apply mx-auto min-h-screen bg-white text-slate-900;
+}

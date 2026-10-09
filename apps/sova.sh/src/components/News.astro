@@ -1,0 +1,76 @@
+---
+import type {NewsIssue} from '../data/news';
+
+export interface Props {
+  news: NewsIssue[];
+}
+
+const issues = Astro.props.news;
+---
+
+<ul class="list">
+  {
+    issues.map((issue) => (
+      <li class="issue" style={`background-image: url(${issue.image})`}>
+        <a href={issue.url} rel="noopener">
+          <span class="number">#{issue.id}</span>
+          <p class="description">{issue.description}</p>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @import '../styles/global.css';
+
+  .list {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  @media (min-width: 560px) {
+    .list {
+      grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
+    }
+  }
+
+  @media (max-width: 559px) {
+    .issue:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 400px) {
+    .list .issue {
+      min-height: 20ch;
+    }
+  }
+
+  .issue {
+    @apply flex flex-col gap-1 overflow-hidden rounded-md bg-white bg-cover bg-center;
+    box-shadow: var(--shadow-elevation);
+    transition:
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .issue a {
+    @apply h-full overflow-hidden rounded-md bg-black/50 text-white backdrop-blur-lg;
+  }
+
+  .issue:hover a {
+    color: transparent;
+    background-color: transparent;
+    backdrop-filter: none;
+  }
+
+  .issue .number {
+    @apply float-right overflow-hidden px-4 py-2 text-3xl font-light;
+  }
+
+  .issue .description {
+    @apply px-4 py-3 text-lg;
+  }
+</style>

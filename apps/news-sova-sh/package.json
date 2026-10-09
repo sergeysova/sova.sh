@@ -1,0 +1,51 @@
+{
+  "name": "@sergeysova/news.sova.sh",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/mdast": "^4.0.4",
+    "astro": "^5.2.5",
+    "change-case": "^5.4.4",
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "rehype-external-links": "^3.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "rollup": "^4.34.3",
+    "sharp": "^0.33.5",
+    "to-vfile": "^8.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "vfile-matter": "^5.0.0"
+  },
+  "dependencies": {
+    "@sova-web/content": "workspace:*",
+    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/prism": "^3.2.0",
+    "@astrojs/react": "^4.2.0",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.2.1",
+    "@github/relative-time-element": "^4.2.3",
+    "@tabler/icons": "^3.29.0",
+    "@tailwindcss/vite": "^4.0.3",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "astro-robots-txt": "^1.0.0",
+    "astro-seo": "^0.8.4",
+    "mdast": "^3.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.3"
+  }
+}

@@ -1,0 +1,218 @@
+---
+import './prism-one-light.css';
+import Layout from './Layout.astro';
+import IfLang from '../components/IfLang.astro';
+import AssetArticles from '../assets/articles.svg?url';
+const {frontmatter} = Astro.props;
+---
+
+<Layout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  type="article"
+  locale={frontmatter.language}
+>
+  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 xl:max-w-[80ch]">
+    <img src={AssetArticles} class="my-10 pr-10" />
+    <div class="go-back">
+      <a href="/">
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
+    </div>
+    <h1 class="mt-8 mb-6 text-2xl font-medium sm:text-3xl md:text-4xl xl:text-5xl">
+      {frontmatter.title}
+    </h1>
+    <div class="prose markdown max-w-[66ch] xl:max-w-[80ch]">
+      <slot />
+    </div>
+    <div class="go-back mt-10">
+      <a href="/">
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @import '../styles/global.css';
+
+  main {
+    margin: 0 auto;
+    margin-top: 4ch;
+    margin-bottom: 10ch;
+  }
+
+  @media (max-width: 654px) {
+    main {
+      @apply px-4;
+    }
+  }
+</style>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  main .markdown h1 {
+    @apply mt-6 mb-4 text-2xl font-medium sm:text-3xl md:mb-5 md:text-4xl xl:mb-6 xl:text-5xl;
+    line-height: 1;
+  }
+
+  main .markdown h1:not(:first-child) {
+    @apply mt-8;
+  }
+
+  main .markdown h2 {
+    @apply mb-2 text-xl font-medium sm:text-2xl md:mb-3 md:text-3xl xl:mb-5 xl:text-4xl;
+    line-height: 1;
+  }
+
+  main .markdown h2:not(:first-child) {
+    @apply mt-8;
+  }
+
+  main .markdown h3 {
+    @apply mb-2 text-xl font-medium;
+    line-height: 1;
+  }
+
+  main .markdown h3:not(:first-child) {
+    @apply mt-6;
+  }
+
+  main .markdown h4 {
+    @apply mb-2 text-lg font-medium;
+    line-height: 1;
+  }
+
+  main .markdown h4:not(:first-child) {
+    @apply mt-4;
+  }
+
+  main .markdown h1,
+  main .markdown h2,
+  main .markdown h3,
+  main .markdown h4,
+  main .markdown h5,
+  main .markdown h6,
+  main .markdown h7 {
+    @apply relative block;
+  }
+
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7):hover [aria-hidden] {
+    opacity: 1;
+  }
+
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+    position: absolute;
+    left: -1.5ch;
+    display: inline-block;
+    opacity: 0;
+    width: 2rem;
+  }
+
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon {
+    text-align: left;
+    display: inline-block;
+  }
+
+  main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] .icon::after {
+    content: '#';
+  }
+
+  @media (max-width: 654px) {
+    main .markdown :where(h1, h2, h3, h4, h5, h6, h7) [aria-hidden] {
+      position: relative;
+      left: auto;
+      opacity: 1;
+      width: 1.2rem;
+    }
+  }
+
+  main .markdown #table-of-contents {
+    display: none;
+  }
+
+  main .markdown :not(pre, .astro-debug) code {
+    @apply rounded bg-red-50 px-2 py-1 text-red-800;
+    font-size: 0.9em;
+  }
+
+  main .markdown ul,
+  main .markdown ol,
+  main .markdown dl {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  main .markdown ul,
+  main .markdown ol,
+  main .markdown dl {
+    margin-block: 0.5em;
+    margin-inline: 0;
+    padding-inline-start: 1.5em;
+  }
+
+  main .markdown ul {
+    list-style-type: disc;
+  }
+
+  main .markdown :where(ul, ol, dl) > li > p {
+    margin-block: 0;
+  }
+
+  main .markdown :where(ul, ol, dl) li:not(:first-child) {
+    margin-top: 0.3em;
+  }
+
+  main .markdown ol {
+    list-style-type: decimal;
+  }
+
+  main .markdown :where(ul, ol) ::marker {
+    @apply text-sky-500;
+  }
+
+  main .markdown p {
+    margin-block: 1em;
+  }
+
+  main .markdown strong,
+  main .markdown b {
+    @apply font-bold;
+  }
+
+  main .markdown blockquote {
+    @apply border-l-4 border-gray-300 text-gray-500;
+
+    padding-block: 0;
+    margin: 0.8em 0;
+  }
+
+  @media (min-width: 30em) {
+    main .markdown blockquote {
+      padding-right: 4em;
+      padding-left: 1.25rem;
+    }
+  }
+
+  main .markdown pre > code {
+    padding: 0;
+  }
+
+  main .markdown pre > code[class*='language-'] {
+    font-family: 'JetBrains Mono', Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
+      'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+  }
+
+  main .markdown a {
+    @apply text-sky-600 underline;
+  }
+  main .markdown a:hover {
+    @apply no-underline;
+  }
+</style>

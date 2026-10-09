@@ -1,0 +1,370 @@
+---
+import {getCollection} from 'astro:content';
+
+import AssetArticles from '../assets/articles.svg?url';
+import AssetNews from '../assets/news.svg?url';
+import AssetPodcast from '../assets/podcast.svg?url';
+import AssetYoutube from '../assets/youtube.svg?url';
+
+import IconMicrophone from '../assets/icons/microphone.svg?url';
+import IconNews from '../assets/icons/news.svg?url';
+import IconNotes from '../assets/icons/notes.svg?url';
+import IconYoutube from '../assets/icons/youtube.svg?url';
+
+import Layout from '../layouts/Layout.astro';
+
+import Articles from '../components/Articles.astro';
+import Section from '../components/Section.astro';
+import News from '../components/News.astro';
+import Podcasts from '../components/Podcasts.astro';
+import Videos from '../components/Videos.astro';
+
+import IfLang from '../components/IfLang.astro';
+import LinkTo from '../components/LinkTo.astro';
+
+import {getUniqueArticles} from '../data/forem';
+import {getVideos} from '../data/youtube';
+import {getEpisodes} from '../data/podcast';
+import {getNews} from '../data/news';
+import {getPages} from '../data/markdown';
+import {switchLang} from '../lib/language';
+
+const COUNT_OF_CONTENT = 6;
+
+const [forem, pages, videos, episodes, news, projects, interests] = await Promise.all([
+  getUniqueArticles(),
+  getPages(),
+  getVideos(),
+  getEpisodes(),
+  getNews(),
+  getCollection('projects'),
+  getCollection('interests'),
+]);
+
+const articles = [...forem, ...pages]
+  .sort((a, b) => new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf())
+  .slice(0, COUNT_OF_CONTENT);
+projects.sort((a, b) => a.data.order - b.data.order);
+interests.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+  description={switchLang({
+    en: "I'm open source developer, podcaster, effector contributor.",
+    ru: 'Я участник команды разработчиков effector, подкастер и frontend архитектор.',
+  })}
+  image="https://avatars.githubusercontent.com/u/5620073?v=4"
+>
+  <main class="mx-auto mb-10 w-full max-w-[65ch] px-6 md:max-w-[80ch]">
+    <div class="about">
+      <h1 class="text-5xl">
+        <IfLang equals="ru">Привет, я</IfLang>
+        <IfLang equals="en">My name is</IfLang>
+        <span class="text-gradient">{switchLang({ru: 'Сергей Сова', en: 'Sergey Sova'})}</span>
+      </h1>
+      <p class="text-xl text-slate-900">
+        <IfLang equals="en">
+          I had made a bunch of packages for the effector ecosystem:
+          <LinkTo name="patronum" />,
+          <LinkTo name="inspector" />, etc. <br />
+          I have a podcast on Russian, made <LinkTo name="twitter" />, and <LinkTo
+            name="telegram"
+          /> with 3K+ subscribers in total.
+          <br />My open-source contributions feed is available on <LinkTo name="github" />.
+        </IfLang>
+        <IfLang equals="ru">
+          Я сделал несколько пакетов для экосистемы effector:
+          <LinkTo name="patronum" />,
+          <LinkTo name="inspector" /> и т.д.
+          <br />У меня есть подкаст на русском, собрал в <LinkTo name="twitter" /> и <LinkTo
+            name="telegram"
+          /> больше 3 тыс. подписчиков. Мой вклад в open-source можно посмотреть на странице <LinkTo
+            name="github"
+          />.
+        </IfLang>
+      </p>
+      <IfLang equals="ru">
+        <p class="text-xl text-slate-900">
+          А также много говорю об effector, пишу на React всё самое сложное, руковожу фронтендом,
+          практикую ночной Rust.
+        </p>
+      </IfLang>
+    </div>
+
+    <p class="about">
+      <IfLang equals="en">
+        Этот сайт также доступен на <a href="https://sova.sh">русском языке</a>.
+      </IfLang>
+      <IfLang equals="ru">
+        This site is also available in <a href="https://sergeysova.com">English</a>.
+      </IfLang>
+    </p>
+
+    <nav class="flex gap-2" aria-label={switchLang({en: 'Page sections', ru: 'Разделы страницы'})}>
+      <div class="section-nav">
+        <a href="#projects" class="section-link">
+          <span>{switchLang({en: 'Projects', ru: 'Проекты'})}</span>
+        </a>
+        <a href="#interests" class="section-link">
+          <span>{switchLang({en: 'Interests', ru: 'Интересы'})}</span>
+        </a>
+        <a href="#status" class="section-link">
+          <span>{switchLang({en: 'Status', ru: 'Сейчас'})}</span>
+        </a>
+        <a href="#articles" class="section-link">
+          <img src={IconNotes} alt="" aria-hidden="true" />
+          <span>{switchLang({en: 'Articles', ru: 'Статьи'})}</span>
+        </a>
+        <a href="#news" class="section-link">
+          <img src={IconNews} alt="" aria-hidden="true" />
+          <span>{switchLang({en: 'News', ru: 'Рассылка'})}</span>
+        </a>
+        <a href="#podcast" class="section-link">
+          <img src={IconMicrophone} alt="" aria-hidden="true" />
+          <span>{switchLang({en: 'Podcast', ru: 'Подкаст'})}</span>
+        </a>
+        <a href="#youtube" class="section-link">
+          <img src={IconYoutube} alt="" aria-hidden="true" />
+          <span>Youtube</span>
+        </a>
+      </div>
+    </nav>
+
+    <section class="directory-section" id="status" aria-labelledby="status-title">
+      <h2 id="status-title">{switchLang({en: 'Current focus', ru: 'Сейчас'})}</h2>
+      <p>
+        {
+          switchLang({
+            en: 'Open-source development in the Effector ecosystem.',
+            ru: 'Разработка open source для экосистемы Effector.',
+          })
+        }
+      </p>
+    </section>
+
+    <section class="directory-section" id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">{switchLang({en: 'Projects', ru: 'Проекты'})}</h2>
+      <ul class="project-list">
+        {
+          projects.map((project) => (
+            <li>
+              <a href={project.data.url} target="_blank" rel="noopener">
+                <strong>{project.data.title}</strong>
+                <span>{switchLang(project.data.description)}</span>
+                <span class="project-link">{switchLang({en: 'GitHub', ru: 'GitHub'})}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="directory-section" id="interests" aria-labelledby="interests-title">
+      <h2 id="interests-title">{switchLang({en: 'Interests', ru: 'Интересы'})}</h2>
+      <ul class="interest-list">
+        {interests.map((interest) => <li>{switchLang(interest.data.title)}</li>)}
+      </ul>
+    </section>
+
+    <Section
+      id="articles"
+      titleImage={AssetArticles}
+      titleImageAlt={{ru: 'Статьи', en: 'Articles'}}
+      links={[{text: 'Dev.to', url: 'https://dev.to/sergeysova'}]}
+    >
+      <Articles
+        articles={articles.map((source) => ({
+          title: source.title,
+          url: source.url,
+          description: source.description,
+          cover: source.cover_image,
+          published_at: source.published_at,
+        }))}
+      />
+    </Section>
+
+    <Section
+      id="news"
+      titleImage={AssetNews}
+      titleImageAlt={{ru: 'Рассылка', en: 'Newsletter'}}
+      description={{
+        ru: 'Email-рассылка с подборками статей, новостей и инструментов для web-разработчиков.',
+        en: 'Email newsletter with a selection of articles, news and tools for web developers.',
+      }}
+      links={[{text: {ru: 'Прочесть все', en: 'Read all'}, url: 'https://news.sova.sh'}]}
+    >
+      <News news={news.slice(0, COUNT_OF_CONTENT)} />
+    </Section>
+
+    <Section
+      id="podcast"
+      titleImage={AssetPodcast}
+      titleImageAlt={{ru: 'Подкаст', en: 'Podcast'}}
+      description={{
+        ru: 'Нерегулярные выпуски подкаста «Под куполом» это записи моих размышлений об устройстве мира, личных переживаний и открытии нового в формате ночных посиделок.',
+        en: 'The occasional podcast “Under the Dome” is a recording of my reflections on the world is being, personal experiences, and favorite discoveries in the format of midnight insights.',
+      }}
+      links={[{text: {ru: 'Прослушать все', en: 'Listen all'}, url: 'https://podcast.sova.sh/'}]}
+    >
+      <Podcasts episodes={episodes.slice(0, COUNT_OF_CONTENT)} />
+    </Section>
+
+    <Section
+      id="youtube"
+      titleImage={AssetYoutube}
+      titleImageAlt="YouTube"
+      links={[{text: {ru: 'Посмотреть все', en: 'View all'}, url: 'https://www.youtube.com/@sova'}]}
+    >
+      <Videos videos={videos.slice(0, COUNT_OF_CONTENT)} />
+    </Section>
+  </main>
+</Layout>
+
+<style>
+  @import '../styles/global.css';
+
+  :root {
+    --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+  }
+
+  main {
+    margin: auto;
+    @apply flex flex-col gap-10;
+  }
+
+  .directory-section {
+    border-top: 1px solid rgb(100 116 139 / 28%);
+    padding-top: 1.25rem;
+  }
+
+  .directory-section h2 {
+    @apply mb-3 text-2xl font-semibold;
+  }
+
+  .directory-section > p {
+    @apply text-slate-700;
+    margin: 0;
+  }
+
+  .project-list,
+  .interest-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .project-list li + li {
+    border-top: 1px solid rgb(100 116 139 / 18%);
+  }
+
+  .project-list a {
+    align-items: baseline;
+    color: inherit;
+    display: grid;
+    gap: 0.35rem 1rem;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr) auto;
+    padding: 0.85rem 0;
+    text-decoration: none;
+  }
+
+  .project-list a:focus-visible {
+    outline: 2px solid #4f39fa;
+    outline-offset: 3px;
+  }
+
+  .project-list a:hover strong,
+  .project-list a:focus-visible strong {
+    color: #4f39fa;
+  }
+
+  .project-list strong {
+    font-weight: 700;
+  }
+
+  .project-list a > span:nth-child(2) {
+    color: #475569;
+  }
+
+  .project-list .project-link {
+    color: #4f39fa;
+    font-size: 0.9rem;
+  }
+
+  .interest-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.35rem;
+  }
+
+  .interest-list li::before {
+    color: #4f39fa;
+    content: '— ';
+  }
+
+  .section-nav {
+    flex-wrap: wrap;
+  }
+
+  main h1 {
+    margin: 2rem 0;
+  }
+
+  main .about p + p {
+    @apply pt-2;
+  }
+
+  main .about :global(a) {
+    @apply text-indigo-800 underline;
+  }
+  main .about :global(a):hover {
+    @apply text-indigo-800 no-underline;
+  }
+
+  main .section-nav {
+    @apply flex flex-row items-center space-x-1;
+  }
+
+  main .section-nav .section-link {
+    @apply inline-flex items-center justify-center gap-1 rounded-md py-1 pr-2 pl-1.5 align-middle transition-all;
+    @apply hover:bg-slate-500/20;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600;
+  }
+
+  main .section-nav .section-link img {
+    @apply h-4 w-4 fill-current opacity-80;
+  }
+
+  .text-gradient {
+    font-weight: 900;
+    background-image: var(--astro-gradient);
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 100% 200%;
+    background-position-y: 100%;
+    border-radius: 0.4rem;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @media (max-width: 560px) {
+    .project-list a {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .project-list a > span:nth-child(2) {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      background-position-y: 0%;
+    }
+    50% {
+      background-position-y: 80%;
+    }
+  }
+</style>

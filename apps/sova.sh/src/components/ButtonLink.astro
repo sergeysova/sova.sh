@@ -1,0 +1,13 @@
+---
+export interface Props {
+  href: string;
+  text: string;
+}
+---
+
+<a
+  class="button relative inline-block rounded border-2 border-black bg-white px-5 py-3 transition hover:bg-black hover:text-white focus:bg-black focus:text-white"
+  href={Astro.props.href}
+  rel="noopener"
+  >{Astro.props.text}
+</a>
