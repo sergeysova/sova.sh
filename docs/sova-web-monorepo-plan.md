@@ -430,9 +430,10 @@ GitHub secrets, управление DNS, действующие production-де
       Markdown, изображения, RSS и JSON endpoint, через `git subtree`
       без squash. Source commit `a2ad58366bd6c3e82185ba85e062560de99f30c2`;
       история upstream сохранена.
-- [ ] Проверить лицензии/атрибуцию импортированных материалов.
-      В upstream нет файла LICENSE; публичность репозитория сама по себе
-      не подтверждает разрешение на повторную публикацию.
+- [x] Сергей подтвердил, что рассылка принадлежит ему; содержимое
+      импортировано с его разрешения. В upstream нет файла LICENSE, поэтому
+      это подтверждение владельца, а не лицензия на повторное использование
+      материалов третьими лицами.
 - [x] Добиться совместимости с текущим workspace; imported news-app
       собирается на Astro 5.18.2. Прямую версию TypeScript `6.0.3` в root
       приложениях не менял; peer stack Astro 5 разрешает TypeScript `5.9.3`.
@@ -546,8 +547,11 @@ GitHub secrets, управление DNS, действующие production-де
 Подготовить инфраструктуру можно параллельно с этапами 1–4.
 Переключать production — после проверки соответствующего сайта и CI.
 
-- [x] Заменить Pages/PAT deploy на Workers Static Assets; создать
-      `wrangler.jsonc` для индекса, бренда и заготовки подкаста.
+- [x] Перевести приложения на Workers Static Assets и создать
+      `wrangler.jsonc` для индекса, бренда, подкаста и рассылки.
+- [x] Проверить локально `wrangler deploy --dry-run` для всех четырёх
+      приложений. Это проверка конфигурации и собранных assets, не
+      подтверждение Cloudflare account или production deploy.
 - [ ] Проверить существующие Workers `sova-sh`, `sergeysova-com`,
       `ru-sergeysova-com`, `podcast-sova-sh`, после переноса добавить
       `news-sova-sh`. Публиковать готовый `dist` через `wrangler deploy`;
@@ -555,6 +559,8 @@ GitHub secrets, управление DNS, действующие production-де
 - [ ] Проверить права Workers API-токена и актуальность
       `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID`.
       Добавить отсутствующие secrets, не заменяя рабочие без причины.
+      Локальный `wrangler whoami` сейчас не проходит: сохранённая авторизация
+      просрочена, а CLI-токен в окружение не передан.
 - [ ] Проверить каждый таргет на `workers.dev` или Version URL
       без переключения production. PR-публикацию настроить отдельным
       шагом; URL публичен, если не защищён Access [C4].
