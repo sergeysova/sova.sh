@@ -552,18 +552,26 @@ GitHub secrets, управление DNS, действующие production-де
 - [x] Проверить локально `wrangler deploy --dry-run` для всех четырёх
       приложений. Это проверка конфигурации и собранных assets, не
       подтверждение Cloudflare account или production deploy.
-- [ ] Проверить существующие Workers `sova-sh`, `sergeysova-com`,
-      `ru-sergeysova-com`, `podcast-sova-sh`, после переноса добавить
-      `news-sova-sh`. Публиковать готовый `dist` через `wrangler deploy`;
-      отдельный bootstrap Pages-проектов здесь не нужен [C2].
-- [ ] Проверить права Workers API-токена и актуальность
-      `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID`.
-      Добавить отсутствующие secrets, не заменяя рабочие без причины.
-      Локальный `wrangler whoami` сейчас не проходит: сохранённая авторизация
-      просрочена, а CLI-токен в окружение не передан.
+- [x] Сверить публичные DNS и HTTP origin без изменения DNS (2026-10-09):
+      `sova.sh` и `sergeysova.com` отвечают GitHub Pages, `news.sova.sh`
+      указывает на `sergeysova.github.io`, `podcast.sova.sh` сейчас
+      обслуживается старым Caddy/nginx origin, `ru.sergeysova.com`
+      не разрешается. Apex-зоны используют Cloudflare nameservers, но
+      веб-запросы сейчас идут к прежним origin.
+- [x] Проверить локальную Wrangler OAuth-авторизацию: доступны два аккаунта,
+      токен имеет права Workers read/write. Имена production Workers из
+      workflows (`sova-sh`, `sergeysova-com`, `ru-sergeysova-com`,
+      `podcast-sova-sh`, `news-sova-sh`) не существуют ни в одном из них.
+      Проверены только эти известные имена, а не полный список Workers.
+- [ ] Уточнить, какой из доступных аккаунтов должен быть production target,
+      и проверить, что `CLOUDFLARE_ACCOUNT_ID` в GitHub Actions указывает на
+      него. Секреты Actions локально не проверялись; значение OAuth-токена
+      не считывалось.
 - [ ] Проверить каждый таргет на `workers.dev` или Version URL
       без переключения production. PR-публикацию настроить отдельным
-      шагом; URL публичен, если не защищён Access [C4].
+      шагом; URL публичен, если не защищён Access [C4]. Пока Workers с
+      указанными именами отсутствуют; для preview нужно выбрать аккаунт
+      и создать отдельные preview Worker names.
 - [ ] До первого переключения опубликовать известный рабочий текущий
       артефакт как production baseline соответствующего Worker,
       записать version ID и проверить возврат к нему.
