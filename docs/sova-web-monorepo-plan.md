@@ -209,13 +209,13 @@ Wrangler 4.148.0 завершал создание Worker ошибкой `10001`
 GitHub Actions.
 
 `ru.sergeysova.com`, ранее не разрешавшийся в DNS, привязан к RU Worker
-и проверен по HTTPS. Остальные домены не переключены. Попытка привязать
-`sergeysova.com` остановилась на `100117`: у hostname остаются внешние DNS
-записи GitHub Pages. Остальные текущие записи также ведут на GitHub Pages
-или прежний podcast origin. Конфигурация `sergeysova-com` уже обновлена,
-но Custom Domain не появился.
+и проверен по HTTPS. Также привязаны и проверены `sova.sh`, `news.sova.sh`
+и `podcast.sova.sh`; JSON/RSS и страницы эпизодов отвечают через Workers.
+`sergeysova.com` пока остаётся на GitHub Pages: оба авторитетных DNS-сервера
+всё ещё возвращают его четыре A-записи GitHub Pages, поэтому попытка Custom
+Domain получила `100117`. Worker preview EN работает на `workers.dev`.
 
-Корневой `test` теперь исполняет шесть unit-тестов схем и адаптеров
+Корневой `test` теперь исполняет семь unit-тестов схем и адаптеров
 `packages/content`. Корневой `lint` пока не имеет package scripts.
 `turbo.json` включает `content/**` в глобальные cache inputs; это
 инвалидирует кэш, но само по себе не доказывает выбор верного deploy-job.
@@ -580,24 +580,33 @@ GitHub secrets, управление DNS, действующие production-де
       Создать `news-sova-sh`, `sova-sh`, `sergeysova-com`,
       `ru-sergeysova-com` и `podcast-sova-sh` и проверить их `workers.dev`
       endpoints. Последние проверенные version IDs: `news-sova-sh`
-      `d1379667-8f9a-4330-bce5-773ac1e7c2fb`, `sova-sh`
-      `08e395c9-6a14-40eb-b01b-caa707a8c0ec`, `sergeysova-com`
+      `1c4bbd26-ee56-4fc5-b04d-6ca4ecf52228`, `sova-sh`
+      `4d1e2c8c-02ba-4d0d-b819-78653f1aa416`, `sergeysova-com`
       `d65eba9b-7b58-451b-9854-ffb97439a076`, `ru-sergeysova-com`
       `ff6943b9-12f2-4352-9177-cc4e1516afde`, `podcast-sova-sh`
-      `7c8f224b-7f55-480f-8737-1832d679da83`.
+      `2cb88232-b727-4af5-aa9f-80632ae21df7`.
 - [ ] Проверить deploy из GitHub Actions и account/token scopes.
       Секрет `CLOUDFLARE_API_TOKEN` не считывался локально.
-- [x] Переключить `ru.sergeysova.com`: прежней DNS-записи не было;
-      Cloudflare provisioned Custom Domain, HTTPS вернул 200 и RU-страницу.
-- [ ] Для остальных доменов удалить существующие A/AAAA/CNAME записи,
-      ведущие на старые origins, затем привязать Custom Domains. Попытка
-      на `sergeysova.com` вернула `100117` (“externally managed DNS records”).
-      Для news также убрать CNAME `news.sova.sh` на GitHub Pages. Нужен
-      API-токен со scope Zone DNS Edit для `sova.sh` и `sergeysova.com`;
-      текущий Wrangler OAuth имеет только Zone Read. Веб-запросы подтвердили,
-      что старые DNS записи остались: GitHub Pages/Caddy origins не затронуты.
-- [ ] Перед каждым следующим переключением зафиксировать текущие DNS
-      записи для rollback; проверить сайты, canonical, assets, RSS/JSON.
+- [x] Привязать `ru.sergeysova.com`, `sova.sh`, `news.sova.sh` и
+      `podcast.sova.sh`. HTTPS и контент проверены на доменах. Старая
+      DNS-запись RU отсутствовала; после привязки Cloudflare создал её.
+- [ ] Привязать EN `sergeysova.com`: Cloudflare вернул `100117`
+      (“externally managed DNS records”). Авторитетные `alla` и `albert`
+      всё ещё возвращают четыре A-записи GitHub Pages:
+      `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+      `185.199.111.153`. Удалить их, затем повторить deploy.
+- [x] Зафиксировать DNS старых origins для rollback:
+      `sova.sh` — A `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`
+      и AAAA `2606:50c0:8000::153`, `2606:50c0:8001::153`,
+      `2606:50c0:8002::153`, `2606:50c0:8003::153`;
+      `news.sova.sh` — CNAME `sergeysova.github.io`;
+      `podcast.sova.sh` — A `34.239.225.42`, `3.209.36.65`,
+      `54.158.235.112`. Старые записи уже заменены Custom Domains.
+- [ ] Проверить доступ DNS для будущего rollback: локальный Wrangler OAuth
+      имеет `Zone Read`, но не `Zone DNS Edit`. Для изменений записей нужен
+      токен с `Zone DNS Edit` для зон `sova.sh` и `sergeysova.com` [C8].
+- [ ] После EN-привязки проверить все production-домены: HTTPS, HTML,
+      canonical, assets, RSS/JSON, маршрут эпизода и локали.
 - [ ] Подготовить активные Cloudflare zones для `sova.sh` и
       `sergeysova.com`. При переносе nameservers сначала сохранить
       прежний хостинг через старые DNS-записи, включая MX/TXT,
@@ -605,8 +614,8 @@ GitHub secrets, управление DNS, действующие production-де
 - [ ] Привязать Custom Domains к нужным Workers через dashboard
       или Wrangler `routes` с `custom_domain: true` [C3].
       Для RU-бренда не наследовать EN-домен: locale-таргеты должны
-      иметь отдельные привязки и Worker names. RU уже привязан; остальные
-      route definitions готовы, но DNS records ещё не освобождены.
+      иметь отдельные привязки и Worker names. RU уже привязан отдельным
+      конфигом; EN route definition готов, но DNS A-записи ещё существуют.
 - [ ] Переключать домены по одному, проверяя HTML, редиректы,
       assets, RSS/JSON, canonical, языки и реальный контент.
 - [ ] Проверить, что старый GitHub Pages deploy больше не запускается;
