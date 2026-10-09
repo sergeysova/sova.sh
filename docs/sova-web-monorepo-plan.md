@@ -4,7 +4,7 @@
 и независимо публиковать статические Astro-приложения. При переносе
 сохранить контент, историю доступных исходников и опубликованные ссылки.
 
-Срез локального кода: коммит `5be504f`, проверка 7 октября 2026 года.
+Срез отслеживаемого кода: коммит `3af14c8` от 9 октября 2026 года.
 Публичные репозитории и технические ограничения проверены по источникам
 в конце документа. Настройки GitHub secrets, Cloudflare, DNS и фактические
 production-деплои из этого документа не подтверждены.
@@ -141,6 +141,11 @@ Markdown-страницы статически маршрутизируются 
 их актуальность и подготовить недостающие тексты Work/Consulting.
 Утверждение старого плана «контента нет нигде» было неверным.
 
+**Решение Сергея:** в брендовой локали показывать перевод заголовка,
+если он существует; если перевода нет — не показывать этот материал.
+Не переводить автоматически и не подставлять оригинал. Текущие
+формулировки разделов приняты как рабочие и могут быть изменены позже.
+
 ### Подкаст
 
 `apps/podcast-sova-sh` уже собирает список и
@@ -176,29 +181,30 @@ Build-time endpoints `issues.json` и `rss.xml` формируются из эт
 
 Общий `deploy.yml` заменён workflows по приложению/группе доменов:
 
-- `sova.yml` собирает `apps/sova.sh` и публикует Worker `sova-sh`;
+- `sova.yml` собирает `apps/sova.sh` и запускает deploy Worker `sova-sh`;
 - `sergeysova.yml` собирает `apps/sergeysova.com` в отдельных EN/RU-job
-  и публикует Workers `sergeysova-com` и `ru-sergeysova-com`;
-- `podcast.yml` собирает подкаст и публикует Worker `podcast-sova-sh`,
+  и запускает deploy Workers `sergeysova-com` и `ru-sergeysova-com`;
+- `podcast.yml` собирает подкаст и запускает deploy Worker `podcast-sova-sh`,
   но запускается только вручную до готовности нового сайта.
-- `news.yml` собирает `apps/news-sova-sh` для PR и push в `main`,
-  но пока не публикует Worker.
+- `news.yml` собирает `apps/news-sova-sh` для PR и запускает deploy Worker
+  при push в `main`; этот job ещё не проверен в GitHub Actions.
 - `test.yml` запускает `pnpm test` без production-секретов.
 
 В каждом app есть `wrangler.jsonc` с `assets.directory: "./dist"`,
-без Worker-скрипта. EN/RU-job переопределяют имя Worker через `--name`,
-поэтому не затирают один production-таргет другим.
+без Worker-скрипта. Выбранный аккаунт и `workers_dev: true` закреплены
+во всех четырёх app-конфигах. EN/RU-job переопределяют имя Worker через
+`--name`, поэтому не затирают один production-таргет другим.
 
 Push ограничен ручными `paths`-фильтрами; сборки опубликованных сайтов
 вызывают `pnpm --filter … build`, обходя Turbo cache. Фильтры Sova и
 бренда включают `content/**`. Кросс-репозиторный GitHub Pages/PAT-deploy
 удалён из workflows.
 
-Upstream-документ сообщает о добавленных Cloudflare secrets и проверке
-Wrangler dry-run, но отмечает, что это не проверка полного production
-build. Доступность secrets, успешные реальные деплои и привязку
-доменов нужно подтвердить отдельно. Для news Worker ещё нет
-`wrangler.jsonc` и deploy-job.
+Wrangler dry-run проверен для четырёх приложений. Сергей выбрал аккаунт
+`SergeySova`; его ID закреплён в конфигах и deploy-workflows.
+Локальная попытка создать `news-sova-sh` завершилась ошибкой Cloudflare
+`10001`, поэтому Worker не создан. Новый deploy-step для news ещё не проверен
+GitHub Actions. Production DNS и origin не переключали.
 
 Корневой `test` теперь исполняет шесть unit-тестов схем и адаптеров
 `packages/content`. Корневой `lint` пока не имеет package scripts.
@@ -572,11 +578,10 @@ GitHub secrets, управление DNS, действующие production-де
       Cloudflare указывает, что для создания Workers нужен product-level
       Admin [C7]. Проверить роль OAuth-пользователя или использовать
       Actions-токен с нужным доступом.
-- [ ] Проверить каждый таргет на `workers.dev` или Version URL
-      без переключения production. PR-публикацию настроить отдельным
-      шагом; URL публичен, если не защищён Access [C4]. Пока Workers с
-      указанными именами отсутствуют; для preview нужно выбрать аккаунт
-      и создать отдельные preview Worker names.
+- [ ] После устранения ошибки авторизации проверить каждый таргет на
+      `workers.dev` или Version URL без переключения production.
+      PR-публикацию настроить отдельным шагом; URL публичен, если не
+      защищён Access [C4]. Аккаунт выбран; Worker пока не создан.
 - [ ] До первого переключения опубликовать известный рабочий текущий
       артефакт как production baseline соответствующего Worker,
       записать version ID и проверить возврат к нему.
