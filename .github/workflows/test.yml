@@ -1,4 +1,4 @@
-name: Test content package
+name: Test shared content
 
 on:
   pull_request:

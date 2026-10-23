@@ -12,7 +12,6 @@ pnpm --filter @sergeysova/news.sova.sh dev
 pnpm --filter @sergeysova/news.sova.sh build
 ```
 
-`news.yml` builds the app for pull requests and deploys it on pushes to
-`main`. Successful Workers deployment and production domain status are
-tracked in
+`deploy.yml` builds and deploys the app on pushes to `main`. Successful
+Workers deployment and production domain status are tracked in
 [`docs/sova-web-monorepo-plan.md`](../../docs/sova-web-monorepo-plan.md).

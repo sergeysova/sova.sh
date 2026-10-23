@@ -7,3 +7,7 @@ export type {ArticleData, ArticleSummary, InterestData, ProjectData} from './art
 export {getPublishedNewsletterIssues, NewsletterIssueSchema} from './newsletter';
 export type {NewsletterIssueData, NewsletterIssueSummary} from './newsletter';
 export {getFeaturedTalks, invitedContent} from './invited-content';
+export {getForemArticles} from './forem';
+export type {ForemArticle} from './forem';
+export {getYoutubeVideos} from './youtube';
+export type {YoutubeVideo} from './youtube';

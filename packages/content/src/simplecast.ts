@@ -49,6 +49,8 @@ export async function getSimplecastEpisodes({
       Authorization: `Bearer ${apiKey}`,
     },
   };
+  const seenIds = new Set<string>();
+  const seenSlugs = new Set<string>();
   const episodes = await collectPages(async (pagination) => {
     const url = new URL(endpoint);
     if (pagination) {
@@ -58,24 +60,24 @@ export async function getSimplecastEpisodes({
 
     const response = await cachedFetch(url, fetchOptions);
     if (!response.ok) {
-      throw new Error(await response.text());
+      throw new Error(`Simplecast request failed (${response.status}): ${response.statusText}`);
     }
 
-    return SimplecastResponse.parse(await response.json());
+    const page = SimplecastResponse.parse(await response.json());
+    for (const episode of page.collection) {
+      if (seenIds.has(episode.id)) {
+        throw new Error(`Simplecast returned a duplicate episode id: ${episode.id}`);
+      }
+      if (seenSlugs.has(episode.slug)) {
+        throw new Error(`Simplecast returned a duplicate episode slug: ${episode.slug}`);
+      }
+      seenIds.add(episode.id);
+      seenSlugs.add(episode.slug);
+    }
+    return page;
   }, DEFAULT_PAGE_SIZE);
 
-  const seenIds = new Set<string>();
-  const seenSlugs = new Set<string>();
-  for (const episode of episodes) {
-    if (seenIds.has(episode.id)) {
-      throw new Error(`Simplecast returned a duplicate episode id: ${episode.id}`);
-    }
-    if (seenSlugs.has(episode.slug)) {
-      throw new Error(`Simplecast returned a duplicate episode slug: ${episode.slug}`);
-    }
-    seenIds.add(episode.id);
-    seenSlugs.add(episode.slug);
-  }
+  if (episodes.length === 0) throw new Error('Simplecast returned no episodes');
 
   return episodes;
 }

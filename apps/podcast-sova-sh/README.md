@@ -18,6 +18,7 @@ the app should link to that feed rather than generate a duplicate one.
 
 Before replacing the current site, compare the complete API archive with
 the feed and existing episode URLs, then verify playback and metadata.
-The Cloudflare workflow is manual. See
+The Cloudflare workflow deploys on relevant changes and refreshes the
+episode archive daily. See
 [`docs/sova-web-monorepo-plan.md`](../../docs/sova-web-monorepo-plan.md)
 for the remaining checks and production status.

@@ -10,7 +10,7 @@ Single-context: read the root glossary and relevant ADRs when present. See `docs
 
 ## Project context
 
-This pnpm/Turborepo monorepo contains four Astro sites under `apps/` and the shared `packages/content` package. See `README.md` for the app map and commands.
+This pnpm/Turborepo monorepo contains four Astro sites under `apps/`, shared content code in `packages/content`, and shared site UI in `packages/ui`. See `README.md` for the app map and commands.
 
 For architecture, decisions, migration history, and remaining work, consult the relevant sections of `docs/sova-web-monorepo-plan.md`. It is the maintained project-status source; read the whole plan only when the task spans the migration. Use the current code and live configuration to verify status-sensitive claims.
 
