@@ -1,0 +1,76 @@
+---
+import Layout from './Layout.astro';
+import IfLang from '../components/IfLang.astro';
+const {frontmatter} = Astro.props;
+---
+
+<Layout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  type="article"
+  locale={frontmatter.language}
+>
+  <main id="main-content" class="reading-shell site-container">
+    <div class="article-heading">
+      <p class="meta">{frontmatter.language === 'ru' ? 'Публикация' : 'Published writing'}</p>
+      <h1 class="display-title">{frontmatter.title}</h1>
+    </div>
+    <article class="reading">
+      <slot />
+    </article>
+    <a class="back-link" href="/">
+      <span aria-hidden="true">←</span>
+      <IfLang equals="ru">Вернуться</IfLang>
+      <IfLang equals="en">Go home</IfLang>
+    </a>
+  </main>
+</Layout>
+<style>
+  .reading-shell {
+    margin-inline: auto;
+    padding-block: clamp(54px, 8vw, 96px) 90px;
+  }
+
+  .article-heading {
+    border-bottom: 1px solid var(--color-line);
+    margin: 0 auto 48px;
+    max-width: 72ch;
+    padding-bottom: 32px;
+  }
+
+  .article-mark {
+    height: 44px;
+    margin-bottom: 32px;
+    opacity: 0.7;
+    width: 44px;
+  }
+
+  .article-heading .meta {
+    color: var(--color-accent);
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  .article-heading .display-title {
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 1.08;
+    margin: 0;
+  }
+
+  .reading {
+    margin-inline: auto;
+    max-width: 72ch;
+  }
+
+  .back-link {
+    display: flex;
+    gap: 10px;
+    margin: 56px auto 0;
+    max-width: 72ch;
+    text-decoration: none;
+  }
+
+  .back-link span {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,8 @@
+---
+export interface Props {
+  href: string;
+  text: string;
+}
+---
+
+<a class="button" href={Astro.props.href} rel="noopener">{Astro.props.text}</a>

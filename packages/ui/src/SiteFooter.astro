@@ -1,0 +1,22 @@
+---
+export interface Props {
+  locale?: 'ru' | 'en';
+  historyHref?: string;
+}
+const {locale = 'ru', historyHref} = Astro.props;
+---
+
+<footer class="site-footer site-container">
+  <a class="site-wordmark" href="https://sova.sh">sova<span>.</span>sh</a>
+  <nav aria-label={locale === 'ru' ? 'Дополнительные ссылки' : 'More links'}>
+    {
+      historyHref && (
+        <a href={historyHref}>{locale === 'ru' ? 'История публикаций' : 'Publish history'}</a>
+      )
+    }
+    <a href="https://t.me/sergeysova">Telegram</a>
+    <a href="https://youtube.com/@sova">YouTube</a>
+    <a href="mailto:contact@sergeysova.com">Email</a>
+  </nav>
+  <small>© Sergey Sova</small>
+</footer>

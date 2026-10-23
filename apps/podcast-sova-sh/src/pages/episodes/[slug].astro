@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {getAllEpisodes} from '../../data/episodes';
+
+export async function getStaticPaths() {
+  const episodes = await getAllEpisodes();
+  return episodes.map((episode) => ({
+    params: {slug: episode.slug},
+    props: {episode},
+  }));
+}
+
+const {episode} = Astro.props;
+---
+
+<Layout title={`${episode.title} — Под куполом`} description={episode.description}>
+  <main id="main-content" class="site-container episode-main">
+    <a href="/" class="episode-back">← Все выпуски</a>
+    <header class="episode-heading site-hero">
+      <p class="meta">Сезон {episode.season}, выпуск {episode.number}</p>
+      <h1 class="episode-title">{episode.title}</h1>
+      <time class="meta" datetime={episode.publishedAt}>
+        {new Date(episode.publishedAt).toLocaleDateString('ru-RU', {dateStyle: 'medium'})}
+      </time>
+      <img class="episode-art" src={episode.imageURL} alt="" width="260" height="260" />
+    </header>
+
+    <section class="player-shell" aria-label="Аудиоплеер">
+      <!-- Simplecast player -->
+      <iframe
+        title={`Слушать: ${episode.title}`}
+        src={`https://player.simplecast.com/${episode.id}?dark=true`}
+        height="200"
+        allow="autoplay"></iframe>
+    </section>
+
+    <article class="episode-description reading" set:html={episode.description} />
+  </main>
+</Layout>

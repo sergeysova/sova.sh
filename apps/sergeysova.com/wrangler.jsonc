@@ -1,0 +1,15 @@
+{
+  "name": "sergeysova-com",
+  "account_id": "7cbe0e9d17c68ddb7e72472d1e85a976",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "sergeysova.com",
+      "custom_domain": true,
+    },
+  ],
+  "assets": {
+    "directory": "./dist",
+  },
+}

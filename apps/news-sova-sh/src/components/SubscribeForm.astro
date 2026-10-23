@@ -1,0 +1,42 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="mt-12">
+  <form
+    class="subscribe-form frame"
+    action="https://api.follow.it/subscription-form/SmwwVHRIcmdiSWdjNUE4UEZuZkduMzcwd3FHT1FpMXpOTFhnSFN2aHcrMzIyZ3NUOEdjM3RmWW5ndU9QVjJQYjBjNTlZZEdMNmtVZ1JjdFpsNXI4c1h1RW13eGdHU1AvUVJuZzA0b2UzRUxqMEdTVTVhZ3QrVkFqdmJZZXFDb0l8N3Y0a0ZaVlZhQW9wTmtlYjgvRnVDeThPUEQvOWEyWnBZc21ZM2dWMFBYST0=/8"
+    method="post"
+  >
+    <h3>
+      {title}
+    </h3>
+    <p class="form-note">
+      Вы можете получать подобные подборки новостей на почту. Я отправляю их не
+      чаще раза в неделю, может даже реже.
+    </p>
+    <p class="form-note">
+      Каждая ссылка перед добавлением в рассылку проходит моё ревью, я читаю
+      содержимое и анализирую полезность для подписчиков.
+    </p>
+    <div class="subscribe-controls">
+      <label class="email-label" for="subscribe-email"
+        >Адрес электронной почты</label
+      >
+      <input
+        id="subscribe-email"
+        type="email"
+        name="email"
+        required="required"
+        placeholder="Укажите свою почту"
+        autocomplete="email"
+        spellcheck="false"
+      />
+      <button type="submit" class="button button-primary">Подписаться</button>
+    </div>
+  </form>
+</div>

@@ -1,79 +1,153 @@
-name: Github Pages Astro CI
+name: Build and deploy sites
 
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 5 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  deployments: read
+
+env:
+  BRAND_EN_CUSTOM_DOMAIN_READY: ${{ vars.BRAND_EN_CUSTOM_DOMAIN_READY == 'true' }}
+
+concurrency:
+  group: deploy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  ru:
+  select:
     runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
     steps:
-      - name: 🛎️ Checkout
+      - name: Checkout full history
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: 📦 Setup pnpm
+      - name: Select impacted targets
+        id: targets
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          BRAND_EN_CUSTOM_DOMAIN_READY: ${{ vars.BRAND_EN_CUSTOM_DOMAIN_READY == 'true' }}
+        run: node scripts/ci-targets.mjs
+
+  deploy:
+    needs: select
+    if: github.ref == 'refs/heads/main' && needs.select.outputs.matrix != '[]'
+    permissions:
+      contents: read
+      deployments: write
+    name: deploy (${{ matrix.target }})
+    runs-on: ubuntu-22.04
+    env:
+      BRAND_EN_CUSTOM_DOMAIN_READY: ${{ vars.BRAND_EN_CUSTOM_DOMAIN_READY == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.select.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
-      - name: 🐧 Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          cache: pnpm
 
-      - name: 🔍 Installation
-        run: pnpm install
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: 🔧 Build RU — sova.sh
-        run: pnpm build
+      - name: Resolve target metadata
+        id: target_metadata
         env:
-          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
-          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
-          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
-          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
-          PUBLIC_SITE: https://sova.sh
-          PUBLIC_LANGUAGE: ru
-          PUBLIC_GTAG: UA-67236238-5
+          TARGET: ${{ matrix.target }}
+        run: node scripts/ci-targets.mjs github-output "$TARGET"
 
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: Restore external-data cache
+        if: matrix.target != 'news'
+        id: external_cache
+        uses: actions/cache/restore@v4
         with:
-          branch: gh-pages
-          folder: ./dist
+          path: ${{ steps.target_metadata.outputs.cache_path }}
+          key: external-data-v1-${{ runner.os }}-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            external-data-v1-${{ runner.os }}-${{ matrix.target }}-
 
-  en:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: 🛎️ Checkout
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: 🐧 Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: 🔍 Installation
-        run: pnpm install
-
-      - name: 🔧 Build EN — sergeysova.com
-        run: pnpm build
+      - name: Build site
         env:
-          DEVTO_API_KEY: '${{ secrets.DEVTO_API_KEY }}'
-          YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
-          EFFECTOR_COMMUNITY_API_KEY: '${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}'
-          SIMPLECAST_API_KEY: '${{ secrets.SIMPLECAST_API_KEY }}'
-          PUBLIC_SITE: https://sergeysova.com
-          PUBLIC_LANGUAGE: en
-          PUBLIC_GTAG: G-PHKCHPT847
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          EFFECTOR_COMMUNITY_API_KEY: ${{ secrets.EFFECTOR_COMMUNITY_API_KEY }}
+          SIMPLECAST_API_KEY: ${{ secrets.SIMPLECAST_API_KEY }}
+        run: |
+          case "${{ matrix.target }}" in
+            sova)
+              PUBLIC_SITE=https://sova.sh PUBLIC_LANGUAGE=ru pnpm --filter @sova-web/sova.sh build
+              ;;
+            brand-en)
+              PUBLIC_SITE=https://sergeysova.com PUBLIC_LANGUAGE=en PUBLIC_GTAG=G-PHKCHPT847 pnpm --filter @sova-web/sergeysova.com build
+              ;;
+            brand-ru)
+              PUBLIC_SITE=https://ru.sergeysova.com PUBLIC_LANGUAGE=ru PUBLIC_GTAG=G-PHKCHPT847 pnpm --filter @sova-web/sergeysova.com build
+              ;;
+            news)
+              PUBLIC_SITE=https://news.sova.sh pnpm --filter @sergeysova/news.sova.sh build
+              ;;
+            podcast)
+              PUBLIC_SITE=https://podcast.sova.sh pnpm --filter @sova-web/podcast-sova-sh build
+              ;;
+          esac
 
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: Save external-data cache
+        if: success() && matrix.target != 'news' && steps.external_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
-          branch: gh-pages
-          folder: ./dist
-          repository-name: sergeysova/sergeysova.com
-          token: '${{ secrets.ACCESS_TOKEN }}'
+          path: ${{ steps.target_metadata.outputs.cache_path }}
+          key: external-data-v1-${{ runner.os }}-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Prepare EN brand preview config
+        if: matrix.target == 'brand-en' && env.BRAND_EN_CUSTOM_DOMAIN_READY != 'true'
+        run: node scripts/prepare-brand-preview.mjs
+
+      - name: Record deployment start
+        id: ledger
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/deployment-ledger.mjs start "${{ matrix.target }}"
+
+      - name: Deploy Worker
+        id: deployment
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 7cbe0e9d17c68ddb7e72472d1e85a976
+        run: node scripts/deploy-worker.mjs "${{ matrix.target }}"
+
+      - name: Smoke check deployed routes
+        run: node scripts/deploy-smoke.mjs "${{ matrix.target }}" "${{ steps.deployment.outputs.url }}"
+
+      - name: Remove temporary EN preview config
+        if: always() && matrix.target == 'brand-en' && env.BRAND_EN_CUSTOM_DOMAIN_READY != 'true'
+        run: rm -f "${{ steps.target_metadata.outputs.preview_config_path }}"
+
+      - name: Record deployment result
+        if: always() && steps.ledger.outputs.deployment_id != ''
+        env:
+          DEPLOYMENT_ID: ${{ steps.ledger.outputs.deployment_id }}
+          DEPLOYMENT_URL: ${{ steps.deployment.outputs.url }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_JOB_STATUS: ${{ job.status }}
+          WORKER_VERSION: ${{ steps.deployment.outputs.version }}
+        run: node scripts/deployment-ledger.mjs finish "${{ matrix.target }}"

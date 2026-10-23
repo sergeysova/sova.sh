@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Сова рассылает новости"
+  description="Спасибо, за подписку!"
+  slug="/thank-you"
+>
+  <main id="main-content" class="site-container news-main">
+    <a href="/" class="back-link">↵ На главную</a>
+    <section class="thanks-copy site-hero">
+      <h1 class="thanks-heading">Спасибо за подписку!</h1>
+      <p>
+        Я занимаюсь web-разработкой уже более 10 лет и всё это время я свободно
+        делюсь своими знаниями и инструментами, которыми сам пользуюсь.
+      </p>
+      <p>
+        Здесь нет рекламы или проплаченного продвижения. Всё, что я здесь
+        выкладываю я читаю и анализирую: что-то больше, что-то меньше.
+      </p>
+      <p>
+        Мне важен каждый подписчик, каждая рекомендация, ведь это помогает мне
+        делиться знаниями, а также обретать новые. А если я получаю новые
+        знания, значит и вы тоже!
+      </p>
+      <div class="thanks-mark">
+        <img src="/banner.jpg" alt="Сергей Сова" />
+        <p>Спасибо, что читаете.</p>
+      </div>
+    </section>
+    <div>
+      <a id="backlink" href="/" class="button button-primary"
+        >Вернуться на главную</a
+      >
+    </div>
+  </main>
+</Layout>
+
+<script>
+  loadIssue().catch(console.info);
+
+  async function loadIssue() {
+    const backlink = document.getElementById("backlink")! as HTMLAnchorElement;
+    const savedValue = localStorage.getItem("previousReadIssue");
+    if (!savedValue) return;
+
+    const previousReadIssueNumber = parseInt(savedValue, 10);
+    const { issues } = await fetch("/issues.json").then((resp) => resp.json());
+    const previousIssue = issues.find(
+      (issue: any) => issue.number == previousReadIssueNumber,
+    );
+    if (!previousIssue) return;
+
+    backlink.innerText = `Продолжить читать выпуск №${previousIssue.number}`;
+    backlink.href = `/issues/${previousIssue.slug}`;
+    // localStorage.removeItem("previousReadIssue");
+  }
+</script>

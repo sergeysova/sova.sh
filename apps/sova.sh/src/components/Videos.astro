@@ -1,0 +1,57 @@
+---
+import type {YoutubeVideo} from '../data/youtube';
+
+export interface Props {
+  videos: YoutubeVideo[];
+}
+
+const {videos} = Astro.props;
+---
+
+<ul class="content-grid">
+  {
+    videos.map((video) => (
+      <li class="video">
+        <a href={video.url} target="_blank" rel="noopener">
+          <div class="cover" style={`background-image: url(${video.thumbnails.standard.url})`}>
+            <div class="blind">
+              <h3 class="title">{video.title}</h3>
+            </div>
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @reference '../styles/global.css';
+
+  @media (max-width: 559px) {
+    .video:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  .video {
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950;
+  }
+
+  .video:hover {
+    border-color: var(--color-accent);
+  }
+
+  .video .cover {
+    @apply relative flex flex-col justify-end bg-cover bg-center;
+    aspect-ratio: 1.7;
+    background-size: 115%;
+  }
+
+  .video .cover .blind {
+    @apply bg-black/85 font-light;
+  }
+
+  .video .cover .title {
+    @apply block w-full px-4 py-2 text-lg text-white;
+  }
+</style>

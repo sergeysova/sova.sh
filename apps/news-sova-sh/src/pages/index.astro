@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import SubscribeForm from "../components/SubscribeForm.astro";
+import { getPublishedNewsletterIssues } from "@sova-web/content";
+
+const entries = await getCollection("newsletter");
+const issues = getPublishedNewsletterIssues(entries, "https://news.sova.sh");
+---
+
+<Layout
+  title="Сова рассылает новости"
+  description="Email-рассылка с подборками статей, новостей и инструментов для web-разработчиков"
+  slug="/"
+>
+  <main id="main-content" class="site-container news-main">
+    <section class="archive-intro site-hero">
+      <h1 class="display-title">Сова рассылает новости</h1>
+      <p class="about lead">
+        Это веб-версия email-рассылки с подборками статей, новостей и
+        инструментов для web-разработчиков. Меня зовут <a
+          href="https://sova.sh"
+          target="_blank">Сергей Сова</a
+        >, я много говорю об effector, пишу на React всё самое сложное, руковожу
+        фронтендом, практикую ночной Rust.
+      </p>
+      <a class="back-link" href="/rss.xml">RSS-лента новостей</a>
+      <a class="button button-primary subscribe-cta" href="#subscribe"
+        >Подписаться на рассылку</a
+      >
+    </section>
+
+    <section aria-label="Архив выпусков">
+      <ul class="issue-list">
+        {
+          issues.map((issue, index) => (
+            <li class="issue-item">
+              <a href={`/issues/${issue.slug}`} class="issue-link">
+                <div class="issue-art">
+                  {issue.image && (
+                    <img
+                      src={issue.image}
+                      alt=""
+                      loading={index > 0 ? "lazy" : "eager"}
+                    />
+                  )}
+                </div>
+                <div class="issue-copy">
+                  <span class="issue-number">
+                    {index === 0
+                      ? "Последний выпуск"
+                      : `Выпуск №${issue.number}`}
+                  </span>
+                  <h2>{issue.description}</h2>
+                  <p class="issue-description">Выпуск №{issue.number}</p>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div id="subscribe" class="subscribe-shell">
+      <SubscribeForm title="Подпишитесь на эту рассылку" />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import "@github/relative-time-element";
+</script>

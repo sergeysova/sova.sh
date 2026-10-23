@@ -1,0 +1,313 @@
+---
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/en';
+import LocaleData from 'dayjs/plugin/localeData';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+
+import Layout from '../layouts/Layout.astro';
+import IconMicrophone from '../assets/icons/microphone.svg?url';
+import IconNews from '../assets/icons/news.svg?url';
+import IconNotes from '../assets/icons/notes.svg?url';
+import IconYoutube from '../assets/icons/youtube.svg?url';
+
+import {getUniqueArticles} from '../data/forem';
+import {getPages} from '../data/markdown';
+import {getVideos} from '../data/youtube';
+import {getEpisodes} from '../data/podcast';
+import {getNews} from '../data/news';
+import {switchLang} from '../lib/language';
+import {invitedContent} from '@sova-web/content';
+
+interface HistoryRecord {
+  type: 'article' | 'video' | 'podcast' | 'news';
+  title: string;
+  description: string;
+  url: string;
+  publishedAt: Date;
+  invited: boolean;
+}
+
+const [articles, pages, videos, episodes, news] = await Promise.all([
+  getUniqueArticles(),
+  getPages(),
+  getVideos(),
+  getEpisodes(),
+  getNews(),
+]);
+
+const records: HistoryRecord[] = [];
+
+invitedContent.forEach((record) => records.push({...record, invited: true}));
+
+articles.forEach((article) =>
+  records.push({
+    type: 'article',
+    title: article.title,
+    description: article.description,
+    url: article.url,
+    publishedAt: new Date(article.published_at),
+    invited: false,
+  }),
+);
+
+pages.forEach((page) =>
+  records.push({
+    type: 'article',
+    title: page.title,
+    description: page.description,
+    url: page.url,
+    publishedAt: new Date(page.published_at),
+    invited: false,
+  }),
+);
+
+videos.forEach((video) =>
+  records.push({
+    type: 'video',
+    title: video.title,
+    description: video.description,
+    publishedAt: new Date(video.publishedAt),
+    url: video.url,
+    invited: false,
+  }),
+);
+
+episodes.forEach((episode) =>
+  records.push({
+    type: 'podcast',
+    title: episode.title,
+    description: episode.description,
+    publishedAt: new Date(episode.pubDate),
+    url: episode.link,
+    invited: false,
+  }),
+);
+
+news.forEach((issue) =>
+  records.push({
+    type: 'news',
+    title: `Сова рассылает выпуск #${issue.id}`,
+    description: issue.description,
+    publishedAt: new Date(issue.publishedAt),
+    url: issue.url,
+    invited: false,
+  }),
+);
+
+records.sort((a, b) => b.publishedAt.valueOf() - a.publishedAt.valueOf());
+
+const icon: {[key in HistoryRecord['type']]: string} = {
+  article: IconNotes,
+  video: IconYoutube,
+  podcast: IconMicrophone,
+  news: IconNews,
+};
+
+dayjs.extend(LocaleData);
+dayjs.extend(LocalizedFormat);
+dayjs.locale(import.meta.env.PUBLIC_LANGUAGE);
+
+const articleTypeTitle: {[Key in HistoryRecord['type']]: string} = {
+  article: switchLang({en: 'Article', ru: 'Статья'}),
+  news: switchLang({en: 'Newsletter issue', ru: 'Новостной выпуск'}),
+  podcast: switchLang({en: 'Podcast episode', ru: 'Выпуск подкаста'}),
+  video: switchLang({en: 'Video', ru: 'Видео'}),
+};
+---
+
+<Layout
+  title={switchLang({
+    en: 'Publish history',
+    ru: 'История публикаций',
+  })}
+  description={switchLang({
+    en: 'All my published content in chronological order',
+    ru: 'Весь мой контент в хронологическом порядке',
+  })}
+>
+  <main id="main-content" class="history-page relative">
+    <h1 class="history-title">{switchLang({en: 'Publish history', ru: 'История публикаций'})}</h1>
+    <div class="relative space-y-5">
+      {
+        records.map((record, index) => {
+          const recordYear = record.publishedAt.getUTCFullYear();
+          const recordMonth = record.publishedAt.getUTCMonth();
+          const previousYear = records[index - 1]?.publishedAt.getUTCFullYear() ?? recordYear + 1;
+          const previousMonth = records[index - 1]?.publishedAt.getUTCMonth() ?? recordMonth + 1;
+          return (
+            <Fragment>
+              {recordYear !== previousYear ? (
+                <h2 class="year">
+                  <a href={`#r-${recordYear}`} id={`r-${recordYear}`}>
+                    {recordYear}
+                  </a>
+                </h2>
+              ) : null}
+              {recordMonth !== previousMonth || recordYear !== previousYear ? (
+                <h3 class="month-heading">
+                  <a
+                    href={`#r-${recordYear}-${recordMonth}`}
+                    id={`r-${recordYear}-${recordMonth}`}
+                    class="month capitalize"
+                  >
+                    {dayjs(record.publishedAt).format('MMMM')}
+                  </a>
+                </h3>
+              ) : null}
+              <a
+                data-type={record.type}
+                data-invited={switchLang({en: 'invited', ru: 'приглашен'})}
+                class:list={[
+                  'record z-50',
+                  {
+                    invited: record.invited,
+                  },
+                ]}
+                href={record.url}
+                rel="noopener"
+                target="_blank"
+              >
+                <div class="flex space-x-2 px-4 text-xl">
+                  <img
+                    src={icon[record.type]}
+                    class="inline-block w-5"
+                    title={articleTypeTitle[record.type]}
+                    alt=""
+                  />
+                  <span>{record.title}</span>
+                </div>
+                <span class="pr-4 pl-12 text-sm">{dayjs(record.publishedAt).format('LL')}</span>
+                <p class="pr-4 pl-12">{record.description}</p>
+              </a>
+            </Fragment>
+          );
+        })
+      }
+      <div class="line"></div>
+    </div>
+  </main>
+</Layout>
+<style>
+  @reference '../styles/global.css';
+
+  #main-content.history-page {
+    box-sizing: border-box;
+    width: min(100%, 70ch);
+    margin: 0 auto;
+    padding: 3rem 1rem 6rem;
+    gap: 1.25rem;
+  }
+
+  .history-title {
+    margin: 0 0 0.75rem;
+    font: 400 clamp(2.5rem, 7vw, 4.5rem) / 1.1 var(--font-display);
+  }
+
+  .line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.4rem;
+    z-index: -1;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .year {
+    position: sticky;
+    top: 0.5rem;
+    z-index: 90;
+    display: block;
+    margin: 0 -0.75rem;
+    border: 1px solid var(--color-line);
+    padding: 0.5rem 1.25rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    font: 1.4rem var(--font-display);
+  }
+
+  .year a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .year:not(:first-child) {
+    margin-top: 3rem;
+  }
+
+  .month-heading {
+    margin: 0;
+  }
+
+  .month {
+    display: inline-block;
+    margin-left: 2.5rem;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .month:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .record {
+    --record-accent: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: visible;
+    border: 1px solid var(--color-line);
+    padding-block: 0.75rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    box-shadow: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .record:hover {
+    border-color: var(--color-accent);
+  }
+
+  .record > div {
+    font-size: 1rem;
+  }
+
+  .record > span,
+  .record > p {
+    color: var(--color-muted);
+  }
+
+  .record::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0.25rem;
+    background: var(--record-accent);
+    content: '';
+  }
+
+  .record.invited {
+    --record-accent: var(--color-accent);
+    margin-left: -0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  .record.invited::after {
+    width: 1.25rem;
+    padding-block: 0.25rem;
+    color: var(--color-bg);
+    content: attr(data-invited);
+    font-size: 0.875rem;
+    text-align: right;
+    text-orientation: sideways;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+</style>

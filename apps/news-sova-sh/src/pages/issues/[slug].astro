@@ -1,0 +1,77 @@
+---
+import { getCollection, render } from "astro:content";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import { getPublishedNewsletterIssues } from "@sova-web/content";
+
+import SubscribeForm from "../../components/SubscribeForm.astro";
+import Layout from "../../layouts/Layout.astro";
+
+import { getEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("newsletter");
+  const issues = getPublishedNewsletterIssues(entries, "https://news.sova.sh");
+  return issues.map((issue) => ({
+    params: { slug: issue.slug },
+  }));
+}
+
+export interface Params {
+  slug: string;
+}
+
+const { slug } = Astro.params;
+const issue = await getEntry("newsletter", slug);
+if (!issue) return null;
+
+const { Content } = await render(issue);
+const title = `Сова рассылает выпуск #${issue.data.number}`;
+---
+
+<Layout
+  title={title}
+  description={issue.data.introduction}
+  slug={issue.id}
+  publishedDate={issue.data.date}
+  image={issue.data.image}
+>
+  <main id="main-content" class="site-container news-main reading-shell">
+    <a href="/" class="back-link">⇤ Все выпуски</a>
+    <header class="issue-heading site-hero">
+      <p class="meta">
+        Выпуск №{issue.data.number} · {
+          issue.data.date.toLocaleDateString("ru-RU", { dateStyle: "medium" })
+        }
+      </p>
+      <h1>{title}</h1>
+      <p>{issue.data.introduction}</p>
+    </header>
+    <article class="reading">
+      <Content />
+    </article>
+    <a href="/" class="back-link">↵ Все выпуски</a>
+    <div class="subscribe-shell">
+      <SubscribeForm title="Получайте больше на почту…" />
+    </div>
+    <save-issue data-number={issue.data.number}></save-issue>
+  </main>
+</Layout>
+<script>
+  import "@github/relative-time-element";
+
+  class SaveIssue extends HTMLElement {
+    constructor() {
+      super();
+    }
+    connectedCallback() {
+      if (this.dataset.number !== undefined) {
+        localStorage.setItem(
+          "previousReadIssue",
+          this.dataset.number.toString(),
+        );
+      }
+    }
+  }
+
+  customElements.define("save-issue", SaveIssue);
+</script>

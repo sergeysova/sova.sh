@@ -1,0 +1,125 @@
+---
+import {switchLang} from '../lib/language';
+import SiteHeader from '@sova-web/ui/SiteHeader.astro';
+import SiteFooter from '@sova-web/ui/SiteFooter.astro';
+import ThemeHead from '@sova-web/ui/ThemeHead.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article' | 'profile';
+  image?: string;
+  locale?: 'ru' | 'en';
+  alternateLanguages?: {
+    en: string;
+    ru: string;
+  };
+  headerLinks?: Array<{href: string; label: string}>;
+}
+
+const siteName = switchLang({
+  ru: 'Сергей Сова',
+  en: 'Sergey Sova',
+});
+
+const {
+  title,
+  description,
+  type = 'website',
+  image,
+  locale = import.meta.env.PUBLIC_LANGUAGE,
+  alternateLanguages,
+  headerLinks,
+} = Astro.props;
+const localeValue = locale === 'ru' ? 'ru' : 'en';
+const realLocale = locale === 'ru' ? 'ru_RU' : 'en_US';
+const fullTitle = title ? `${title} · ${siteName}` : siteName;
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  import.meta.env.PUBLIC_SITE || Astro.url.origin,
+).toString();
+
+const gtagSource = `window.dataLayer = window.dataLayer || [];
+function gtag() {
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+gtag('config', '${import.meta.env.PUBLIC_GTAG}');`.replace(/\n+/gim, '');
+---
+
+<!doctype html>
+<html lang={locale} prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <link rel="icon" href="/favicon.png" />
+
+    <title>{fullTitle}</title>
+    <meta property="og:title" content={fullTitle} />
+    <meta name="twitter:title" content={fullTitle} />
+
+    {type !== 'website' ? <meta property="og:site_name" content={siteName} /> : null}
+
+    {description ? <meta property="description" content={description} /> : null}
+    {description ? <meta property="og:description" content={description} /> : null}
+    {description ? <meta property="twitter:description" content={description} /> : null}
+    <meta
+      name="keywords"
+      content="Effector, JavaScript, TypeScript, Software Development, React, Testing, Consulting"
+    />
+
+    {image ? <meta property="image" content={image} /> : null}
+    {image ? <meta property="og:image" content={image} /> : null}
+    {image ? <meta property="twitter:image" content={image} /> : null}
+
+    <meta content="og:locale" content={realLocale} />
+    <meta property="og:url" content={canonicalUrl} />
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="en" href={alternateLanguages.en} />
+      ) : null
+    }
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="ru" href={alternateLanguages.ru} />
+      ) : null
+    }
+    {
+      alternateLanguages ? (
+        <link rel="alternate" hreflang="x-default" href={alternateLanguages.en} />
+      ) : null
+    }
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@sova_original" />
+    <meta name="twitter:site" content="@sova_original" />
+
+    <link rel="me" href="https://techhub.social/@sergeysova" />
+
+    <ThemeHead />
+    <script
+      is:inline
+      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GTAG}`}></script>
+    <script
+      is:inline
+      type={import.meta.env.PROD ? 'application/javascript' : 'skip'}
+      set:html={gtagSource}
+    />
+  </head>
+
+  <body>
+    <SiteHeader
+      site="profile"
+      locale={localeValue}
+      links={headerLinks}
+      alternateHref={alternateLanguages?.[localeValue === 'ru' ? 'en' : 'ru']}
+    />
+    <slot />
+    <SiteFooter locale={localeValue} historyHref="/history" />
+  </body>
+</html>

@@ -1,0 +1,78 @@
+---
+import type {Episode} from '../data/podcast';
+import {getImage} from 'astro:assets';
+
+export interface Props {
+  episodes: Episode[];
+}
+
+const originalEpisodes = Astro.props.episodes;
+const episodes = await Promise.all(
+  originalEpisodes.map(async (episode) => {
+    const image = await getImage({
+      width: 736,
+      quality: 90,
+      inferSize: true,
+      aspectRatio: 1.48,
+      src: episode.imageURL,
+    });
+    return {
+      ...episode,
+      imageURL: image.src,
+    };
+  }),
+);
+---
+
+<ul class="content-grid">
+  {
+    episodes.map((episode) => (
+      <li class="episode">
+        <a href={episode.link} rel="noopener">
+          <div class="cover" style={`background-image: url(${episode.imageURL})`}>
+            <kbd>
+              S{episode.season}:E{episode.episode}
+            </kbd>
+            <h3 class="title">{episode.title}</h3>
+          </div>
+          <p class="description">{episode.description}</p>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @reference '../styles/global.css';
+
+  @media (max-width: 559px) {
+    .episode:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  .episode {
+    @apply flex flex-col gap-1 overflow-hidden border border-zinc-700 bg-zinc-950;
+  }
+
+  .episode:hover {
+    border-color: var(--color-accent);
+  }
+
+  .episode .cover {
+    @apply relative block bg-cover bg-center;
+    aspect-ratio: 1.9;
+  }
+
+  .episode .cover kbd {
+    @apply float-right rounded-tr-md rounded-bl bg-black/85 px-2 py-1 text-white;
+  }
+
+  .episode .title {
+    @apply absolute bottom-0 block w-full bg-black/85 px-4 py-2 text-xl font-light text-white;
+  }
+
+  .episode .description {
+    @apply px-4 py-3 text-lg text-zinc-300;
+  }
+</style>

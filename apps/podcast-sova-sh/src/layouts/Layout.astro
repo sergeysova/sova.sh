@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+import SiteHeader from '@sova-web/ui/SiteHeader.astro';
+import SiteFooter from '@sova-web/ui/SiteFooter.astro';
+import ThemeHead from '@sova-web/ui/ThemeHead.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const {title, description = 'Подкаст «Под куполом» — Сергей Сова'} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={Astro.url.href} />
+    <ThemeHead />
+    <title>{title}</title>
+  </head>
+  <body>
+    <SiteHeader site="podcast" locale="ru" />
+    <slot />
+    <SiteFooter locale="ru" />
+  </body>
+</html>

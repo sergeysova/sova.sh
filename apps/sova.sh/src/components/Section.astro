@@ -1,0 +1,45 @@
+---
+import {optionalTranslate, switchLang} from '../lib/language';
+import ButtonLink from './ButtonLink.astro';
+
+interface Link {
+  text: {ru: string; en: string} | string;
+  url: string;
+}
+
+export interface Props {
+  title?: string | {ru: string; en: string};
+  id?: string;
+  description?: {
+    ru: string;
+    en: string;
+  };
+  links?: Link[];
+}
+
+const {title, description, links, id} = Astro.props;
+const sectionTitle = title ? optionalTranslate(title) : undefined;
+---
+
+<section class="content-section">
+  {id ? <a id={id} /> : null}
+  {sectionTitle ? <h2 class="section-title">{sectionTitle}</h2> : null}
+  <slot />
+  {description ? <p class="pt-4">{switchLang(description)}</p> : null}
+  {
+    links ? (
+      <div class="flex gap-2 pt-4">
+        {links.map((link) => (
+          <ButtonLink text={optionalTranslate(link.text)} href={link.url} />
+        ))}
+      </div>
+    ) : null
+  }
+</section>
+
+<style>
+  .section-title {
+    font: 400 clamp(1.7rem, 3vw, 2.5rem)/1.2 var(--font-display);
+    margin: 0 0 1rem;
+  }
+</style>

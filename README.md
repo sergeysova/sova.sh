@@ -1,40 +1,48 @@
-# Sova.sh
+# sova-web
 
-## 🚀 Project Structure
+Монорепозиторий статических Astro-сайтов. Актуальные архитектура,
+решения, незавершённая работа и статус production — в
+[`docs/sova-web-monorepo-plan.md`](./docs/sova-web-monorepo-plan.md).
 
-Inside of your Astro project, you'll see the following folders and files:
+## Приложения
 
+| Сайт                                  | Путь                   | Назначение                                     |
+| ------------------------------------- | ---------------------- | ---------------------------------------------- |
+| `sova.sh`                             | `apps/sova.sh`         | Русскоязычный индекс                           |
+| `sergeysova.com`, `ru.sergeysova.com` | `apps/sergeysova.com`  | Профессиональный бренд, отдельные EN/RU-сборки |
+| `news.sova.sh`                        | `apps/news-sova-sh`    | Архив рассылки, JSON- и RSS-эндпоинты          |
+| `podcast.sova.sh`                     | `apps/podcast-sova-sh` | Список эпизодов и страницы Simplecast          |
+
+`packages/content` содержит общий контентный код и загрузчики API.
+Авторские материалы и выпуски рассылки находятся в корневом `content/`.
+`packages/ui` содержит общий Astro UI и тёмную дизайн-систему сайтов;
+визуальные токены и правила описаны в [`docs/design-system.md`](./docs/design-system.md).
+
+## Работа локально
+
+```bash
+pnpm install
+pnpm --filter @sova-web/sova.sh dev
+pnpm --filter @sova-web/sergeysova.com dev
+pnpm --filter @sergeysova/news.sova.sh dev
+pnpm --filter @sova-web/podcast-sova-sh dev
 ```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── data/
-│   │   └── fetcher.ts
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+
+`pnpm build` собирает приложения через Turborepo; `pnpm test` запускает
+тесты пакетов. Приложениям, которые загружают внешние данные при сборке,
+нужны переменные из их `apps/*/.env.example`. Не выводите и не коммитьте
+значения секретов.
+
+CV собирается из Typst-исходников:
+
+```bash
+pnpm --filter @sova-web/sova.sh cv
+pnpm --filter @sova-web/sergeysova.com cv
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Деплой
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command             | Action                                             |
-| :------------------ | :------------------------------------------------- |
-| `pnpm install`      | Installs dependencies                              |
-| `pnpm dev`          | Starts local dev server at `localhost:3000`        |
-| `pnpm build`        | Build your production site to `./dist/`            |
-| `pnpm preview`      | Preview your build locally, before deploying       |
-| `pnpm astro ...`    | Run CLI commands like `astro add`, `astro preview` |
-| `pnpm astro --help` | Get help using the Astro CLI                       |
+Приложения настроены на Cloudflare Workers Static Assets. Наличие
+конфигурации и workflow не означает, что production Workers созданы или
+сайты переключены: текущий статус и незавершённые действия описаны в
+плане монорепозитория.

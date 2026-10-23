@@ -1,0 +1,33 @@
+---
+import Layout from './Layout.astro';
+import IfLang from '../components/IfLang.astro';
+const {frontmatter} = Astro.props;
+---
+
+<Layout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  type="article"
+  locale={frontmatter.language}
+>
+  <main id="main-content" class="reading-shell">
+    <div class="go-back">
+      <a class="back-link" href="/">
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
+    </div>
+    <h1 class="display-title">{frontmatter.title}</h1>
+    <div class="reading markdown">
+      <slot />
+    </div>
+    <div class="go-back mt-10">
+      <a class="back-link" href="/">
+        ↵
+        <IfLang equals="ru">Вернуться</IfLang>
+        <IfLang equals="en">Go home</IfLang>
+      </a>
+    </div>
+  </main>
+</Layout>
