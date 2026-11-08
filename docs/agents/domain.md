@@ -1,20 +1,51 @@
-# Domain docs
+# Доменные документы
 
-## Before exploring
+Как инженерные скиллы читают доменную документацию этого репозитория, когда разбирают код.
 
-- Read `GLOSSARY.md` at the repo root if it exists.
-- Read relevant decisions in `docs/adr/` if that directory exists.
-- If these files don't exist, proceed without flagging their absence.
-- For changes to the sites' architecture, content sources, or deployment, read the relevant section of `docs/sova-web-monorepo-plan.md`.
+## Перед исследованием прочитай
 
-## Layout
+- **`GLOSSARY.md`** в корне репозитория, или
+- **`GLOSSARY-MAP.md`** в корне, если он есть: он указывает на один `GLOSSARY.md` на контекст. Читай те, что относятся к теме.
+- **`docs/adr/`**: читай ADR, которые касаются области работы. В multi-context репозиториях смотри ещё `src/<context>/docs/adr/` для решений внутри контекста.
+- Для изменений архитектуры сайтов, источников контента или деплоя прочитай нужный раздел `docs/sova-web-monorepo-plan.md`.
 
-This is a single-context repo: use the root `GLOSSARY.md` and `docs/adr/`.
+Если какого-то из этих файлов нет, **иди дальше молча**. Не отмечай отсутствие и не предлагай создать их заранее. Скилл `/domain-modeling` (через `/grill-with-docs` и `/improve-codebase-architecture`) создаёт их сам, когда термин или решение действительно зафиксированы.
 
-## Use the glossary
+## Структура файлов
 
-Use glossary terms when naming domain concepts. If a needed concept is missing, note the gap rather than inventing a competing term.
+Этот репозиторий — single-context:
 
-## Flag ADR conflicts
+```
+/
+├── GLOSSARY.md
+├── docs/adr/
+├── apps/
+└── packages/
+```
 
-If a recommendation conflicts with an existing ADR, call out the conflict instead of silently overriding it.
+Multi-context устроен иначе. Признак — `GLOSSARY-MAP.md` в корне:
+
+```
+/
+├── GLOSSARY-MAP.md
+├── docs/adr/                          ← решения на всю систему
+└── src/
+    ├── ordering/
+    │   ├── GLOSSARY.md
+    │   └── docs/adr/                  ← решения контекста
+    └── billing/
+        ├── GLOSSARY.md
+        └── docs/adr/
+```
+
+## Словарь глоссария
+
+Когда называешь доменное понятие (в заголовке задачи, предложении рефакторинга, гипотезе, имени теста), бери термин из `GLOSSARY.md`. Не подменяй его синонимом, от которого глоссарий явно отказывается.
+
+Если нужного понятия в глоссарии ещё нет, это сигнал: либо ты вводишь язык, которым проект не пользуется (пересмотри), либо в глоссарии дырка (отметь её для `/domain-modeling`).
+
+## Конфликт с ADR
+
+Если вывод противоречит существующему ADR, скажи об этом прямо, а не заменяй решение молча:
+
+> _Противоречит ADR-0007, но есть повод открыть его заново, потому что…_
