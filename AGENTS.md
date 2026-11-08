@@ -2,11 +2,15 @@
 
 ### Issue tracker
 
-Issues and specs live in GitHub Issues; use `gh`. See `docs/agents/issue-tracker.md`.
+Задачи и спеки живут в GitHub Issues; используй `gh`. См. `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Пять канонических ролей, строка метки совпадает с именем роли. См. `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
-Single-context: read the root glossary and relevant ADRs when present. See `docs/agents/domain.md`.
+Single-context: читай корневой глоссарий и релевантные ADR, когда они есть. См. `docs/agents/domain.md`.
 
 ## Project context
 
